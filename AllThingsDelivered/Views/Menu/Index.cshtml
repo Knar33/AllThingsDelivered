@@ -1,0 +1,24 @@
+﻿@model AllThingsDelivered.Models.Menu
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="container">
+@for (int i = 0; i < Model.response.menu.menus.items[0].entries.count; i++)
+{
+    <h1>@Model.response.menu.menus.items[0].entries.items[i].name</h1>
+    for (int j = 0; j < Model.response.menu.menus.items[0].entries.items[i].entries.count; j++)
+    {
+        <div class="row">
+            <div class="col-sm-10">
+                <h5>@Model.response.menu.menus.items[0].entries.items[i].entries.items[j].name</h5>
+                <span style="color: gray">@Model.response.menu.menus.items[0].entries.items[i].entries.items[j].description</span>
+            </div>
+            <div class="col-sm-12 text-right">
+                @Model.response.menu.menus.items[0].entries.items[i].entries.items[j].price
+            </div>
+        </div>
+    }
+}
+</div>

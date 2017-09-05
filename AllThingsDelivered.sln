@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.10
+VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AllThingsDelivered", "AllThingsDelivered\AllThingsDelivered.csproj", "{00A6F0D3-149F-40EF-963C-2F7549A45426}"
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "AllThingsDeliveredDB", "AllThingsDeliveredDB\AllThingsDeliveredDB.sqlproj", "{0919D700-862B-45B8-8D97-8FD5DA04B639}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,12 @@ Global
 		{00A6F0D3-149F-40EF-963C-2F7549A45426}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{00A6F0D3-149F-40EF-963C-2F7549A45426}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{00A6F0D3-149F-40EF-963C-2F7549A45426}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0919D700-862B-45B8-8D97-8FD5DA04B639}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0919D700-862B-45B8-8D97-8FD5DA04B639}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0919D700-862B-45B8-8D97-8FD5DA04B639}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{0919D700-862B-45B8-8D97-8FD5DA04B639}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0919D700-862B-45B8-8D97-8FD5DA04B639}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0919D700-862B-45B8-8D97-8FD5DA04B639}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
