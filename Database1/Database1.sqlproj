@@ -4,17 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <Name>AllThingsDeliveredDB</Name>
+    <Name>Database1</Name>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>4.1</ProjectVersion>
-    <ProjectGuid>{d4292e47-3a25-4688-87a8-14fd110090c3}</ProjectGuid>
+    <ProjectGuid>{72042242-a8e7-4149-a03b-00ad2b63c095}</ProjectGuid>
     <DSP>Microsoft.Data.Tools.Schema.Sql.Sql130DatabaseSchemaProvider</DSP>
     <OutputType>Database</OutputType>
     <RootPath>
     </RootPath>
-    <RootNamespace>AllThingsDeliveredDB</RootNamespace>
-    <AssemblyName>AllThingsDeliveredDB</AssemblyName>
-    <ModelCollation>1033,CI</ModelCollation>
+    <RootNamespace>Database1</RootNamespace>
+    <AssemblyName>Database1</AssemblyName>
+    <ModelCollation>1033, CI</ModelCollation>
     <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
     <DeployToDatabase>True</DeployToDatabase>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
@@ -23,8 +23,6 @@
     <SqlServerVerification>False</SqlServerVerification>
     <IncludeCompositeObjects>True</IncludeCompositeObjects>
     <TargetDatabaseSet>True</TargetDatabaseSet>
-    <DefaultCollation>SQL_Latin1_General_CP1_CI_AS</DefaultCollation>
-    <DefaultFilegroup>PRIMARY</DefaultFilegroup>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
@@ -59,20 +57,5 @@
   <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
   <ItemGroup>
     <Folder Include="Properties" />
-    <Folder Include="dbo\" />
-    <Folder Include="dbo\Tables\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Build Include="dbo\Tables\Customers_1.sql" />
-    <Build Include="dbo\Tables\Addresses_1.sql" />
-    <Build Include="dbo\Tables\CustomerAddresses_1.sql" />
-    <Build Include="dbo\Tables\Drivers.sql" />
-    <Build Include="dbo\Tables\Operators.sql" />
-    <Build Include="dbo\Tables\Orders.sql" />
-    <Build Include="dbo\Tables\OrderContents.sql" />
-    <Build Include="dbo\Tables\CustomOrderContents.sql" />
-    <Build Include="dbo\Tables\Restaurants.sql" />
-    <Build Include="dbo\Tables\RestaurantCategories.sql" />
-    <Build Include="dbo\Tables\RestaurantItems.sql" />
   </ItemGroup>
 </Project>

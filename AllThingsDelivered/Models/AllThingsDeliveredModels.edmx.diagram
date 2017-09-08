@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="59c33ee4b7b34003821b91a2aa6cfd07" Name="Diagram1" ZoomLevel="71">
+        <EntityTypeShape EntityType="AllThingsDeliveredDBModel.Address" Width="1.5" PointX="0.75" PointY="7.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="AllThingsDeliveredDBModel.CustomerAddress" Width="1.5" PointX="6" PointY="7.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="AllThingsDeliveredDBModel.Customer" Width="1.5" PointX="6" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="AllThingsDeliveredDBModel.CustomOrderContent" Width="1.5" PointX="10.5" PointY="7.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="AllThingsDeliveredDBModel.Driver" Width="1.5" PointX="3" PointY="7.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="AllThingsDeliveredDBModel.Operator" Width="1.5" PointX="3" PointY="10.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="AllThingsDeliveredDBModel.OrderContent" Width="1.5" PointX="10.5" PointY="10.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="AllThingsDeliveredDBModel.Order" Width="1.5" PointX="8.25" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AllThingsDeliveredDBModel.RestaurantCategory" Width="1.5" PointX="5.25" PointY="13.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="AllThingsDeliveredDBModel.RestaurantItem" Width="1.5" PointX="7.5" PointY="13.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="AllThingsDeliveredDBModel.Restaurant" Width="1.5" PointX="3" PointY="13.875" IsExpanded="true" />
+        <AssociationConnector Association="AllThingsDeliveredDBModel.FK_CustomerAddresses_Addresses" ManuallyRouted="false" />
+        <AssociationConnector Association="AllThingsDeliveredDBModel.FK_Drivers_Addresses" ManuallyRouted="false" />
+        <AssociationConnector Association="AllThingsDeliveredDBModel.FK_Operators_Addresses" ManuallyRouted="false" />
+        <AssociationConnector Association="AllThingsDeliveredDBModel.FK_Orders_Addresses" ManuallyRouted="false" />
+        <AssociationConnector Association="AllThingsDeliveredDBModel.FK_Restaurants_Addresses" ManuallyRouted="false" />
+        <AssociationConnector Association="AllThingsDeliveredDBModel.FK_CustomerAddresses_Customers" ManuallyRouted="false" />
+        <AssociationConnector Association="AllThingsDeliveredDBModel.FK_Orders_Customers" ManuallyRouted="false" />
+        <AssociationConnector Association="AllThingsDeliveredDBModel.FK_CustomOrderContents_Orders" ManuallyRouted="false" />
+        <AssociationConnector Association="AllThingsDeliveredDBModel.FK_Orders_Drivers" ManuallyRouted="false" />
+        <AssociationConnector Association="AllThingsDeliveredDBModel.FK_Orders_Operators" ManuallyRouted="false" />
+        <AssociationConnector Association="AllThingsDeliveredDBModel.FK_OrderContents_Orders" ManuallyRouted="false" />
+        <AssociationConnector Association="AllThingsDeliveredDBModel.FK_RestaurantCategories_Restaurants" ManuallyRouted="false" />
+        <AssociationConnector Association="AllThingsDeliveredDBModel.FK_RestaurantItems_RestaurantCategories" ManuallyRouted="false" />
+        <AssociationConnector Association="AllThingsDeliveredDBModel.FK_RestaurantItems_Restaurants" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

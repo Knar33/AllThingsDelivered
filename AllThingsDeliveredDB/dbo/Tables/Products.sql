@@ -1,6 +1,7 @@
 ﻿CREATE TABLE [dbo].[Products] (
     [ID]           INT            IDENTITY (1, 1) NOT NULL,
     [Name]         NVARCHAR (100) NOT NULL,
+	[Description]  NVARCHAR(1000) NULL,
     [UPC]          NVARCHAR (50)  NULL,
     [Price]        MONEY          DEFAULT ((0)) NOT NULL,
     [Manufacturer] INT            NULL,
