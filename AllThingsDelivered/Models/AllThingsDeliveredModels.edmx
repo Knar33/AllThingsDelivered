@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="AllThingsDeliveredDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="AllThingsDeliveredDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Addresses">
           <Key>
             <PropertyRef Name="AddressID" />
@@ -17,6 +17,7 @@
           <Property Name="ZipCode" Type="nvarchar" MaxLength="25" />
           <Property Name="Country" Type="nvarchar" MaxLength="100" />
           <Property Name="Deleted" Type="bit" Nullable="false" />
+          <Property Name="AddressType" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="CustomerAddresses">
           <Key>
@@ -127,6 +128,8 @@
           <Property Name="RestaurantID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="RestaurantName" Type="nvarchar" MaxLength="1000" Nullable="false" />
           <Property Name="AddressID" Type="int" Nullable="false" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="50" />
+          <Property Name="FSID" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <Association Name="FK_CustomerAddresses_Addresses">
           <End Role="Addresses" Type="Self.Addresses" Multiplicity="1">
@@ -369,11 +372,79 @@
             <End Role="Restaurants" EntitySet="Restaurants" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="AllThingsDeliveredDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="AllThingsDeliveredDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Addresses" EntityType="AllThingsDeliveredDBModel.Address" />
+          <EntitySet Name="CustomerAddresses" EntityType="AllThingsDeliveredDBModel.CustomerAddress" />
+          <EntitySet Name="Customers" EntityType="AllThingsDeliveredDBModel.Customer" />
+          <EntitySet Name="CustomOrderContents" EntityType="AllThingsDeliveredDBModel.CustomOrderContent" />
+          <EntitySet Name="Drivers" EntityType="AllThingsDeliveredDBModel.Driver" />
+          <EntitySet Name="Operators" EntityType="AllThingsDeliveredDBModel.Operator" />
+          <EntitySet Name="OrderContents" EntityType="AllThingsDeliveredDBModel.OrderContent" />
+          <EntitySet Name="Orders" EntityType="AllThingsDeliveredDBModel.Order" />
+          <EntitySet Name="RestaurantCategories" EntityType="AllThingsDeliveredDBModel.RestaurantCategory" />
+          <EntitySet Name="RestaurantItems" EntityType="AllThingsDeliveredDBModel.RestaurantItem" />
+          <EntitySet Name="Restaurants" EntityType="AllThingsDeliveredDBModel.Restaurant" />
+          <AssociationSet Name="FK_CustomerAddresses_Addresses" Association="AllThingsDeliveredDBModel.FK_CustomerAddresses_Addresses">
+            <End Role="Address" EntitySet="Addresses" />
+            <End Role="CustomerAddress" EntitySet="CustomerAddresses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Drivers_Addresses" Association="AllThingsDeliveredDBModel.FK_Drivers_Addresses">
+            <End Role="Address" EntitySet="Addresses" />
+            <End Role="Driver" EntitySet="Drivers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Operators_Addresses" Association="AllThingsDeliveredDBModel.FK_Operators_Addresses">
+            <End Role="Address" EntitySet="Addresses" />
+            <End Role="Operator" EntitySet="Operators" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Orders_Addresses" Association="AllThingsDeliveredDBModel.FK_Orders_Addresses">
+            <End Role="Address" EntitySet="Addresses" />
+            <End Role="Order" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Restaurants_Addresses" Association="AllThingsDeliveredDBModel.FK_Restaurants_Addresses">
+            <End Role="Address" EntitySet="Addresses" />
+            <End Role="Restaurant" EntitySet="Restaurants" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CustomerAddresses_Customers" Association="AllThingsDeliveredDBModel.FK_CustomerAddresses_Customers">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="CustomerAddress" EntitySet="CustomerAddresses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Orders_Customers" Association="AllThingsDeliveredDBModel.FK_Orders_Customers">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="Order" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CustomOrderContents_Orders" Association="AllThingsDeliveredDBModel.FK_CustomOrderContents_Orders">
+            <End Role="Order" EntitySet="Orders" />
+            <End Role="CustomOrderContent" EntitySet="CustomOrderContents" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Orders_Drivers" Association="AllThingsDeliveredDBModel.FK_Orders_Drivers">
+            <End Role="Driver" EntitySet="Drivers" />
+            <End Role="Order" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Orders_Operators" Association="AllThingsDeliveredDBModel.FK_Orders_Operators">
+            <End Role="Operator" EntitySet="Operators" />
+            <End Role="Order" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderContents_Orders" Association="AllThingsDeliveredDBModel.FK_OrderContents_Orders">
+            <End Role="Order" EntitySet="Orders" />
+            <End Role="OrderContent" EntitySet="OrderContents" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RestaurantCategories_Restaurants" Association="AllThingsDeliveredDBModel.FK_RestaurantCategories_Restaurants">
+            <End Role="Restaurant" EntitySet="Restaurants" />
+            <End Role="RestaurantCategory" EntitySet="RestaurantCategories" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RestaurantItems_RestaurantCategories" Association="AllThingsDeliveredDBModel.FK_RestaurantItems_RestaurantCategories">
+            <End Role="RestaurantCategory" EntitySet="RestaurantCategories" />
+            <End Role="RestaurantItem" EntitySet="RestaurantItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RestaurantItems_Restaurants" Association="AllThingsDeliveredDBModel.FK_RestaurantItems_Restaurants">
+            <End Role="Restaurant" EntitySet="Restaurants" />
+            <End Role="RestaurantItem" EntitySet="RestaurantItems" />
+          </AssociationSet>
+        </EntityContainer>
         <EntityType Name="Address">
           <Key>
             <PropertyRef Name="AddressID" />
@@ -386,11 +457,12 @@
           <Property Name="ZipCode" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
           <Property Name="Country" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Deleted" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="CustomerAddresses" Relationship="Self.FK_CustomerAddresses_Addresses" FromRole="Addresses" ToRole="CustomerAddresses" />
-          <NavigationProperty Name="Drivers" Relationship="Self.FK_Drivers_Addresses" FromRole="Addresses" ToRole="Drivers" />
-          <NavigationProperty Name="Operators" Relationship="Self.FK_Operators_Addresses" FromRole="Addresses" ToRole="Operators" />
-          <NavigationProperty Name="Orders" Relationship="Self.FK_Orders_Addresses" FromRole="Addresses" ToRole="Orders" />
-          <NavigationProperty Name="Restaurants" Relationship="Self.FK_Restaurants_Addresses" FromRole="Addresses" ToRole="Restaurants" />
+          <Property Name="AddressType" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="CustomerAddresses" Relationship="AllThingsDeliveredDBModel.FK_CustomerAddresses_Addresses" FromRole="Address" ToRole="CustomerAddress" />
+          <NavigationProperty Name="Drivers" Relationship="AllThingsDeliveredDBModel.FK_Drivers_Addresses" FromRole="Address" ToRole="Driver" />
+          <NavigationProperty Name="Operators" Relationship="AllThingsDeliveredDBModel.FK_Operators_Addresses" FromRole="Address" ToRole="Operator" />
+          <NavigationProperty Name="Orders" Relationship="AllThingsDeliveredDBModel.FK_Orders_Addresses" FromRole="Address" ToRole="Order" />
+          <NavigationProperty Name="Restaurants" Relationship="AllThingsDeliveredDBModel.FK_Restaurants_Addresses" FromRole="Address" ToRole="Restaurant" />
         </EntityType>
         <EntityType Name="CustomerAddress">
           <Key>
@@ -400,20 +472,20 @@
           <Property Name="CustomerID" Type="Int32" Nullable="false" />
           <Property Name="AddressID" Type="Int32" Nullable="false" />
           <Property Name="DefaultAddr" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Address" Relationship="Self.FK_CustomerAddresses_Addresses" FromRole="CustomerAddresses" ToRole="Addresses" />
-          <NavigationProperty Name="Customer" Relationship="Self.FK_CustomerAddresses_Customers" FromRole="CustomerAddresses" ToRole="Customers" />
+          <NavigationProperty Name="Address" Relationship="AllThingsDeliveredDBModel.FK_CustomerAddresses_Addresses" FromRole="CustomerAddress" ToRole="Address" />
+          <NavigationProperty Name="Customer" Relationship="AllThingsDeliveredDBModel.FK_CustomerAddresses_Customers" FromRole="CustomerAddress" ToRole="Customer" />
         </EntityType>
         <EntityType Name="Customer">
           <Key>
             <PropertyRef Name="CustomerID" />
           </Key>
           <Property Name="CustomerID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="FirstName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="LastName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="PhoneNumber" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumber" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="CustomerAddresses" Relationship="Self.FK_CustomerAddresses_Customers" FromRole="Customers" ToRole="CustomerAddresses" />
-          <NavigationProperty Name="Orders" Relationship="Self.FK_Orders_Customers" FromRole="Customers" ToRole="Orders" />
+          <NavigationProperty Name="CustomerAddresses" Relationship="AllThingsDeliveredDBModel.FK_CustomerAddresses_Customers" FromRole="Customer" ToRole="CustomerAddress" />
+          <NavigationProperty Name="Orders" Relationship="AllThingsDeliveredDBModel.FK_Orders_Customers" FromRole="Customer" ToRole="Order" />
         </EntityType>
         <EntityType Name="CustomOrderContent">
           <Key>
@@ -421,9 +493,9 @@
           </Key>
           <Property Name="CustomOrderContentsID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ItemLocation" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="Content" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Content" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="OrderID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Order" Relationship="Self.FK_CustomOrderContents_Orders" FromRole="CustomOrderContents" ToRole="Orders" />
+          <NavigationProperty Name="Order" Relationship="AllThingsDeliveredDBModel.FK_CustomOrderContents_Orders" FromRole="CustomOrderContent" ToRole="Order" />
         </EntityType>
         <EntityType Name="Driver">
           <Key>
@@ -431,13 +503,13 @@
           </Key>
           <Property Name="DriverID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="AddressID" Type="Int32" />
-          <Property Name="FirstName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="LastName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="ClockedIn" Type="Boolean" Nullable="false" />
           <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="0" />
-          <NavigationProperty Name="Address" Relationship="Self.FK_Drivers_Addresses" FromRole="Drivers" ToRole="Addresses" />
-          <NavigationProperty Name="Orders" Relationship="Self.FK_Orders_Drivers" FromRole="Drivers" ToRole="Orders" />
+          <NavigationProperty Name="Address" Relationship="AllThingsDeliveredDBModel.FK_Drivers_Addresses" FromRole="Driver" ToRole="Address" />
+          <NavigationProperty Name="Orders" Relationship="AllThingsDeliveredDBModel.FK_Orders_Drivers" FromRole="Driver" ToRole="Order" />
         </EntityType>
         <EntityType Name="Operator">
           <Key>
@@ -445,12 +517,12 @@
           </Key>
           <Property Name="OperatorID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="AddressID" Type="Int32" Nullable="false" />
-          <Property Name="FirstName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="LastName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="0" />
-          <NavigationProperty Name="Address" Relationship="Self.FK_Operators_Addresses" FromRole="Operators" ToRole="Addresses" />
-          <NavigationProperty Name="Orders" Relationship="Self.FK_Orders_Operators" FromRole="Operators" ToRole="Orders" />
+          <NavigationProperty Name="Address" Relationship="AllThingsDeliveredDBModel.FK_Operators_Addresses" FromRole="Operator" ToRole="Address" />
+          <NavigationProperty Name="Orders" Relationship="AllThingsDeliveredDBModel.FK_Orders_Operators" FromRole="Operator" ToRole="Order" />
         </EntityType>
         <EntityType Name="OrderContent">
           <Key>
@@ -459,12 +531,12 @@
           <Property Name="OrderContentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="OrderID" Type="Int32" Nullable="false" />
           <Property Name="RestaurantID" Type="Int32" Nullable="false" />
-          <Property Name="ItemName" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ItemName" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="ItemDescription" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
           <Property Name="Quantity" Type="Int32" Nullable="false" />
           <Property Name="Price" Type="Decimal" Precision="18" Scale="0" />
-          <Property Name="Customize" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Order" Relationship="Self.FK_OrderContents_Orders" FromRole="OrderContents" ToRole="Orders" />
+          <Property Name="Customize" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Order" Relationship="AllThingsDeliveredDBModel.FK_OrderContents_Orders" FromRole="OrderContent" ToRole="Order" />
         </EntityType>
         <EntityType Name="Order">
           <Key>
@@ -476,7 +548,7 @@
           <Property Name="CustomerID" Type="Int32" Nullable="false" />
           <Property Name="OperatorID" Type="Int32" />
           <Property Name="TimePlaced" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="OrderMethod" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="OrderMethod" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Active" Type="Boolean" Nullable="false" />
           <Property Name="Updating" Type="Boolean" Nullable="false" />
           <Property Name="Updated" Type="Boolean" Nullable="false" />
@@ -484,12 +556,12 @@
           <Property Name="DeliveryFee" Type="Decimal" Precision="18" Scale="0" />
           <Property Name="Customertip" Type="Decimal" Precision="18" Scale="0" />
           <Property Name="DriverRating" Type="Int32" />
-          <NavigationProperty Name="Address" Relationship="Self.FK_Orders_Addresses" FromRole="Orders" ToRole="Addresses" />
-          <NavigationProperty Name="Customer" Relationship="Self.FK_Orders_Customers" FromRole="Orders" ToRole="Customers" />
-          <NavigationProperty Name="CustomOrderContents" Relationship="Self.FK_CustomOrderContents_Orders" FromRole="Orders" ToRole="CustomOrderContents" />
-          <NavigationProperty Name="Driver" Relationship="Self.FK_Orders_Drivers" FromRole="Orders" ToRole="Drivers" />
-          <NavigationProperty Name="Operator" Relationship="Self.FK_Orders_Operators" FromRole="Orders" ToRole="Operators" />
-          <NavigationProperty Name="OrderContents" Relationship="Self.FK_OrderContents_Orders" FromRole="Orders" ToRole="OrderContents" />
+          <NavigationProperty Name="Address" Relationship="AllThingsDeliveredDBModel.FK_Orders_Addresses" FromRole="Order" ToRole="Address" />
+          <NavigationProperty Name="Customer" Relationship="AllThingsDeliveredDBModel.FK_Orders_Customers" FromRole="Order" ToRole="Customer" />
+          <NavigationProperty Name="CustomOrderContents" Relationship="AllThingsDeliveredDBModel.FK_CustomOrderContents_Orders" FromRole="Order" ToRole="CustomOrderContent" />
+          <NavigationProperty Name="Driver" Relationship="AllThingsDeliveredDBModel.FK_Orders_Drivers" FromRole="Order" ToRole="Driver" />
+          <NavigationProperty Name="Operator" Relationship="AllThingsDeliveredDBModel.FK_Orders_Operators" FromRole="Order" ToRole="Operator" />
+          <NavigationProperty Name="OrderContents" Relationship="AllThingsDeliveredDBModel.FK_OrderContents_Orders" FromRole="Order" ToRole="OrderContent" />
         </EntityType>
         <EntityType Name="RestaurantCategory">
           <Key>
@@ -497,276 +569,209 @@
           </Key>
           <Property Name="RestaurantCategoryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="RestaurantID" Type="Int32" Nullable="false" />
-          <Property Name="CategoryName" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="CategoryDescription" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Restaurant" Relationship="Self.FK_RestaurantCategories_Restaurants" FromRole="RestaurantCategories" ToRole="Restaurants" />
-          <NavigationProperty Name="RestaurantItems" Relationship="Self.FK_RestaurantItems_RestaurantCategories" FromRole="RestaurantCategories" ToRole="RestaurantItems" />
+          <Property Name="CategoryName" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="CategoryDescription" Type="String" Nullable="false" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Restaurant" Relationship="AllThingsDeliveredDBModel.FK_RestaurantCategories_Restaurants" FromRole="RestaurantCategory" ToRole="Restaurant" />
+          <NavigationProperty Name="RestaurantItems" Relationship="AllThingsDeliveredDBModel.FK_RestaurantItems_RestaurantCategories" FromRole="RestaurantCategory" ToRole="RestaurantItem" />
         </EntityType>
         <EntityType Name="RestaurantItem">
           <Key>
             <PropertyRef Name="RestaurantItemID" />
           </Key>
           <Property Name="RestaurantItemID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ItemName" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="ItemDescription" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ItemName" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="ItemDescription" Type="String" Nullable="false" MaxLength="2000" FixedLength="false" Unicode="true" />
           <Property Name="RestaurantID" Type="Int32" Nullable="false" />
           <Property Name="RestaurantCategoryID" Type="Int32" />
-          <NavigationProperty Name="RestaurantCategory" Relationship="Self.FK_RestaurantItems_RestaurantCategories" FromRole="RestaurantItems" ToRole="RestaurantCategories" />
-          <NavigationProperty Name="Restaurant" Relationship="Self.FK_RestaurantItems_Restaurants" FromRole="RestaurantItems" ToRole="Restaurants" />
+          <NavigationProperty Name="RestaurantCategory" Relationship="AllThingsDeliveredDBModel.FK_RestaurantItems_RestaurantCategories" FromRole="RestaurantItem" ToRole="RestaurantCategory" />
+          <NavigationProperty Name="Restaurant" Relationship="AllThingsDeliveredDBModel.FK_RestaurantItems_Restaurants" FromRole="RestaurantItem" ToRole="Restaurant" />
         </EntityType>
         <EntityType Name="Restaurant">
           <Key>
             <PropertyRef Name="RestaurantID" />
           </Key>
           <Property Name="RestaurantID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="RestaurantName" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="RestaurantName" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="AddressID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Address" Relationship="Self.FK_Restaurants_Addresses" FromRole="Restaurants" ToRole="Addresses" />
-          <NavigationProperty Name="RestaurantCategories" Relationship="Self.FK_RestaurantCategories_Restaurants" FromRole="Restaurants" ToRole="RestaurantCategories" />
-          <NavigationProperty Name="RestaurantItems" Relationship="Self.FK_RestaurantItems_Restaurants" FromRole="Restaurants" ToRole="RestaurantItems" />
+          <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="FSID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Address" Relationship="AllThingsDeliveredDBModel.FK_Restaurants_Addresses" FromRole="Restaurant" ToRole="Address" />
+          <NavigationProperty Name="RestaurantCategories" Relationship="AllThingsDeliveredDBModel.FK_RestaurantCategories_Restaurants" FromRole="Restaurant" ToRole="RestaurantCategory" />
+          <NavigationProperty Name="RestaurantItems" Relationship="AllThingsDeliveredDBModel.FK_RestaurantItems_Restaurants" FromRole="Restaurant" ToRole="RestaurantItem" />
         </EntityType>
         <Association Name="FK_CustomerAddresses_Addresses">
-          <End Role="Addresses" Type="Self.Address" Multiplicity="1">
+          <End Type="AllThingsDeliveredDBModel.Address" Role="Address" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="CustomerAddresses" Type="Self.CustomerAddress" Multiplicity="*" />
+          <End Type="AllThingsDeliveredDBModel.CustomerAddress" Role="CustomerAddress" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Addresses">
+            <Principal Role="Address">
               <PropertyRef Name="AddressID" />
             </Principal>
-            <Dependent Role="CustomerAddresses">
+            <Dependent Role="CustomerAddress">
               <PropertyRef Name="AddressID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Drivers_Addresses">
-          <End Role="Addresses" Type="Self.Address" Multiplicity="0..1" />
-          <End Role="Drivers" Type="Self.Driver" Multiplicity="*" />
+          <End Type="AllThingsDeliveredDBModel.Address" Role="Address" Multiplicity="0..1" />
+          <End Type="AllThingsDeliveredDBModel.Driver" Role="Driver" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Addresses">
+            <Principal Role="Address">
               <PropertyRef Name="AddressID" />
             </Principal>
-            <Dependent Role="Drivers">
+            <Dependent Role="Driver">
               <PropertyRef Name="AddressID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Operators_Addresses">
-          <End Role="Addresses" Type="Self.Address" Multiplicity="1" />
-          <End Role="Operators" Type="Self.Operator" Multiplicity="*" />
+          <End Type="AllThingsDeliveredDBModel.Address" Role="Address" Multiplicity="1" />
+          <End Type="AllThingsDeliveredDBModel.Operator" Role="Operator" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Addresses">
+            <Principal Role="Address">
               <PropertyRef Name="AddressID" />
             </Principal>
-            <Dependent Role="Operators">
+            <Dependent Role="Operator">
               <PropertyRef Name="AddressID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Orders_Addresses">
-          <End Role="Addresses" Type="Self.Address" Multiplicity="1" />
-          <End Role="Orders" Type="Self.Order" Multiplicity="*" />
+          <End Type="AllThingsDeliveredDBModel.Address" Role="Address" Multiplicity="1" />
+          <End Type="AllThingsDeliveredDBModel.Order" Role="Order" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Addresses">
+            <Principal Role="Address">
               <PropertyRef Name="AddressID" />
             </Principal>
-            <Dependent Role="Orders">
+            <Dependent Role="Order">
               <PropertyRef Name="AddressID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Restaurants_Addresses">
-          <End Role="Addresses" Type="Self.Address" Multiplicity="1" />
-          <End Role="Restaurants" Type="Self.Restaurant" Multiplicity="*" />
+          <End Type="AllThingsDeliveredDBModel.Address" Role="Address" Multiplicity="1" />
+          <End Type="AllThingsDeliveredDBModel.Restaurant" Role="Restaurant" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Addresses">
+            <Principal Role="Address">
               <PropertyRef Name="AddressID" />
             </Principal>
-            <Dependent Role="Restaurants">
+            <Dependent Role="Restaurant">
               <PropertyRef Name="AddressID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_CustomerAddresses_Customers">
-          <End Role="Customers" Type="Self.Customer" Multiplicity="1">
+          <End Type="AllThingsDeliveredDBModel.Customer" Role="Customer" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
-          <End Role="CustomerAddresses" Type="Self.CustomerAddress" Multiplicity="*" />
+          <End Type="AllThingsDeliveredDBModel.CustomerAddress" Role="CustomerAddress" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Customers">
+            <Principal Role="Customer">
               <PropertyRef Name="CustomerID" />
             </Principal>
-            <Dependent Role="CustomerAddresses">
+            <Dependent Role="CustomerAddress">
               <PropertyRef Name="CustomerID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Orders_Customers">
-          <End Role="Customers" Type="Self.Customer" Multiplicity="1" />
-          <End Role="Orders" Type="Self.Order" Multiplicity="*" />
+          <End Type="AllThingsDeliveredDBModel.Customer" Role="Customer" Multiplicity="1" />
+          <End Type="AllThingsDeliveredDBModel.Order" Role="Order" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Customers">
+            <Principal Role="Customer">
               <PropertyRef Name="CustomerID" />
             </Principal>
-            <Dependent Role="Orders">
+            <Dependent Role="Order">
               <PropertyRef Name="CustomerID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_CustomOrderContents_Orders">
-          <End Role="Orders" Type="Self.Order" Multiplicity="1" />
-          <End Role="CustomOrderContents" Type="Self.CustomOrderContent" Multiplicity="*" />
+          <End Type="AllThingsDeliveredDBModel.Order" Role="Order" Multiplicity="1" />
+          <End Type="AllThingsDeliveredDBModel.CustomOrderContent" Role="CustomOrderContent" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Orders">
+            <Principal Role="Order">
               <PropertyRef Name="OrderID" />
             </Principal>
-            <Dependent Role="CustomOrderContents">
+            <Dependent Role="CustomOrderContent">
               <PropertyRef Name="OrderID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Orders_Drivers">
-          <End Role="Drivers" Type="Self.Driver" Multiplicity="0..1" />
-          <End Role="Orders" Type="Self.Order" Multiplicity="*" />
+          <End Type="AllThingsDeliveredDBModel.Driver" Role="Driver" Multiplicity="0..1" />
+          <End Type="AllThingsDeliveredDBModel.Order" Role="Order" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Drivers">
+            <Principal Role="Driver">
               <PropertyRef Name="DriverID" />
             </Principal>
-            <Dependent Role="Orders">
+            <Dependent Role="Order">
               <PropertyRef Name="DriverID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Orders_Operators">
-          <End Role="Operators" Type="Self.Operator" Multiplicity="0..1" />
-          <End Role="Orders" Type="Self.Order" Multiplicity="*" />
+          <End Type="AllThingsDeliveredDBModel.Operator" Role="Operator" Multiplicity="0..1" />
+          <End Type="AllThingsDeliveredDBModel.Order" Role="Order" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Operators">
+            <Principal Role="Operator">
               <PropertyRef Name="OperatorID" />
             </Principal>
-            <Dependent Role="Orders">
+            <Dependent Role="Order">
               <PropertyRef Name="OperatorID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_OrderContents_Orders">
-          <End Role="Orders" Type="Self.Order" Multiplicity="1" />
-          <End Role="OrderContents" Type="Self.OrderContent" Multiplicity="*" />
+          <End Type="AllThingsDeliveredDBModel.Order" Role="Order" Multiplicity="1" />
+          <End Type="AllThingsDeliveredDBModel.OrderContent" Role="OrderContent" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Orders">
+            <Principal Role="Order">
               <PropertyRef Name="OrderID" />
             </Principal>
-            <Dependent Role="OrderContents">
+            <Dependent Role="OrderContent">
               <PropertyRef Name="OrderID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_RestaurantCategories_Restaurants">
-          <End Role="Restaurants" Type="Self.Restaurant" Multiplicity="1" />
-          <End Role="RestaurantCategories" Type="Self.RestaurantCategory" Multiplicity="*" />
+          <End Type="AllThingsDeliveredDBModel.Restaurant" Role="Restaurant" Multiplicity="1" />
+          <End Type="AllThingsDeliveredDBModel.RestaurantCategory" Role="RestaurantCategory" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Restaurants">
+            <Principal Role="Restaurant">
               <PropertyRef Name="RestaurantID" />
             </Principal>
-            <Dependent Role="RestaurantCategories">
+            <Dependent Role="RestaurantCategory">
               <PropertyRef Name="RestaurantID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_RestaurantItems_RestaurantCategories">
-          <End Role="RestaurantCategories" Type="Self.RestaurantCategory" Multiplicity="0..1" />
-          <End Role="RestaurantItems" Type="Self.RestaurantItem" Multiplicity="*" />
+          <End Type="AllThingsDeliveredDBModel.RestaurantCategory" Role="RestaurantCategory" Multiplicity="0..1" />
+          <End Type="AllThingsDeliveredDBModel.RestaurantItem" Role="RestaurantItem" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="RestaurantCategories">
+            <Principal Role="RestaurantCategory">
               <PropertyRef Name="RestaurantCategoryID" />
             </Principal>
-            <Dependent Role="RestaurantItems">
+            <Dependent Role="RestaurantItem">
               <PropertyRef Name="RestaurantCategoryID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_RestaurantItems_Restaurants">
-          <End Role="Restaurants" Type="Self.Restaurant" Multiplicity="1" />
-          <End Role="RestaurantItems" Type="Self.RestaurantItem" Multiplicity="*" />
+          <End Type="AllThingsDeliveredDBModel.Restaurant" Role="Restaurant" Multiplicity="1" />
+          <End Type="AllThingsDeliveredDBModel.RestaurantItem" Role="RestaurantItem" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Restaurants">
+            <Principal Role="Restaurant">
               <PropertyRef Name="RestaurantID" />
             </Principal>
-            <Dependent Role="RestaurantItems">
+            <Dependent Role="RestaurantItem">
               <PropertyRef Name="RestaurantID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="AllThingsDeliveredDBEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Addresses" EntityType="Self.Address" />
-          <EntitySet Name="CustomerAddresses" EntityType="Self.CustomerAddress" />
-          <EntitySet Name="Customers" EntityType="Self.Customer" />
-          <EntitySet Name="CustomOrderContents" EntityType="Self.CustomOrderContent" />
-          <EntitySet Name="Drivers" EntityType="Self.Driver" />
-          <EntitySet Name="Operators" EntityType="Self.Operator" />
-          <EntitySet Name="OrderContents" EntityType="Self.OrderContent" />
-          <EntitySet Name="Orders" EntityType="Self.Order" />
-          <EntitySet Name="RestaurantCategories" EntityType="Self.RestaurantCategory" />
-          <EntitySet Name="RestaurantItems" EntityType="Self.RestaurantItem" />
-          <EntitySet Name="Restaurants" EntityType="Self.Restaurant" />
-          <AssociationSet Name="FK_CustomerAddresses_Addresses" Association="Self.FK_CustomerAddresses_Addresses">
-            <End Role="Addresses" EntitySet="Addresses" />
-            <End Role="CustomerAddresses" EntitySet="CustomerAddresses" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Drivers_Addresses" Association="Self.FK_Drivers_Addresses">
-            <End Role="Addresses" EntitySet="Addresses" />
-            <End Role="Drivers" EntitySet="Drivers" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Operators_Addresses" Association="Self.FK_Operators_Addresses">
-            <End Role="Addresses" EntitySet="Addresses" />
-            <End Role="Operators" EntitySet="Operators" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Orders_Addresses" Association="Self.FK_Orders_Addresses">
-            <End Role="Addresses" EntitySet="Addresses" />
-            <End Role="Orders" EntitySet="Orders" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Restaurants_Addresses" Association="Self.FK_Restaurants_Addresses">
-            <End Role="Addresses" EntitySet="Addresses" />
-            <End Role="Restaurants" EntitySet="Restaurants" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CustomerAddresses_Customers" Association="Self.FK_CustomerAddresses_Customers">
-            <End Role="Customers" EntitySet="Customers" />
-            <End Role="CustomerAddresses" EntitySet="CustomerAddresses" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Orders_Customers" Association="Self.FK_Orders_Customers">
-            <End Role="Customers" EntitySet="Customers" />
-            <End Role="Orders" EntitySet="Orders" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CustomOrderContents_Orders" Association="Self.FK_CustomOrderContents_Orders">
-            <End Role="Orders" EntitySet="Orders" />
-            <End Role="CustomOrderContents" EntitySet="CustomOrderContents" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Orders_Drivers" Association="Self.FK_Orders_Drivers">
-            <End Role="Drivers" EntitySet="Drivers" />
-            <End Role="Orders" EntitySet="Orders" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Orders_Operators" Association="Self.FK_Orders_Operators">
-            <End Role="Operators" EntitySet="Operators" />
-            <End Role="Orders" EntitySet="Orders" />
-          </AssociationSet>
-          <AssociationSet Name="FK_OrderContents_Orders" Association="Self.FK_OrderContents_Orders">
-            <End Role="Orders" EntitySet="Orders" />
-            <End Role="OrderContents" EntitySet="OrderContents" />
-          </AssociationSet>
-          <AssociationSet Name="FK_RestaurantCategories_Restaurants" Association="Self.FK_RestaurantCategories_Restaurants">
-            <End Role="Restaurants" EntitySet="Restaurants" />
-            <End Role="RestaurantCategories" EntitySet="RestaurantCategories" />
-          </AssociationSet>
-          <AssociationSet Name="FK_RestaurantItems_RestaurantCategories" Association="Self.FK_RestaurantItems_RestaurantCategories">
-            <End Role="RestaurantCategories" EntitySet="RestaurantCategories" />
-            <End Role="RestaurantItems" EntitySet="RestaurantItems" />
-          </AssociationSet>
-          <AssociationSet Name="FK_RestaurantItems_Restaurants" Association="Self.FK_RestaurantItems_Restaurants">
-            <End Role="Restaurants" EntitySet="Restaurants" />
-            <End Role="RestaurantItems" EntitySet="RestaurantItems" />
-          </AssociationSet>
-        </EntityContainer>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -775,133 +780,136 @@
           <EntitySetMapping Name="Addresses">
             <EntityTypeMapping TypeName="AllThingsDeliveredDBModel.Address">
               <MappingFragment StoreEntitySet="Addresses">
-                <ScalarProperty Name="AddressID" ColumnName="AddressID" />
-                <ScalarProperty Name="Line1" ColumnName="Line1" />
-                <ScalarProperty Name="Line2" ColumnName="Line2" />
-                <ScalarProperty Name="City" ColumnName="City" />
-                <ScalarProperty Name="State" ColumnName="State" />
-                <ScalarProperty Name="ZipCode" ColumnName="ZipCode" />
-                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="AddressType" ColumnName="AddressType" />
                 <ScalarProperty Name="Deleted" ColumnName="Deleted" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="ZipCode" ColumnName="ZipCode" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Line2" ColumnName="Line2" />
+                <ScalarProperty Name="Line1" ColumnName="Line1" />
+                <ScalarProperty Name="AddressID" ColumnName="AddressID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CustomerAddresses">
             <EntityTypeMapping TypeName="AllThingsDeliveredDBModel.CustomerAddress">
               <MappingFragment StoreEntitySet="CustomerAddresses">
-                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
-                <ScalarProperty Name="AddressID" ColumnName="AddressID" />
                 <ScalarProperty Name="DefaultAddr" ColumnName="DefaultAddr" />
+                <ScalarProperty Name="AddressID" ColumnName="AddressID" />
+                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Customers">
             <EntityTypeMapping TypeName="AllThingsDeliveredDBModel.Customer">
               <MappingFragment StoreEntitySet="Customers">
-                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
-                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CustomOrderContents">
             <EntityTypeMapping TypeName="AllThingsDeliveredDBModel.CustomOrderContent">
               <MappingFragment StoreEntitySet="CustomOrderContents">
-                <ScalarProperty Name="CustomOrderContentsID" ColumnName="CustomOrderContentsID" />
-                <ScalarProperty Name="ItemLocation" ColumnName="ItemLocation" />
-                <ScalarProperty Name="Content" ColumnName="Content" />
                 <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="ItemLocation" ColumnName="ItemLocation" />
+                <ScalarProperty Name="CustomOrderContentsID" ColumnName="CustomOrderContentsID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Drivers">
             <EntityTypeMapping TypeName="AllThingsDeliveredDBModel.Driver">
               <MappingFragment StoreEntitySet="Drivers">
-                <ScalarProperty Name="DriverID" ColumnName="DriverID" />
-                <ScalarProperty Name="AddressID" ColumnName="AddressID" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
-                <ScalarProperty Name="ClockedIn" ColumnName="ClockedIn" />
-                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
                 <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="ClockedIn" ColumnName="ClockedIn" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="AddressID" ColumnName="AddressID" />
+                <ScalarProperty Name="DriverID" ColumnName="DriverID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Operators">
             <EntityTypeMapping TypeName="AllThingsDeliveredDBModel.Operator">
               <MappingFragment StoreEntitySet="Operators">
-                <ScalarProperty Name="OperatorID" ColumnName="OperatorID" />
-                <ScalarProperty Name="AddressID" ColumnName="AddressID" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
-                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
                 <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="AddressID" ColumnName="AddressID" />
+                <ScalarProperty Name="OperatorID" ColumnName="OperatorID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="OrderContents">
             <EntityTypeMapping TypeName="AllThingsDeliveredDBModel.OrderContent">
               <MappingFragment StoreEntitySet="OrderContents">
-                <ScalarProperty Name="OrderContentID" ColumnName="OrderContentID" />
-                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
-                <ScalarProperty Name="RestaurantID" ColumnName="RestaurantID" />
-                <ScalarProperty Name="ItemName" ColumnName="ItemName" />
-                <ScalarProperty Name="ItemDescription" ColumnName="ItemDescription" />
-                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
-                <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="Customize" ColumnName="Customize" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="ItemDescription" ColumnName="ItemDescription" />
+                <ScalarProperty Name="ItemName" ColumnName="ItemName" />
+                <ScalarProperty Name="RestaurantID" ColumnName="RestaurantID" />
+                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+                <ScalarProperty Name="OrderContentID" ColumnName="OrderContentID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Orders">
             <EntityTypeMapping TypeName="AllThingsDeliveredDBModel.Order">
               <MappingFragment StoreEntitySet="Orders">
-                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
-                <ScalarProperty Name="AddressID" ColumnName="AddressID" />
-                <ScalarProperty Name="DriverID" ColumnName="DriverID" />
-                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
-                <ScalarProperty Name="OperatorID" ColumnName="OperatorID" />
-                <ScalarProperty Name="TimePlaced" ColumnName="TimePlaced" />
-                <ScalarProperty Name="OrderMethod" ColumnName="OrderMethod" />
-                <ScalarProperty Name="Active" ColumnName="Active" />
-                <ScalarProperty Name="Updating" ColumnName="Updating" />
-                <ScalarProperty Name="Updated" ColumnName="Updated" />
-                <ScalarProperty Name="OrderPrice" ColumnName="OrderPrice" />
-                <ScalarProperty Name="DeliveryFee" ColumnName="DeliveryFee" />
-                <ScalarProperty Name="Customertip" ColumnName="Customertip" />
                 <ScalarProperty Name="DriverRating" ColumnName="DriverRating" />
+                <ScalarProperty Name="Customertip" ColumnName="Customertip" />
+                <ScalarProperty Name="DeliveryFee" ColumnName="DeliveryFee" />
+                <ScalarProperty Name="OrderPrice" ColumnName="OrderPrice" />
+                <ScalarProperty Name="Updated" ColumnName="Updated" />
+                <ScalarProperty Name="Updating" ColumnName="Updating" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+                <ScalarProperty Name="OrderMethod" ColumnName="OrderMethod" />
+                <ScalarProperty Name="TimePlaced" ColumnName="TimePlaced" />
+                <ScalarProperty Name="OperatorID" ColumnName="OperatorID" />
+                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+                <ScalarProperty Name="DriverID" ColumnName="DriverID" />
+                <ScalarProperty Name="AddressID" ColumnName="AddressID" />
+                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="RestaurantCategories">
             <EntityTypeMapping TypeName="AllThingsDeliveredDBModel.RestaurantCategory">
               <MappingFragment StoreEntitySet="RestaurantCategories">
-                <ScalarProperty Name="RestaurantCategoryID" ColumnName="RestaurantCategoryID" />
-                <ScalarProperty Name="RestaurantID" ColumnName="RestaurantID" />
-                <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
                 <ScalarProperty Name="CategoryDescription" ColumnName="CategoryDescription" />
+                <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+                <ScalarProperty Name="RestaurantID" ColumnName="RestaurantID" />
+                <ScalarProperty Name="RestaurantCategoryID" ColumnName="RestaurantCategoryID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="RestaurantItems">
             <EntityTypeMapping TypeName="AllThingsDeliveredDBModel.RestaurantItem">
               <MappingFragment StoreEntitySet="RestaurantItems">
-                <ScalarProperty Name="RestaurantItemID" ColumnName="RestaurantItemID" />
-                <ScalarProperty Name="ItemName" ColumnName="ItemName" />
-                <ScalarProperty Name="ItemDescription" ColumnName="ItemDescription" />
-                <ScalarProperty Name="RestaurantID" ColumnName="RestaurantID" />
                 <ScalarProperty Name="RestaurantCategoryID" ColumnName="RestaurantCategoryID" />
+                <ScalarProperty Name="RestaurantID" ColumnName="RestaurantID" />
+                <ScalarProperty Name="ItemDescription" ColumnName="ItemDescription" />
+                <ScalarProperty Name="ItemName" ColumnName="ItemName" />
+                <ScalarProperty Name="RestaurantItemID" ColumnName="RestaurantItemID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Restaurants">
             <EntityTypeMapping TypeName="AllThingsDeliveredDBModel.Restaurant">
               <MappingFragment StoreEntitySet="Restaurants">
-                <ScalarProperty Name="RestaurantID" ColumnName="RestaurantID" />
-                <ScalarProperty Name="RestaurantName" ColumnName="RestaurantName" />
+                <ScalarProperty Name="FSID" ColumnName="FSID" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
                 <ScalarProperty Name="AddressID" ColumnName="AddressID" />
+                <ScalarProperty Name="RestaurantName" ColumnName="RestaurantName" />
+                <ScalarProperty Name="RestaurantID" ColumnName="RestaurantID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

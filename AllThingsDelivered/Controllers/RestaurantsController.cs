@@ -8,6 +8,18 @@ namespace AllThingsDelivered.Controllers
 {
     public class RestaurantsController : Controller
     {
+        Models.AllThingsDeliveredDBEntities db = new Models.AllThingsDeliveredDBEntities();
+
+        //Type override and hit tab
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
         // GET: Restaurants
         public ActionResult Index()
         {

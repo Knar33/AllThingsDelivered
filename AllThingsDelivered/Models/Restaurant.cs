@@ -24,6 +24,8 @@ namespace AllThingsDelivered.Models
         public int RestaurantID { get; set; }
         public string RestaurantName { get; set; }
         public int AddressID { get; set; }
+        public string Phone { get; set; }
+        public string FSID { get; set; }
     
         public virtual Address Address { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

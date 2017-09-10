@@ -5,6 +5,48 @@ using System.Web;
 
 namespace AllThingsDelivered.Models
 {
+    //restaurant info
+    public class Venue
+    {
+        public VenueResponse response { get; set; }
+    }
+
+    public class VenueResponse
+    {
+        public Venues[] venues { get; set; }
+    }
+
+    public class Venues
+    {
+        public bool hasMenu { get; set; }
+        public string name { get; set; }
+        public MenuUrl menu { get; set; }
+        public VenueLocation location { get; set; }
+        public VenueContact contact { get; set; }
+        public string id { get; set; }
+    }
+
+    public class VenueContact
+    {
+        public string phone { get; set; }
+    }
+
+    public class VenueLocation
+    {
+        public string address { get; set; }
+        public string postalCode { get; set; }
+        public string city { get; set; }
+        public string state { get; set; }
+        public string Country { get; set; }
+    }
+
+    public class MenuUrl
+    {
+        public string url { get; set; }
+    }
+
+    //Restaurant menu
+
     public class Menu
     {
         public Meta meta { get; set; }
