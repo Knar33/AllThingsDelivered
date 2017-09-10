@@ -21,7 +21,7 @@ namespace AllThingsDelivered
 
             routes.MapRoute(
                 name: "restaurants",
-                url: "Restaurants/{town}",
+                url: "Restaurants/{city}",
                 defaults: new { controller = "Restaurants", action = "List", town = UrlParameter.Optional }
             );
 

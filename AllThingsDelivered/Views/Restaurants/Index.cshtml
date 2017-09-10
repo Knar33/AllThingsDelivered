@@ -1,6 +1,8 @@
-﻿
+﻿@model Cities
 @{
     ViewBag.Title = "Index";
 }
-
-<a href="/Restaurants/Wheaton/">Wheaton</a>
+@foreach(string city in Model.cities)
+{
+    <a href="restaurants/@city">@city</a> <Br>
+}
