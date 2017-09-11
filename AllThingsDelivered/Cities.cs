@@ -7,6 +7,6 @@ namespace AllThingsDelivered
 {
     public class Cities
     {
-        public string[] cities = new string[] { "Chicago" };
+        public string[] cities = new string[] { "Chicago", "Boston", "philadelphia", "New York" };
     }
 }

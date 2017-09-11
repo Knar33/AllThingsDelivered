@@ -16,6 +16,48 @@ namespace CodingTemple.CodingCookware.Web.Controllers
             return View();
         }
 
+        public ActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ForgotPassword(string email)
+        {
+            if (ModelState.IsValid)
+            {
+                var manager = HttpContext.GetOwinContext().GetUserManager<UserManager<IdentityUser>>();
+                IdentityUser user = manager.FindByEmail(email);
+                string resetToken = manager.GeneratePasswordResetToken(user.Id);
+
+                string sendGridApiKey = System.Configuration.ConfigurationManager.AppSettings["SendGrid.ApiKey"];
+                SendGrid.SendGridClient client = new SendGrid.SendGridClient(sendGridApiKey);
+
+                SendGrid.Helpers.Mail.SendGridMessage message = new SendGrid.Helpers.Mail.SendGridMessage();
+
+                message.AddTo(email);
+                message.Subject = "Reset your password on AllThingsDelivered.com";
+                message.SetFrom("no-reply@allthingsdelivered.com", "All Things Deivered Administration");
+                string body = string.Format("<a href=\"{0}/account/resetpassword?email={1}&token={2}\">Reset your password</a>", 
+                    Request.Url.GetLeftPart(UriPartial.Authority),
+                    email,
+                    resetToken
+                    );
+                message.AddContent("text/html", body);
+
+                var response = client.SendEmailAsync(message).Result;
+
+                return RedirectToAction("ForgotPasswordSent");
+            }
+            return View();
+        }
+
+        public ActionResult ForgotPasswordSent()
+        {
+            return View();
+        }
+
         //GET: Account/signIn
         public ActionResult SignIn()
         {
@@ -64,16 +106,16 @@ namespace CodingTemple.CodingCookware.Web.Controllers
         [HttpPost]
         public async System.Threading.Tasks.Task<ActionResult> Register(string username, string password)
         {
-            var userStore = new Microsoft.AspNet.Identity.EntityFramework.UserStore<Microsoft.AspNet.Identity.EntityFramework.IdentityUser>();
-            var manager = new Microsoft.AspNet.Identity.UserManager<Microsoft.AspNet.Identity.EntityFramework.IdentityUser>(userStore);
-            var user = new Microsoft.AspNet.Identity.EntityFramework.IdentityUser() { UserName = username };
+            UserStore<IdentityUser> userStore = new UserStore<IdentityUser>();
+            UserManager<IdentityUser> manager = new UserManager<IdentityUser>(userStore);
+            IdentityUser user = new IdentityUser() { UserName = username, Email = username };
             
-            Microsoft.AspNet.Identity.IdentityResult result = await manager.CreateAsync(user, password);
+            IdentityResult result = await manager.CreateAsync(user, password);
 
             if (result.Succeeded)
             {
                 var authenticationManager = HttpContext.GetOwinContext().Authentication;
-                var userIdentity = await manager.CreateIdentityAsync(user, Microsoft.AspNet.Identity.DefaultAuthenticationTypes.ApplicationCookie);
+                var userIdentity = await manager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
                 authenticationManager.SignIn(new Microsoft.Owin.Security.AuthenticationProperties() { }, userIdentity);
             }
             else

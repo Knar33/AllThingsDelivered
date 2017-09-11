@@ -10,7 +10,6 @@ using Newtonsoft.Json;
 
 namespace AllThingsDelivered.Controllers
 {
-    [Authorize(Roles = "Administrator")]
     public class ScrapeController : Controller
     {
         Models.AllThingsDeliveredDBEntities db = new Models.AllThingsDeliveredDBEntities();
@@ -43,7 +42,7 @@ namespace AllThingsDelivered.Controllers
 
                 for (int i = 0; i < 10; i++)
                 {
-                    var cityString = string.Format("https://api.foursquare.com/v2/venues/search?client_id={0}&client_secret={1}&v=20170825&near={2}&limit=500&categoryId=4d4b7105d754a06374d81259&intent=browse&offset={3}",
+                    var cityString = string.Format("https://api.foursquare.com/v2/venues/search?client_id={0}&client_secret={1}&v=20170825&near={2}&limit=50&categoryId=4d4b7105d754a06374d81259&intent=browse&offset={3}",
                         ConfigurationManager.AppSettings["FourSquare.ClientId"],
                         ConfigurationManager.AppSettings["FourSquare.ClientSecret"],
                         city,
