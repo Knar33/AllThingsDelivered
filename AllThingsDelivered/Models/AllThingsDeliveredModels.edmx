@@ -81,6 +81,13 @@
           <Property Name="StartDate" Type="date" Nullable="false" />
           <Property Name="EndDate" Type="date" Nullable="false" />
         </EntityType>
+        <EntityType Name="IgnoredRestaurants">
+          <Key>
+            <PropertyRef Name="IgnoredRestaurantsID" />
+          </Key>
+          <Property Name="IgnoredRestaurantsID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RestaurantFSID" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
         <EntityType Name="Operators">
           <Key>
             <PropertyRef Name="OperatorID" />
@@ -344,6 +351,7 @@
           <EntitySet Name="Customers" EntityType="Self.Customers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CustomOrderContents" EntityType="Self.CustomOrderContents" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Drivers" EntityType="Self.Drivers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="IgnoredRestaurants" EntityType="Self.IgnoredRestaurants" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Operators" EntityType="Self.Operators" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OrderContents" EntityType="Self.OrderContents" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Orders" EntityType="Self.Orders" Schema="dbo" store:Type="Tables" />
@@ -423,6 +431,7 @@
           <EntitySet Name="Customers" EntityType="AllThingsDeliveredDBModel.Customer" />
           <EntitySet Name="CustomOrderContents" EntityType="AllThingsDeliveredDBModel.CustomOrderContent" />
           <EntitySet Name="Drivers" EntityType="AllThingsDeliveredDBModel.Driver" />
+          <EntitySet Name="IgnoredRestaurants" EntityType="AllThingsDeliveredDBModel.IgnoredRestaurant" />
           <EntitySet Name="Operators" EntityType="AllThingsDeliveredDBModel.Operator" />
           <EntitySet Name="OrderContents" EntityType="AllThingsDeliveredDBModel.OrderContent" />
           <EntitySet Name="Orders" EntityType="AllThingsDeliveredDBModel.Order" />
@@ -581,6 +590,13 @@
           <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="0" />
           <NavigationProperty Name="Address" Relationship="AllThingsDeliveredDBModel.FK_Drivers_Addresses" FromRole="Driver" ToRole="Address" />
           <NavigationProperty Name="Orders" Relationship="AllThingsDeliveredDBModel.FK_Orders_Drivers" FromRole="Driver" ToRole="Order" />
+        </EntityType>
+        <EntityType Name="IgnoredRestaurant">
+          <Key>
+            <PropertyRef Name="IgnoredRestaurantsID" />
+          </Key>
+          <Property Name="IgnoredRestaurantsID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RestaurantFSID" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Operator">
           <Key>
@@ -936,6 +952,14 @@
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="AddressID" ColumnName="AddressID" />
                 <ScalarProperty Name="DriverID" ColumnName="DriverID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="IgnoredRestaurants">
+            <EntityTypeMapping TypeName="AllThingsDeliveredDBModel.IgnoredRestaurant">
+              <MappingFragment StoreEntitySet="IgnoredRestaurants">
+                <ScalarProperty Name="RestaurantFSID" ColumnName="RestaurantFSID" />
+                <ScalarProperty Name="IgnoredRestaurantsID" ColumnName="IgnoredRestaurantsID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

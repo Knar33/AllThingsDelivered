@@ -22,6 +22,21 @@
                }
             </div>
         </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <form method="post" action="/menu/index">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="id" value="@item.RestaurantItemID" />
+                    <input type="hidden" name="ItemName" value="@item.ItemName" id="@("ItemName" + Convert.ToString(item.RestaurantItemID))" />
+                    <input type="hidden" name="ItemDescription" value="@item.ItemDescription" id="@("ItemDescription" + Convert.ToString(item.RestaurantItemID))" />
+                    <input type="hidden" name="Price" value="@item.Price" id="@("Price" + Convert.ToString(item.RestaurantItemID))" />
+                    <input type="hidden" name="RestaurantID" value="@Model.RestaurantID" id="@("RestaurantID" + Convert.ToString(item.RestaurantItemID))" />
+                    <input type="text" name="Customize" id="@("Customize" + Convert.ToString(item.RestaurantItemID))" />
+                    <input type="text" name="Quantity" id="@("Quantity" + Convert.ToString(item.RestaurantItemID))" value="1" />
+                    <input type="submit" class="btn btn-default" />
+                </form>
+            </div>
+        </div>
     }
 }
 </div>

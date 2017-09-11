@@ -28,6 +28,21 @@
         </div>
     </div>
     <div class="container body-content">
+        @if (User.Identity.IsAuthenticated)
+        {
+                <text>
+                Welcome, @User.Identity.Name! <br />
+                @Html.ActionLink("LogOff", "LogOff", "Account")
+                </text>
+        }
+        else
+        {
+                <text>
+                @Html.ActionLink("Register", "Register", "Account")<br />
+                @Html.ActionLink("Log On", "LogOn", "Account")
+                </text>
+        }
+        <br /><br />
         @RenderBody()
         <hr />
         <footer>
