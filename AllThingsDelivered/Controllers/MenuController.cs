@@ -13,10 +13,21 @@ namespace AllThingsDelivered.Store.Controllers
 {
     public class MenuController : Controller
     {
-        // GET: Menu
-        public ActionResult Index(string id)
+        AllThingsDeliveredDBEntities db = new AllThingsDeliveredDBEntities();
+
+        protected override void Dispose(bool disposing)
         {
-            return View();
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        // GET: Menu
+        public ActionResult Index(int id)
+        {
+            return View(db.Restaurants.Find(id));
         }
     }
 }

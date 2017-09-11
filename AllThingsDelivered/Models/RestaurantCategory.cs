@@ -23,7 +23,6 @@ namespace AllThingsDelivered.Models
         public int RestaurantCategoryID { get; set; }
         public int RestaurantID { get; set; }
         public string CategoryName { get; set; }
-        public string CategoryDescription { get; set; }
     
         public virtual Restaurant Restaurant { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

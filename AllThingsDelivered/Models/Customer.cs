@@ -17,6 +17,8 @@ namespace AllThingsDelivered.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Customer()
         {
+            this.CartContents = new HashSet<CartContent>();
+            this.CustomCartContents = new HashSet<CustomCartContent>();
             this.CustomerAddresses = new HashSet<CustomerAddress>();
             this.Orders = new HashSet<Order>();
         }
@@ -27,6 +29,10 @@ namespace AllThingsDelivered.Models
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CartContent> CartContents { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CustomCartContent> CustomCartContents { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CustomerAddress> CustomerAddresses { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

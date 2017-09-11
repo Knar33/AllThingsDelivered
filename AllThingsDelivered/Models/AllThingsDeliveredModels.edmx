@@ -19,6 +19,28 @@
           <Property Name="Deleted" Type="bit" Nullable="false" />
           <Property Name="AddressType" Type="nvarchar" MaxLength="100" />
         </EntityType>
+        <EntityType Name="CartContents">
+          <Key>
+            <PropertyRef Name="CartContentID" />
+          </Key>
+          <Property Name="CartContentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CustomerID" Type="int" Nullable="false" />
+          <Property Name="RestaurantID" Type="int" Nullable="false" />
+          <Property Name="ItemName" Type="nvarchar" MaxLength="1000" Nullable="false" />
+          <Property Name="ItemDescription" Type="nvarchar" MaxLength="2000" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
+          <Property Name="Price" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="Customize" Type="nvarchar" MaxLength="1000" />
+        </EntityType>
+        <EntityType Name="CustomCartContents">
+          <Key>
+            <PropertyRef Name="CustomCartContentsID" />
+          </Key>
+          <Property Name="CustomCartContentsID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ItemLocation" Type="nvarchar" MaxLength="1000" />
+          <Property Name="Content" Type="nvarchar" MaxLength="1000" Nullable="false" />
+          <Property Name="CustomerID" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="CustomerAddresses">
           <Key>
             <PropertyRef Name="CustomerID" />
@@ -108,8 +130,7 @@
           </Key>
           <Property Name="RestaurantCategoryID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="RestaurantID" Type="int" Nullable="false" />
-          <Property Name="CategoryName" Type="nvarchar" MaxLength="1000" Nullable="false" />
-          <Property Name="CategoryDescription" Type="nvarchar" MaxLength="2000" Nullable="false" />
+          <Property Name="CategoryName" Type="nvarchar" MaxLength="1000" />
         </EntityType>
         <EntityType Name="RestaurantItems">
           <Key>
@@ -117,9 +138,9 @@
           </Key>
           <Property Name="RestaurantItemID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ItemName" Type="nvarchar" MaxLength="1000" Nullable="false" />
-          <Property Name="ItemDescription" Type="nvarchar" MaxLength="2000" Nullable="false" />
-          <Property Name="RestaurantID" Type="int" Nullable="false" />
+          <Property Name="ItemDescription" Type="nvarchar" MaxLength="2000" />
           <Property Name="RestaurantCategoryID" Type="int" />
+          <Property Name="Price" Type="decimal" Precision="18" Scale="2" />
         </EntityType>
         <EntityType Name="Restaurants">
           <Key>
@@ -131,6 +152,30 @@
           <Property Name="Phone" Type="nvarchar" MaxLength="50" />
           <Property Name="FSID" Type="nvarchar" MaxLength="50" />
         </EntityType>
+        <Association Name="FK_CartContents_Customers">
+          <End Role="Customers" Type="Self.Customers" Multiplicity="1" />
+          <End Role="CartContents" Type="Self.CartContents" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customers">
+              <PropertyRef Name="CustomerID" />
+            </Principal>
+            <Dependent Role="CartContents">
+              <PropertyRef Name="CustomerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CustomCartContents_Customers">
+          <End Role="Customers" Type="Self.Customers" Multiplicity="1" />
+          <End Role="CustomCartContents" Type="Self.CustomCartContents" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customers">
+              <PropertyRef Name="CustomerID" />
+            </Principal>
+            <Dependent Role="CustomCartContents">
+              <PropertyRef Name="CustomerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_CustomerAddresses_Addresses">
           <End Role="Addresses" Type="Self.Addresses" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -279,18 +324,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_RestaurantItems_Restaurants">
-          <End Role="Restaurants" Type="Self.Restaurants" Multiplicity="1" />
-          <End Role="RestaurantItems" Type="Self.RestaurantItems" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Restaurants">
-              <PropertyRef Name="RestaurantID" />
-            </Principal>
-            <Dependent Role="RestaurantItems">
-              <PropertyRef Name="RestaurantID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Restaurants_Addresses">
           <End Role="Addresses" Type="Self.Addresses" Multiplicity="1" />
           <End Role="Restaurants" Type="Self.Restaurants" Multiplicity="*" />
@@ -305,6 +338,8 @@
         </Association>
         <EntityContainer Name="AllThingsDeliveredDBModelStoreContainer">
           <EntitySet Name="Addresses" EntityType="Self.Addresses" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CartContents" EntityType="Self.CartContents" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CustomCartContents" EntityType="Self.CustomCartContents" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CustomerAddresses" EntityType="Self.CustomerAddresses" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Customers" EntityType="Self.Customers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CustomOrderContents" EntityType="Self.CustomOrderContents" Schema="dbo" store:Type="Tables" />
@@ -315,6 +350,14 @@
           <EntitySet Name="RestaurantCategories" EntityType="Self.RestaurantCategories" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RestaurantItems" EntityType="Self.RestaurantItems" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Restaurants" EntityType="Self.Restaurants" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_CartContents_Customers" Association="Self.FK_CartContents_Customers">
+            <End Role="Customers" EntitySet="Customers" />
+            <End Role="CartContents" EntitySet="CartContents" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CustomCartContents_Customers" Association="Self.FK_CustomCartContents_Customers">
+            <End Role="Customers" EntitySet="Customers" />
+            <End Role="CustomCartContents" EntitySet="CustomCartContents" />
+          </AssociationSet>
           <AssociationSet Name="FK_CustomerAddresses_Addresses" Association="Self.FK_CustomerAddresses_Addresses">
             <End Role="Addresses" EntitySet="Addresses" />
             <End Role="CustomerAddresses" EntitySet="CustomerAddresses" />
@@ -363,10 +406,6 @@
             <End Role="RestaurantCategories" EntitySet="RestaurantCategories" />
             <End Role="RestaurantItems" EntitySet="RestaurantItems" />
           </AssociationSet>
-          <AssociationSet Name="FK_RestaurantItems_Restaurants" Association="Self.FK_RestaurantItems_Restaurants">
-            <End Role="Restaurants" EntitySet="Restaurants" />
-            <End Role="RestaurantItems" EntitySet="RestaurantItems" />
-          </AssociationSet>
           <AssociationSet Name="FK_Restaurants_Addresses" Association="Self.FK_Restaurants_Addresses">
             <End Role="Addresses" EntitySet="Addresses" />
             <End Role="Restaurants" EntitySet="Restaurants" />
@@ -378,6 +417,8 @@
       <Schema Namespace="AllThingsDeliveredDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="AllThingsDeliveredDBEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Addresses" EntityType="AllThingsDeliveredDBModel.Address" />
+          <EntitySet Name="CartContents" EntityType="AllThingsDeliveredDBModel.CartContent" />
+          <EntitySet Name="CustomCartContents" EntityType="AllThingsDeliveredDBModel.CustomCartContent" />
           <EntitySet Name="CustomerAddresses" EntityType="AllThingsDeliveredDBModel.CustomerAddress" />
           <EntitySet Name="Customers" EntityType="AllThingsDeliveredDBModel.Customer" />
           <EntitySet Name="CustomOrderContents" EntityType="AllThingsDeliveredDBModel.CustomOrderContent" />
@@ -407,6 +448,14 @@
           <AssociationSet Name="FK_Restaurants_Addresses" Association="AllThingsDeliveredDBModel.FK_Restaurants_Addresses">
             <End Role="Address" EntitySet="Addresses" />
             <End Role="Restaurant" EntitySet="Restaurants" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CartContents_Customers" Association="AllThingsDeliveredDBModel.FK_CartContents_Customers">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="CartContent" EntitySet="CartContents" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CustomCartContents_Customers" Association="AllThingsDeliveredDBModel.FK_CustomCartContents_Customers">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="CustomCartContent" EntitySet="CustomCartContents" />
           </AssociationSet>
           <AssociationSet Name="FK_CustomerAddresses_Customers" Association="AllThingsDeliveredDBModel.FK_CustomerAddresses_Customers">
             <End Role="Customer" EntitySet="Customers" />
@@ -440,10 +489,6 @@
             <End Role="RestaurantCategory" EntitySet="RestaurantCategories" />
             <End Role="RestaurantItem" EntitySet="RestaurantItems" />
           </AssociationSet>
-          <AssociationSet Name="FK_RestaurantItems_Restaurants" Association="AllThingsDeliveredDBModel.FK_RestaurantItems_Restaurants">
-            <End Role="Restaurant" EntitySet="Restaurants" />
-            <End Role="RestaurantItem" EntitySet="RestaurantItems" />
-          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Address">
           <Key>
@@ -463,6 +508,30 @@
           <NavigationProperty Name="Operators" Relationship="AllThingsDeliveredDBModel.FK_Operators_Addresses" FromRole="Address" ToRole="Operator" />
           <NavigationProperty Name="Orders" Relationship="AllThingsDeliveredDBModel.FK_Orders_Addresses" FromRole="Address" ToRole="Order" />
           <NavigationProperty Name="Restaurants" Relationship="AllThingsDeliveredDBModel.FK_Restaurants_Addresses" FromRole="Address" ToRole="Restaurant" />
+        </EntityType>
+        <EntityType Name="CartContent">
+          <Key>
+            <PropertyRef Name="CartContentID" />
+          </Key>
+          <Property Name="CartContentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CustomerID" Type="Int32" Nullable="false" />
+          <Property Name="RestaurantID" Type="Int32" Nullable="false" />
+          <Property Name="ItemName" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="ItemDescription" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <Property Name="Price" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="Customize" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Customer" Relationship="AllThingsDeliveredDBModel.FK_CartContents_Customers" FromRole="CartContent" ToRole="Customer" />
+        </EntityType>
+        <EntityType Name="CustomCartContent">
+          <Key>
+            <PropertyRef Name="CustomCartContentsID" />
+          </Key>
+          <Property Name="CustomCartContentsID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ItemLocation" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="Content" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="CustomerID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Customer" Relationship="AllThingsDeliveredDBModel.FK_CustomCartContents_Customers" FromRole="CustomCartContent" ToRole="Customer" />
         </EntityType>
         <EntityType Name="CustomerAddress">
           <Key>
@@ -484,6 +553,8 @@
           <Property Name="LastName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="PhoneNumber" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="CartContents" Relationship="AllThingsDeliveredDBModel.FK_CartContents_Customers" FromRole="Customer" ToRole="CartContent" />
+          <NavigationProperty Name="CustomCartContents" Relationship="AllThingsDeliveredDBModel.FK_CustomCartContents_Customers" FromRole="Customer" ToRole="CustomCartContent" />
           <NavigationProperty Name="CustomerAddresses" Relationship="AllThingsDeliveredDBModel.FK_CustomerAddresses_Customers" FromRole="Customer" ToRole="CustomerAddress" />
           <NavigationProperty Name="Orders" Relationship="AllThingsDeliveredDBModel.FK_Orders_Customers" FromRole="Customer" ToRole="Order" />
         </EntityType>
@@ -569,8 +640,7 @@
           </Key>
           <Property Name="RestaurantCategoryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="RestaurantID" Type="Int32" Nullable="false" />
-          <Property Name="CategoryName" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="CategoryDescription" Type="String" Nullable="false" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="CategoryName" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Restaurant" Relationship="AllThingsDeliveredDBModel.FK_RestaurantCategories_Restaurants" FromRole="RestaurantCategory" ToRole="Restaurant" />
           <NavigationProperty Name="RestaurantItems" Relationship="AllThingsDeliveredDBModel.FK_RestaurantItems_RestaurantCategories" FromRole="RestaurantCategory" ToRole="RestaurantItem" />
         </EntityType>
@@ -580,11 +650,10 @@
           </Key>
           <Property Name="RestaurantItemID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ItemName" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
-          <Property Name="ItemDescription" Type="String" Nullable="false" MaxLength="2000" FixedLength="false" Unicode="true" />
-          <Property Name="RestaurantID" Type="Int32" Nullable="false" />
+          <Property Name="ItemDescription" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
           <Property Name="RestaurantCategoryID" Type="Int32" />
+          <Property Name="Price" Type="Decimal" Precision="18" Scale="2" />
           <NavigationProperty Name="RestaurantCategory" Relationship="AllThingsDeliveredDBModel.FK_RestaurantItems_RestaurantCategories" FromRole="RestaurantItem" ToRole="RestaurantCategory" />
-          <NavigationProperty Name="Restaurant" Relationship="AllThingsDeliveredDBModel.FK_RestaurantItems_Restaurants" FromRole="RestaurantItem" ToRole="Restaurant" />
         </EntityType>
         <EntityType Name="Restaurant">
           <Key>
@@ -597,7 +666,6 @@
           <Property Name="FSID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Address" Relationship="AllThingsDeliveredDBModel.FK_Restaurants_Addresses" FromRole="Restaurant" ToRole="Address" />
           <NavigationProperty Name="RestaurantCategories" Relationship="AllThingsDeliveredDBModel.FK_RestaurantCategories_Restaurants" FromRole="Restaurant" ToRole="RestaurantCategory" />
-          <NavigationProperty Name="RestaurantItems" Relationship="AllThingsDeliveredDBModel.FK_RestaurantItems_Restaurants" FromRole="Restaurant" ToRole="RestaurantItem" />
         </EntityType>
         <Association Name="FK_CustomerAddresses_Addresses">
           <End Type="AllThingsDeliveredDBModel.Address" Role="Address" Multiplicity="1">
@@ -658,6 +726,30 @@
             </Principal>
             <Dependent Role="Restaurant">
               <PropertyRef Name="AddressID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CartContents_Customers">
+          <End Type="AllThingsDeliveredDBModel.Customer" Role="Customer" Multiplicity="1" />
+          <End Type="AllThingsDeliveredDBModel.CartContent" Role="CartContent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="CustomerID" />
+            </Principal>
+            <Dependent Role="CartContent">
+              <PropertyRef Name="CustomerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CustomCartContents_Customers">
+          <End Type="AllThingsDeliveredDBModel.Customer" Role="Customer" Multiplicity="1" />
+          <End Type="AllThingsDeliveredDBModel.CustomCartContent" Role="CustomCartContent" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="CustomerID" />
+            </Principal>
+            <Dependent Role="CustomCartContent">
+              <PropertyRef Name="CustomerID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -759,18 +851,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_RestaurantItems_Restaurants">
-          <End Type="AllThingsDeliveredDBModel.Restaurant" Role="Restaurant" Multiplicity="1" />
-          <End Type="AllThingsDeliveredDBModel.RestaurantItem" Role="RestaurantItem" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Restaurant">
-              <PropertyRef Name="RestaurantID" />
-            </Principal>
-            <Dependent Role="RestaurantItem">
-              <PropertyRef Name="RestaurantID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -789,6 +869,30 @@
                 <ScalarProperty Name="Line2" ColumnName="Line2" />
                 <ScalarProperty Name="Line1" ColumnName="Line1" />
                 <ScalarProperty Name="AddressID" ColumnName="AddressID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CartContents">
+            <EntityTypeMapping TypeName="AllThingsDeliveredDBModel.CartContent">
+              <MappingFragment StoreEntitySet="CartContents">
+                <ScalarProperty Name="Customize" ColumnName="Customize" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="ItemDescription" ColumnName="ItemDescription" />
+                <ScalarProperty Name="ItemName" ColumnName="ItemName" />
+                <ScalarProperty Name="RestaurantID" ColumnName="RestaurantID" />
+                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+                <ScalarProperty Name="CartContentID" ColumnName="CartContentID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CustomCartContents">
+            <EntityTypeMapping TypeName="AllThingsDeliveredDBModel.CustomCartContent">
+              <MappingFragment StoreEntitySet="CustomCartContents">
+                <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="ItemLocation" ColumnName="ItemLocation" />
+                <ScalarProperty Name="CustomCartContentsID" ColumnName="CustomCartContentsID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -884,7 +988,6 @@
           <EntitySetMapping Name="RestaurantCategories">
             <EntityTypeMapping TypeName="AllThingsDeliveredDBModel.RestaurantCategory">
               <MappingFragment StoreEntitySet="RestaurantCategories">
-                <ScalarProperty Name="CategoryDescription" ColumnName="CategoryDescription" />
                 <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
                 <ScalarProperty Name="RestaurantID" ColumnName="RestaurantID" />
                 <ScalarProperty Name="RestaurantCategoryID" ColumnName="RestaurantCategoryID" />
@@ -894,8 +997,8 @@
           <EntitySetMapping Name="RestaurantItems">
             <EntityTypeMapping TypeName="AllThingsDeliveredDBModel.RestaurantItem">
               <MappingFragment StoreEntitySet="RestaurantItems">
+                <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="RestaurantCategoryID" ColumnName="RestaurantCategoryID" />
-                <ScalarProperty Name="RestaurantID" ColumnName="RestaurantID" />
                 <ScalarProperty Name="ItemDescription" ColumnName="ItemDescription" />
                 <ScalarProperty Name="ItemName" ColumnName="ItemName" />
                 <ScalarProperty Name="RestaurantItemID" ColumnName="RestaurantItemID" />

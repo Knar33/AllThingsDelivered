@@ -74,5 +74,7 @@
     <Build Include="dbo\Tables\Restaurants.sql" />
     <Build Include="dbo\Tables\RestaurantCategories.sql" />
     <Build Include="dbo\Tables\RestaurantItems.sql" />
+    <Build Include="dbo\Tables\CustomCartContents.sql" />
+    <Build Include="dbo\Tables\CartContents.sql" />
   </ItemGroup>
 </Project>

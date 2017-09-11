@@ -29,8 +29,8 @@ namespace AllThingsDelivered.Controllers
 
         public ActionResult List(string city)
         {
-            ViewBag.city = city;
-            return View();
+            var restaurants = db.Restaurants.Where(x => x.Address.City == city);
+            return View(restaurants);
         }
     }
 }

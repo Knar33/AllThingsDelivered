@@ -26,6 +26,8 @@ namespace AllThingsDelivered.Models
         }
     
         public virtual DbSet<Address> Addresses { get; set; }
+        public virtual DbSet<CartContent> CartContents { get; set; }
+        public virtual DbSet<CustomCartContent> CustomCartContents { get; set; }
         public virtual DbSet<CustomerAddress> CustomerAddresses { get; set; }
         public virtual DbSet<Customer> Customers { get; set; }
         public virtual DbSet<CustomOrderContent> CustomOrderContents { get; set; }

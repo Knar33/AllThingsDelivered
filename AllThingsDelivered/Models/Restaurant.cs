@@ -18,7 +18,6 @@ namespace AllThingsDelivered.Models
         public Restaurant()
         {
             this.RestaurantCategories = new HashSet<RestaurantCategory>();
-            this.RestaurantItems = new HashSet<RestaurantItem>();
         }
     
         public int RestaurantID { get; set; }
@@ -30,7 +29,5 @@ namespace AllThingsDelivered.Models
         public virtual Address Address { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<RestaurantCategory> RestaurantCategories { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<RestaurantItem> RestaurantItems { get; set; }
     }
 }

@@ -33,9 +33,9 @@ namespace AllThingsDelivered.Controllers
             db.Database.ExecuteSqlCommand("DELETE FROM Restaurants");
             db.Database.ExecuteSqlCommand("DELETE FROM Addresses WHERE AddressType='Restaurant'");
 
-            string[] cities = new string[4] { "Chicago", "New York", "Houston", "Boston" };
+            Cities City = new Cities();
 
-            foreach (string city in cities)
+            foreach (string city in City.cities)
             {
                 //API call to Foursquare
                 System.Net.Http.HttpClient client = new System.Net.Http.HttpClient();
@@ -50,7 +50,7 @@ namespace AllThingsDelivered.Controllers
                     var cityUrl = await client.GetAsync(cityString);
                     var cityResponse = JsonConvert.DeserializeObject<Venue>(await cityUrl.Content.ReadAsStringAsync());
 
-                    if (cityResponse.response.venues.Count() > 0)
+                    if (cityResponse.response.venues != null)
                     {
                         foreach (Venues venue in cityResponse.response.venues)
                         {
@@ -70,36 +70,35 @@ namespace AllThingsDelivered.Controllers
                                 var menuUrl = await client.GetAsync(menuString);
                                 var menuResponse = JsonConvert.DeserializeObject<Menu>(await menuUrl.Content.ReadAsStringAsync());
 
-                                foreach (SectionItems Section in menuResponse.response.menu.menus.items[0].entries.items)
+                                if (menuResponse.response.menu.menus.count > 0)
                                 {
-                                    RestaurantCategory thisRestaurantCategory = new RestaurantCategory { CategoryName = Section.name, CategoryDescription = " " };
-
-                                    foreach (ItemItems Item in Section.entries.items)
+                                    foreach (SectionItems Section in menuResponse.response.menu.menus.items[0].entries.items)
                                     {
+                                        RestaurantCategory thisRestaurantCategory = new RestaurantCategory { CategoryName = Section.name };
 
-                                        thisRestaurantCategory.RestaurantItems.Add(new RestaurantItem { ItemName = Item.name, ItemDescription = (Item.description == null ? "" : Item.description) });
+                                        foreach (ItemItems Item in Section.entries.items)
+                                        {
+                                            thisRestaurantCategory.RestaurantItems.Add(new RestaurantItem { ItemName = Item.name, ItemDescription = (Item.description == null ? "" : Item.description), Price =  Convert.ToDecimal(Item.price) });
+                                        }
+                                        thisRestaurant.RestaurantCategories.Add(thisRestaurantCategory);
                                     }
-                                    thisRestaurant.RestaurantCategories.Add(thisRestaurantCategory);
                                 }
-
                                 db.Restaurants.Add(thisRestaurant);
-                                try
-                                {
-                                    db.SaveChanges();
-                                }
-                                catch (Exception exception)
-                                {
-                                    Console.WriteLine(exception);
-                                }
-
-                                //second API call to get this restaurants menu bound to menu object
-                                //add each category to RestaurantCategories table
-                                //add each item to RestaurantItems table
                             }
                         }
                     }
                 }
             }
+
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+            }
+
             return View();
         }
     }

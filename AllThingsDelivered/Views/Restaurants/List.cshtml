@@ -1,4 +1,10 @@
-﻿@{
+﻿@using AllThingsDelivered.Models
+@model IEnumerable<Restaurant>
+@{
     ViewBag.Title = "List";
 }
-@ViewBag.city
+
+@foreach (var restaurant in Model)
+{
+    <a href="/menu/@restaurant.RestaurantID">@restaurant.RestaurantName</a><br />
+}

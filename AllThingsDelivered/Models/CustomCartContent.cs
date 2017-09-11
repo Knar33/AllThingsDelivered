@@ -12,14 +12,13 @@ namespace AllThingsDelivered.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class RestaurantItem
+    public partial class CustomCartContent
     {
-        public int RestaurantItemID { get; set; }
-        public string ItemName { get; set; }
-        public string ItemDescription { get; set; }
-        public Nullable<int> RestaurantCategoryID { get; set; }
-        public Nullable<decimal> Price { get; set; }
+        public int CustomCartContentsID { get; set; }
+        public string ItemLocation { get; set; }
+        public string Content { get; set; }
+        public int CustomerID { get; set; }
     
-        public virtual RestaurantCategory RestaurantCategory { get; set; }
+        public virtual Customer Customer { get; set; }
     }
 }
