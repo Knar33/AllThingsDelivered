@@ -106,8 +106,7 @@ namespace CodingTemple.CodingCookware.Web.Controllers
         [HttpPost]
         public async System.Threading.Tasks.Task<ActionResult> Register(string username, string password)
         {
-            UserStore<IdentityUser> userStore = new UserStore<IdentityUser>();
-            UserManager<IdentityUser> manager = new UserManager<IdentityUser>(userStore);
+            var manager = HttpContext.GetOwinContext().GetUserManager<UserManager<IdentityUser>>();
             IdentityUser user = new IdentityUser() { UserName = username, Email = username };
             
             IdentityResult result = await manager.CreateAsync(user, password);
@@ -124,6 +123,30 @@ namespace CodingTemple.CodingCookware.Web.Controllers
                 return View();
             }
             return RedirectToAction("Index", "Home");
+        }
+
+        public ActionResult ResetPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ResetPassword(string email, string token, string newPassword)
+        {
+            if (ModelState.IsValid)
+            {
+                var manager = HttpContext.GetOwinContext().GetUserManager<UserManager<IdentityUser>>();
+                IdentityUser user = manager.FindByEmail(email);
+                IdentityResult result = manager.ResetPassword(user.Id, token, newPassword);
+                if (result.Succeeded)
+                {
+                    TempData["PasswordReset"] = "Your password has been reset successfully";
+                    RedirectToAction("SignIn");
+                }
+                ViewBag.Errors = result.Errors;
+            }
+            return View();
         }
     }
 }

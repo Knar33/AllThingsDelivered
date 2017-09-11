@@ -2,32 +2,39 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using Owin;
 using Microsoft.Owin;
+using AllThingsDelivered;
+using Owin;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 
-[assembly: Microsoft.Owin.OwinStartup(typeof(AllThingsDelivered.Startup))]
 
-namespace AllThingsDelivered
+
+// This is an assembly decorator - it adds some metadata 
+// to the DLL to indicate what the startup class is called
+[assembly: OwinStartup(typeof(Startup))]
+
+namespace CodingTemple.DotNet.CoderClothing
 {
     public class Startup
     {
-        public void Configuration(IAppBuilder app)
+        // My startup class contains a configuration method
+        // which will "set-up" authentication for my app.
+        public void Configuration(Owin.IAppBuilder app)
         {
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
-                LoginPath = new Microsoft.Owin.PathString("/Account/SignIn")
+                LoginPath = new PathString("/Account/SignIn")
             });
 
             app.CreatePerOwinContext(() =>
             {
                 UserStore<IdentityUser> store = new UserStore<IdentityUser>();
                 UserManager<IdentityUser> manager = new UserManager<IdentityUser>(store);
-                manager.UserTokenProvider = new EmailTokenProvider<IdentityUser>();
 
+                manager.UserTokenProvider = new EmailTokenProvider<IdentityUser>();
                 manager.PasswordValidator = new PasswordValidator
                 {
                     RequiredLength = 4,
@@ -37,6 +44,7 @@ namespace AllThingsDelivered
                     RequireNonLetterOrDigit = false
                 };
                 return manager;
+
             });
         }
     }
