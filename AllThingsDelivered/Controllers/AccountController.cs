@@ -25,7 +25,7 @@ namespace CodingTemple.CodingCookware.Web.Controllers
         //POST: Account/SignIn
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SignIn(string username, string password, bool? rememberMe)
+        public ActionResult SignIn(string username, string password, bool? rememberMe, string returnUrl)
         {
             if (ModelState.IsValid)
             {
@@ -46,7 +46,14 @@ namespace CodingTemple.CodingCookware.Web.Controllers
                                 ExpiresUtc = DateTime.UtcNow.AddDays(7)
                             }, userIdentity
                             );
-                        return RedirectToAction("Index", "Home");
+                        if (!string.IsNullOrEmpty(returnUrl))
+                        {
+                            return Redirect(returnUrl);
+                        }
+                        else
+                        {
+                            return RedirectToAction("Index", "Home");
+                        }
                     }
                 }
                 ViewBag.Errors = new string[] { "Could not sign in with this username/password" };

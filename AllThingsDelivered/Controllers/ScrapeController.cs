@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 
 namespace AllThingsDelivered.Controllers
 {
+    [Authorize(Roles = "Administrator")]
     public class ScrapeController : Controller
     {
         Models.AllThingsDeliveredDBEntities db = new Models.AllThingsDeliveredDBEntities();
