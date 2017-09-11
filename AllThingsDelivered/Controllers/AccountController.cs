@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity.Owin;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -10,6 +13,44 @@ namespace CodingTemple.CodingCookware.Web.Controllers
     {
         public ActionResult Register()
         {
+            return View();
+        }
+
+        //GET: Account/signIn
+        public ActionResult SignIn()
+        {
+            return View();
+        }
+
+        //POST: Account/SignIn
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult SignIn(string username, string password, bool? rememberMe)
+        {
+            if (ModelState.IsValid)
+            {
+                var userManager = HttpContext.GetOwinContext().GetUserManager<UserManager<IdentityUser>>();
+                IdentityUser user = userManager.FindByName(username);
+                if (User != null)
+                {
+                    if (userManager.CheckPassword(user, password))
+                    {
+                        var userIdentity = userManager.CreateIdentity(user,
+                            DefaultAuthenticationTypes.ApplicationCookie);
+
+                        var authenticationManager = HttpContext.GetOwinContext().Authentication;
+                        authenticationManager.SignIn(
+                            new Microsoft.Owin.Security.AuthenticationProperties
+                            {
+                                IsPersistent = rememberMe ?? false,
+                                ExpiresUtc = DateTime.UtcNow.AddDays(7)
+                            }, userIdentity
+                            );
+                        return RedirectToAction("Index", "Home");
+                    }
+                }
+                ViewBag.Errors = new string[] { "Could not sign in with this username/password" };
+            }
             return View();
         }
         
