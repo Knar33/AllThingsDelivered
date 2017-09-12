@@ -19,6 +19,23 @@
           <Property Name="Deleted" Type="bit" Nullable="false" />
           <Property Name="AddressType" Type="nvarchar" MaxLength="100" />
         </EntityType>
+        <EntityType Name="AspNetUsers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="256" />
+          <Property Name="EmailConfirmed" Type="bit" Nullable="false" />
+          <Property Name="PasswordHash" Type="nvarchar(max)" />
+          <Property Name="SecurityStamp" Type="nvarchar(max)" />
+          <Property Name="PhoneNumber" Type="nvarchar(max)" />
+          <Property Name="PhoneNumberConfirmed" Type="bit" Nullable="false" />
+          <Property Name="TwoFactorEnabled" Type="bit" Nullable="false" />
+          <Property Name="LockoutEndDateUtc" Type="datetime" />
+          <Property Name="LockoutEnabled" Type="bit" Nullable="false" />
+          <Property Name="AccessFailedCount" Type="int" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="256" Nullable="false" />
+        </EntityType>
         <EntityType Name="CartContents">
           <Key>
             <PropertyRef Name="CartContentID" />
@@ -58,7 +75,7 @@
           <Property Name="FirstName" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="LastName" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="PhoneNumber" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="Email" Type="nvarchar" MaxLength="256" />
+          <Property Name="AspNetUserID" Type="nvarchar" MaxLength="128" Nullable="false" />
         </EntityType>
         <EntityType Name="CustomOrderContents">
           <Key>
@@ -211,6 +228,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Customers_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+          <End Role="Customers" Type="Self.Customers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Customers">
+              <PropertyRef Name="AspNetUserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_CustomOrderContents_Orders">
           <End Role="Orders" Type="Self.Orders" Multiplicity="1" />
           <End Role="CustomOrderContents" Type="Self.CustomOrderContents" Multiplicity="*" />
@@ -345,6 +374,7 @@
         </Association>
         <EntityContainer Name="AllThingsDeliveredDBModelStoreContainer">
           <EntitySet Name="Addresses" EntityType="Self.Addresses" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CartContents" EntityType="Self.CartContents" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CustomCartContents" EntityType="Self.CustomCartContents" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CustomerAddresses" EntityType="Self.CustomerAddresses" Schema="dbo" store:Type="Tables" />
@@ -373,6 +403,10 @@
           <AssociationSet Name="FK_CustomerAddresses_Customers" Association="Self.FK_CustomerAddresses_Customers">
             <End Role="Customers" EntitySet="Customers" />
             <End Role="CustomerAddresses" EntitySet="CustomerAddresses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Customers_AspNetUsers" Association="Self.FK_Customers_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Customers" EntitySet="Customers" />
           </AssociationSet>
           <AssociationSet Name="FK_CustomOrderContents_Orders" Association="Self.FK_CustomOrderContents_Orders">
             <End Role="Orders" EntitySet="Orders" />
@@ -425,6 +459,7 @@
       <Schema Namespace="AllThingsDeliveredDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="AllThingsDeliveredDBEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Addresses" EntityType="AllThingsDeliveredDBModel.Address" />
+          <EntitySet Name="AspNetUsers" EntityType="AllThingsDeliveredDBModel.AspNetUser" />
           <EntitySet Name="CartContents" EntityType="AllThingsDeliveredDBModel.CartContent" />
           <EntitySet Name="CustomCartContents" EntityType="AllThingsDeliveredDBModel.CustomCartContent" />
           <EntitySet Name="CustomerAddresses" EntityType="AllThingsDeliveredDBModel.CustomerAddress" />
@@ -457,6 +492,10 @@
           <AssociationSet Name="FK_Restaurants_Addresses" Association="AllThingsDeliveredDBModel.FK_Restaurants_Addresses">
             <End Role="Address" EntitySet="Addresses" />
             <End Role="Restaurant" EntitySet="Restaurants" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Customers_AspNetUsers" Association="AllThingsDeliveredDBModel.FK_Customers_AspNetUsers">
+            <End Role="AspNetUser" EntitySet="AspNetUsers" />
+            <End Role="Customer" EntitySet="Customers" />
           </AssociationSet>
           <AssociationSet Name="FK_CartContents_Customers" Association="AllThingsDeliveredDBModel.FK_CartContents_Customers">
             <End Role="Customer" EntitySet="Customers" />
@@ -518,6 +557,24 @@
           <NavigationProperty Name="Orders" Relationship="AllThingsDeliveredDBModel.FK_Orders_Addresses" FromRole="Address" ToRole="Order" />
           <NavigationProperty Name="Restaurants" Relationship="AllThingsDeliveredDBModel.FK_Restaurants_Addresses" FromRole="Address" ToRole="Restaurant" />
         </EntityType>
+        <EntityType Name="AspNetUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="EmailConfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SecurityStamp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumberConfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="TwoFactorEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="LockoutEndDateUtc" Type="DateTime" Precision="3" />
+          <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Customers" Relationship="AllThingsDeliveredDBModel.FK_Customers_AspNetUsers" FromRole="AspNetUser" ToRole="Customer" />
+        </EntityType>
         <EntityType Name="CartContent">
           <Key>
             <PropertyRef Name="CartContentID" />
@@ -561,7 +618,8 @@
           <Property Name="FirstName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="LastName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="PhoneNumber" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="AspNetUserID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="AspNetUser" Relationship="AllThingsDeliveredDBModel.FK_Customers_AspNetUsers" FromRole="Customer" ToRole="AspNetUser" />
           <NavigationProperty Name="CartContents" Relationship="AllThingsDeliveredDBModel.FK_CartContents_Customers" FromRole="Customer" ToRole="CartContent" />
           <NavigationProperty Name="CustomCartContents" Relationship="AllThingsDeliveredDBModel.FK_CustomCartContents_Customers" FromRole="Customer" ToRole="CustomCartContent" />
           <NavigationProperty Name="CustomerAddresses" Relationship="AllThingsDeliveredDBModel.FK_CustomerAddresses_Customers" FromRole="Customer" ToRole="CustomerAddress" />
@@ -745,6 +803,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Customers_AspNetUsers">
+          <End Type="AllThingsDeliveredDBModel.AspNetUser" Role="AspNetUser" Multiplicity="1" />
+          <End Type="AllThingsDeliveredDBModel.Customer" Role="Customer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Customer">
+              <PropertyRef Name="AspNetUserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_CartContents_Customers">
           <End Type="AllThingsDeliveredDBModel.Customer" Role="Customer" Multiplicity="1" />
           <End Type="AllThingsDeliveredDBModel.CartContent" Role="CartContent" Multiplicity="*" />
@@ -888,6 +958,24 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="AspNetUsers">
+            <EntityTypeMapping TypeName="AllThingsDeliveredDBModel.AspNetUser">
+              <MappingFragment StoreEntitySet="AspNetUsers">
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
+                <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
+                <ScalarProperty Name="LockoutEndDateUtc" ColumnName="LockoutEndDateUtc" />
+                <ScalarProperty Name="TwoFactorEnabled" ColumnName="TwoFactorEnabled" />
+                <ScalarProperty Name="PhoneNumberConfirmed" ColumnName="PhoneNumberConfirmed" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="CartContents">
             <EntityTypeMapping TypeName="AllThingsDeliveredDBModel.CartContent">
               <MappingFragment StoreEntitySet="CartContents">
@@ -924,7 +1012,7 @@
           <EntitySetMapping Name="Customers">
             <EntityTypeMapping TypeName="AllThingsDeliveredDBModel.Customer">
               <MappingFragment StoreEntitySet="Customers">
-                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="AspNetUserID" ColumnName="AspNetUserID" />
                 <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />

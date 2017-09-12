@@ -2,6 +2,25 @@
     ViewBag.Title = "Sign In";
 }
 <div class="row">
+    @if (TempData["PasswordReset"] != null)
+    {
+        <div class="alert alert-success">
+            <p>@TempData["PasswordReset"]</p>
+        </div>
+    }
+    @if (TempData["ConfirmEmail"] != null)
+    {
+        <div class="alert alert-success">
+            <p>@TempData["ConfirmEmail"]</p>
+        </div>
+    }
+    @if (TempData["SignIn"] != null)
+    {
+        <div class="alert alert-danger">
+            <p>@TempData["SignIn"]</p>
+        </div>
+    }
+
     @if(ViewBag.Errors != null)
     {
         <div class="alert alert-danger">

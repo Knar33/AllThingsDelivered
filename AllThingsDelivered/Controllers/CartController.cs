@@ -21,14 +21,34 @@ namespace AllThingsDelivered.Controllers
 
         public ActionResult Index()
         {
-            int customerID = 1;
+            int customerID = 0;
+            if (User.Identity.IsAuthenticated)
+            {
+                customerID = db.AspNetUsers.Single(x => x.UserName == User.Identity.Name).Customers.First().CustomerID;
+            }
+            else
+            {
+                TempData["SignIn"] = "You must be signed in to do that";
+                return RedirectToAction("SignIn", "Account");
+            }
+
             return View(db.CartContents.Where(x => x.CustomerID == customerID));
         }
 
         [HttpPost]
         public ActionResult Index(int id)
         {
-            int customerID = 1;
+            int customerID = 0;
+            if (User.Identity.IsAuthenticated)
+            {
+                customerID = db.AspNetUsers.Single(x => x.UserName == User.Identity.Name).Customers.First().CustomerID;
+            }
+            else
+            {
+                TempData["SignIn"] = "You must be signed in to do that";
+                return RedirectToAction("SignIn", "Account");
+            }
+            
             CartContent cartContent = new CartContent { CartContentID = id };
             db.CartContents.Attach(cartContent);
             db.CartContents.Remove(cartContent);

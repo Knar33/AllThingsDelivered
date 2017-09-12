@@ -11,15 +11,32 @@
 }
 @using (Html.BeginForm())
 {
+
     <div>
-        <label for="username">Username</label>
+        <label for="username">Email Address</label>
         <input name="username" type="text" />
+    </div>
+
+    <div>
+        <label for="firstname">First Name</label>
+        <input name="firstname" type="text" />
+    </div>
+
+    <div>
+        <label for="lastname">Last Name</label>
+        <input name="lastname" type="text" />
+    </div>
+
+    <div>
+        <label for="phone">Phone Number</label>
+        <input name="phone" type="text" />
     </div>
 
     <div>
         <label for="password">Password</label>
         <input name="password" type="password" />
     </div>
+
 
     <input type="submit" value="Create Account" />
 }

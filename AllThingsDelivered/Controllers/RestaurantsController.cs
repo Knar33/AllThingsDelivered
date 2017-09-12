@@ -9,7 +9,6 @@ namespace AllThingsDelivered.Controllers
     public class RestaurantsController : Controller
     {
         Models.AllThingsDeliveredDBEntities db = new Models.AllThingsDeliveredDBEntities();
-        Cities City = new Cities();
 
         //Type override and hit tab
         protected override void Dispose(bool disposing)
@@ -24,12 +23,7 @@ namespace AllThingsDelivered.Controllers
         // GET: Restaurants
         public ActionResult Index()
         {
-            return View(City);
-        }
-
-        public ActionResult List(string city)
-        {
-            var restaurants = db.Restaurants.Where(x => x.Address.City == city);
+            var restaurants = db.Restaurants;
             return View(restaurants);
         }
     }

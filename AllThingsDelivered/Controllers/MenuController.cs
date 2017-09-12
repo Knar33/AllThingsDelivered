@@ -33,8 +33,17 @@ namespace AllThingsDelivered.Store.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Index(int id, string ItemName, string ItemDescription, int Quantity, decimal Price, int RestaurantID, string Customize)
         {
-            //TODO: Change hard-coded CustomerID to users ID
-            int customerID = 1;
+            int customerID = 0;
+            if (User.Identity.IsAuthenticated)
+            {
+                customerID = db.AspNetUsers.Single(x => x.UserName == User.Identity.Name).Customers.First().CustomerID;
+            }
+            else
+            {
+                TempData["SignIn"] = "You must be signed in to do that";
+                return RedirectToAction("SignIn", "Account");
+            }
+
             db.CartContents.Add(new CartContent { CustomerID = customerID, RestaurantID = RestaurantID, ItemName = ItemName, ItemDescription = ItemDescription, Quantity = Quantity, Customize = Customize, Price = Price });
             db.SaveChanges();
             return View(db.Restaurants.Find(RestaurantID));

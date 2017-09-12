@@ -15,7 +15,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 // to the DLL to indicate what the startup class is called
 [assembly: OwinStartup(typeof(Startup))]
 
-namespace CodingTemple.DotNet.CoderClothing
+namespace AllThingsDelivered
 {
     public class Startup
     {

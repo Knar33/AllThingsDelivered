@@ -3,52 +3,54 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title - All Things Delivered</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                </ul>
-            </div>
+<div class="main container-fluid">
+    <div class="row topNav">
+        <div class="col-sm-offset-2 col-sm-2">
+            <a href="/Home/About">All Things Delivered</a>
+        </div>
+        <div class="col-sm-1">
+            <a href="/Home/About">Home</a>
+        </div>
+        <div class="col-sm-1">
+            <a href="/Restaurants">About</a>
+        </div>
+        <div class="col-sm-1">
+            <a href="/Restaurants">Order Online</a>
+        </div>
+        <div class="col-sm-3 text-right">
+            @if (User.Identity.IsAuthenticated)
+            {
+                <text>
+                    Welcome, @User.Identity.Name<br />
+                    <a href="/Cart">View Cart</a> | <a href="/Account/SignOut">Sign Out</a>
+                </text>
+            }
+            else
+            {
+                <text>
+                    Welcome, Guest | @Html.ActionLink("Register", "Register", "Account") | @Html.ActionLink("Log On", "SignIn", "Account")
+                </text>
+            }
         </div>
     </div>
-    <div class="container body-content">
-        @if (User.Identity.IsAuthenticated)
-        {
-                <text>
-                Welcome, @User.Identity.Name! <br />
-                @Html.ActionLink("LogOff", "LogOff", "Account")
-                </text>
-        }
-        else
-        {
-                <text>
-                @Html.ActionLink("Register", "Register", "Account")<br />
-                @Html.ActionLink("Log On", "SignIn", "Account")
-                </text>
-        }
-        <br /><br />
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
+    <div class="row content">
+        <div class="col-sm-offset-2 col-sm-8">
+            @RenderBody()
+        </div>
     </div>
+    <div class="row botNav">
+        <div class="col-sm-offset-2 col-sm-8">
+            Other stuff at the bottom
+        </div>
+    </div>
+</div>
+
+        
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")

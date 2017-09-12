@@ -1,0 +1,12 @@
+﻿
+@{
+    ViewBag.Title = "ConfirmAccount";
+}
+
+@if (ViewBag.Error != null)
+{
+    foreach (string s in (IEnumerable<string>)ViewBag.Error)
+    {
+        <div>Error: @s</div>
+    }
+}

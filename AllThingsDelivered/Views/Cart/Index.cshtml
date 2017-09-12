@@ -10,6 +10,10 @@
     <text>Item Description: </text>@cartContent.ItemDescription <br />
     <text>Price: </text>@cartContent.Price <br />
     <text>Quantity: </text>@cartContent.Quantity <br />
+    if (cartContent.Customize != null)
+    {
+        <text>Customize: </text>@cartContent.Customize <br />
+    }
     <form method="post" action="/cart">
         <input type="hidden" name="id" value="@cartContent.CartContentID"/>
         <input type="submit" value="Delete" />
