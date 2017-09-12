@@ -48,8 +48,8 @@
             @Html.ValidationMessageFor(m => m.password)
         </div>
         <div class="form-group">
-            @Html.LabelFor(m => m.rememberMe, new { @class = "control-label" })
-            @Html.CheckBoxFor(m => m.rememberMe, new { @class = "form-control" })
+            
+@Html.CheckBoxFor(m => m.rememberMe) @Html.LabelFor(m => m.rememberMe, new { @class = "control-label" })
             @Html.ValidationMessageFor(m => m.rememberMe)
         </div>
         <input type="submit" class="btn btn-default" />

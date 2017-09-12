@@ -51,12 +51,15 @@ namespace AllThingsDelivered.Models
     {
         [Required]
         [EmailAddress]
+        [Display(Name = "Email Address")]
         public string username { get; set; }
 
         [Required]
         [MinLength(4)]
+        [Display(Name = "Password")]
         public string password { get; set; }
-        
+
+        [Display(Name = "Remember Me")]
         public bool rememberMe { get; set; }
 
         public string returnUrl { get; set; }
@@ -64,6 +67,11 @@ namespace AllThingsDelivered.Models
 
     public class ResetPassword
     {
-
+        [Required]
+        [EmailAddress]
+        [Display(Name = "Email Address")]
+        public string email { get; set; }
+        public string token { get; set; }
+        public string password { get; set; }
     }
 }

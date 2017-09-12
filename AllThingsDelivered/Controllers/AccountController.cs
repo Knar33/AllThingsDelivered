@@ -169,19 +169,22 @@ namespace CodingTemple.CodingCookware.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ResetPassword(string email, string token, string password)
+        public ActionResult ResetPassword(ResetPassword model)
         {
             if (ModelState.IsValid)
             {
                 var manager = HttpContext.GetOwinContext().GetUserManager<UserManager<IdentityUser>>();
-                IdentityUser user = manager.FindByEmail(email);
-                IdentityResult result = manager.ResetPassword(user.Id, token, password);
-                if (result.Succeeded)
+                IdentityUser user = manager.FindByEmail(model.email);
+                if (user != null)
                 {
-                    TempData["PasswordReset"] = "Your password has been reset successfully";
-                    return RedirectToAction("SignIn");
+                    IdentityResult result = manager.ResetPassword(user.Id, model.token, model.password);
+                    if (result.Succeeded)
+                    {
+                        TempData["PasswordReset"] = "Your password has been reset successfully";
+                        return RedirectToAction("SignIn");
+                    }
+                    ViewBag.Errors = result.Errors;
                 }
-                ViewBag.Errors = result.Errors;
             }
             return View();
         }
@@ -195,18 +198,15 @@ namespace CodingTemple.CodingCookware.Web.Controllers
         
         public ActionResult ConfirmAccount(string email, string token)
         {
-            if (ModelState.IsValid)
+            var manager = HttpContext.GetOwinContext().GetUserManager<UserManager<IdentityUser>>();
+            IdentityUser user = manager.FindByEmail(email);
+            IdentityResult result = manager.ConfirmEmail(user.Id, token);
+            if (result.Succeeded)
             {
-                var manager = HttpContext.GetOwinContext().GetUserManager<UserManager<IdentityUser>>();
-                IdentityUser user = manager.FindByEmail(email);
-                IdentityResult result = manager.ConfirmEmail(user.Id, token);
-                if (result.Succeeded)
-                {
-                    TempData["ConfirmEmail"] = "Your Email address has been confirmed";
-                    return RedirectToAction("SignIn");
-                }
-                ViewBag.Errors = result.Errors;
+                TempData["ConfirmEmail"] = "Your Email address has been confirmed";
+                return RedirectToAction("SignIn");
             }
+            ViewBag.Error = result.Errors;
             return View();
         }
     }
