@@ -1,4 +1,5 @@
-﻿@{
+﻿@model AllThingsDelivered.Models.SignIn
+@{
     ViewBag.Title = "Sign In";
 }
 <div class="row">
@@ -37,20 +38,24 @@
     {
         @Html.AntiForgeryToken();
         <div class="form-group">
-            <label for="username" class="control-label">Username</label>
-            @Html.TextBox("username", "", new { placeholder = "username or email address", @class = "form-control" })
-        </div>
-        <div cass="form-group">
-            <label for="password" class="control-label">Password</label>
-            @Html.Password("password", "", new { placeholder = "password", @class="form-control" })
+            @Html.LabelFor(m => m.username, new { @class = "control-label" })
+            @Html.TextBoxFor(m => m.username, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.username)
         </div>
         <div class="form-group">
-            @Html.CheckBox("rememberMe", false)
-            <label for="rememberMe">Stay Signed In</label>
+            @Html.LabelFor(m => m.password, new { @class = "control-label" })
+            @Html.PasswordFor(m => m.password, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.password)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.rememberMe, new { @class = "control-label" })
+            @Html.CheckBoxFor(m => m.rememberMe, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.rememberMe)
         </div>
         <input type="submit" class="btn btn-default" />
-
+        <br /><br />
         @Html.ActionLink("Register", "Register", null, new { @class = "btn btn-primary" })
+        <br />
         @Html.ActionLink("Forgot Password", "ForgotPassword", null, new { @class = "btn btn-primary" })
     }
 </div>

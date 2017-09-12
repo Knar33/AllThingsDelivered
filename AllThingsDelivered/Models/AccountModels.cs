@@ -39,7 +39,7 @@ namespace AllThingsDelivered.Models
         public string phone { get; set; }
     }
 
-    public class forgotpassword
+    public class ForgotPassword
     {
         [Required]
         [EmailAddress]
@@ -47,12 +47,22 @@ namespace AllThingsDelivered.Models
         public string email { get; set; }
     }
 
-    public class signin
+    public class SignIn
     {
+        [Required]
+        [EmailAddress]
+        public string username { get; set; }
 
+        [Required]
+        [MinLength(4)]
+        public string password { get; set; }
+        
+        public bool rememberMe { get; set; }
+
+        public string returnUrl { get; set; }
     }
 
-    public class resetpassword
+    public class ResetPassword
     {
 
     }

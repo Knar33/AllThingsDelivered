@@ -65,7 +65,7 @@ namespace CodingTemple.CodingCookware.Web.Controllers
                 var response = client.SendEmailAsync(message).Result;
                 var ResponseBody = response.Body.ReadAsStringAsync().Result;
 
-                return RedirectToAction("Index", "Restaurant");
+                return RedirectToAction("Index", "Restaurants");
             }
             else
             {
@@ -80,7 +80,7 @@ namespace CodingTemple.CodingCookware.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ForgotPassword(forgotpassword model)
+        public ActionResult ForgotPassword(ForgotPassword model)
         {
             if (ModelState.IsValid)
             {
@@ -126,15 +126,15 @@ namespace CodingTemple.CodingCookware.Web.Controllers
         //POST: Account/SignIn
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SignIn(string username, string password, bool? rememberMe, string returnUrl)
+        public ActionResult SignIn(SignIn model)
         {
             if (ModelState.IsValid)
             {
                 var userManager = HttpContext.GetOwinContext().GetUserManager<UserManager<IdentityUser>>();
-                IdentityUser user = userManager.FindByName(username);
+                IdentityUser user = userManager.FindByName(model.username);
                 if (User != null)
                 {
-                    if (userManager.CheckPassword(user, password))
+                    if (userManager.CheckPassword(user, model.password))
                     {
                         var userIdentity = userManager.CreateIdentity(user,
                             DefaultAuthenticationTypes.ApplicationCookie);
@@ -143,13 +143,13 @@ namespace CodingTemple.CodingCookware.Web.Controllers
                         authenticationManager.SignIn(
                             new Microsoft.Owin.Security.AuthenticationProperties
                             {
-                                IsPersistent = rememberMe ?? false,
+                                IsPersistent = model.rememberMe,
                                 ExpiresUtc = DateTime.UtcNow.AddDays(7)
                             }, userIdentity
                             );
-                        if (!string.IsNullOrEmpty(returnUrl))
+                        if (!string.IsNullOrEmpty(model.returnUrl))
                         {
-                            return Redirect(returnUrl);
+                            return Redirect(model.returnUrl);
                         }
                         else
                         {
