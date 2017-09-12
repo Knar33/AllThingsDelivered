@@ -28,45 +28,49 @@ namespace CodingTemple.CodingCookware.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async System.Threading.Tasks.Task<ActionResult> Register(string username, string password, string firstname, string lastname, string phone)
+        public async System.Threading.Tasks.Task<ActionResult> Register(RegisterModel model)
         {
-            var manager = HttpContext.GetOwinContext().GetUserManager<UserManager<IdentityUser>>();
-            IdentityUser user = new IdentityUser() { UserName = username, Email = username };
-            IdentityResult result = await manager.CreateAsync(user, password);
-
-            db.Customers.Add(new Customer { AspNetUserID = user.Id, FirstName = firstname, LastName = lastname, PhoneNumber = phone });
-            db.SaveChanges();
-            
-            if (result.Succeeded)
+            if (ModelState.IsValid)
             {
+                var manager = HttpContext.GetOwinContext().GetUserManager<UserManager<IdentityUser>>();
+                IdentityUser user = new IdentityUser() { UserName = model.username, Email = model.username };
+                IdentityResult result = await manager.CreateAsync(user, model.password1);
+
+                if (!result.Succeeded)
+                {
+                    ViewBag.Error = result.Errors;
+                    return View();
+                }
+
+                db.Customers.Add(new Customer { AspNetUserID = user.Id, FirstName = model.firstname, LastName = model.lastname, PhoneNumber = model.phone });
+                db.SaveChanges();
                 var authenticationManager = HttpContext.GetOwinContext().Authentication;
                 var userIdentity = await manager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
                 authenticationManager.SignIn(new Microsoft.Owin.Security.AuthenticationProperties() { }, userIdentity);
+
+                string token = manager.GenerateEmailConfirmationToken(user.Id);
+                string sendGridApiKey = System.Configuration.ConfigurationManager.AppSettings["SendGrid.ApiKey"];
+                SendGrid.SendGridClient client = new SendGrid.SendGridClient(sendGridApiKey);
+                SendGrid.Helpers.Mail.SendGridMessage message = new SendGrid.Helpers.Mail.SendGridMessage();
+                message.AddTo(model.username);
+                message.Subject = "Confirm your account on AllThingsDelivered.com";
+                message.SetFrom("no-reply@allthingsdelivered.com", "All Things Deivered Administration");
+                string body = string.Format("<a href=\"{0}/account/ConfirmAccount?email={1}&token={2}\">Confirm your account</a>",
+                    Request.Url.GetLeftPart(UriPartial.Authority),
+                    model.username,
+                    token
+                    );
+                message.AddContent("text/html", body);
+                message.SetTemplateId("8765a1ec-6865-4be4-8854-b04ef686d63e");
+                var response = client.SendEmailAsync(message).Result;
+                var ResponseBody = response.Body.ReadAsStringAsync().Result;
+
+                return RedirectToAction("Index", "Restaurant");
             }
             else
             {
-                ViewBag.Error = result.Errors;
                 return View();
             }
-
-            string token = manager.GenerateEmailConfirmationToken(user.Id);
-            string sendGridApiKey = System.Configuration.ConfigurationManager.AppSettings["SendGrid.ApiKey"];
-            SendGrid.SendGridClient client = new SendGrid.SendGridClient(sendGridApiKey);
-            SendGrid.Helpers.Mail.SendGridMessage message = new SendGrid.Helpers.Mail.SendGridMessage();
-            message.AddTo(username);
-            message.Subject = "Confirm your account on AllThingsDelivered.com";
-            message.SetFrom("no-reply@allthingsdelivered.com", "All Things Deivered Administration");
-            string body = string.Format("<a href=\"{0}/account/ConfirmAccount?email={1}&token={2}\">Confirm your account</a>",
-                Request.Url.GetLeftPart(UriPartial.Authority),
-                username,
-                token
-                );
-            message.AddContent("text/html", body);
-            message.SetTemplateId("8765a1ec-6865-4be4-8854-b04ef686d63e");
-            var response = client.SendEmailAsync(message).Result;
-            var ResponseBody = response.Body.ReadAsStringAsync().Result;
-
-            return RedirectToAction("SignIn");
         }
 
         public ActionResult ForgotPassword()
@@ -76,23 +80,23 @@ namespace CodingTemple.CodingCookware.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ForgotPassword(string email)
+        public ActionResult ForgotPassword(forgotpassword model)
         {
             if (ModelState.IsValid)
             {
                 var manager = HttpContext.GetOwinContext().GetUserManager<UserManager<IdentityUser>>();
 
-                IdentityUser user = manager.FindByEmail(email);
+                IdentityUser user = manager.FindByEmail(model.email);
                 string resetToken = manager.GeneratePasswordResetToken(user.Id);
                 string sendGridApiKey = System.Configuration.ConfigurationManager.AppSettings["SendGrid.ApiKey"];
                 SendGrid.SendGridClient client = new SendGrid.SendGridClient(sendGridApiKey);
                 SendGrid.Helpers.Mail.SendGridMessage message = new SendGrid.Helpers.Mail.SendGridMessage();
-                message.AddTo(email);
+                message.AddTo(model.email);
                 message.Subject = "Reset your password on AllThingsDelivered.com";
                 message.SetFrom("no-reply@allthingsdelivered.com", "All Things Deivered Administration");
                 string body = string.Format("<a href=\"{0}/account/resetpassword?email={1}&token={2}\">Reset your password</a>", 
                     Request.Url.GetLeftPart(UriPartial.Authority),
-                    email,
+                    model.email,
                     resetToken
                     );
                 message.AddContent("text/html", body);
