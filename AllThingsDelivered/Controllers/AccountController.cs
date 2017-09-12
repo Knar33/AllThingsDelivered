@@ -85,25 +85,28 @@ namespace CodingTemple.CodingCookware.Web.Controllers
             if (ModelState.IsValid)
             {
                 var manager = HttpContext.GetOwinContext().GetUserManager<UserManager<IdentityUser>>();
-
                 IdentityUser user = manager.FindByEmail(model.email);
-                string resetToken = manager.GeneratePasswordResetToken(user.Id);
-                string sendGridApiKey = System.Configuration.ConfigurationManager.AppSettings["SendGrid.ApiKey"];
-                SendGrid.SendGridClient client = new SendGrid.SendGridClient(sendGridApiKey);
-                SendGrid.Helpers.Mail.SendGridMessage message = new SendGrid.Helpers.Mail.SendGridMessage();
-                message.AddTo(model.email);
-                message.Subject = "Reset your password on AllThingsDelivered.com";
-                message.SetFrom("no-reply@allthingsdelivered.com", "All Things Deivered Administration");
-                string body = string.Format("<a href=\"{0}/account/resetpassword?email={1}&token={2}\">Reset your password</a>", 
-                    Request.Url.GetLeftPart(UriPartial.Authority),
-                    model.email,
-                    resetToken
-                    );
-                message.AddContent("text/html", body);
-                message.SetTemplateId("8765a1ec-6865-4be4-8854-b04ef686d63e");
-                var response = client.SendEmailAsync(message).Result;
-                var ResponseBody = response.Body.ReadAsStringAsync().Result;
 
+                if (user != null)
+                {
+                    string resetToken = manager.GeneratePasswordResetToken(user.Id);
+                    string sendGridApiKey = System.Configuration.ConfigurationManager.AppSettings["SendGrid.ApiKey"];
+
+                    SendGrid.SendGridClient client = new SendGrid.SendGridClient(sendGridApiKey);
+                    SendGrid.Helpers.Mail.SendGridMessage message = new SendGrid.Helpers.Mail.SendGridMessage();
+                    message.AddTo(model.email);
+                    message.Subject = "Reset your password on AllThingsDelivered.com";
+                    message.SetFrom("no-reply@allthingsdelivered.com", "All Things Deivered Administration");
+                    string body = string.Format("<a href=\"{0}/account/resetpassword?email={1}&token={2}\">Reset your password</a>",
+                        Request.Url.GetLeftPart(UriPartial.Authority),
+                        model.email,
+                        resetToken
+                        );
+                    message.AddContent("text/html", body);
+                    message.SetTemplateId("8765a1ec-6865-4be4-8854-b04ef686d63e");
+                    var response = client.SendEmailAsync(message).Result;
+                    var ResponseBody = response.Body.ReadAsStringAsync().Result;
+                }
                 return RedirectToAction("ForgotPasswordSent");
             }
             return View();
