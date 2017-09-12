@@ -185,6 +185,7 @@
     <Compile Include="Controllers\CustomItemController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MenuController.cs" />
+    <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Controllers\RestaurantsController.cs" />
     <Compile Include="Controllers\ScrapeController.cs" />
     <Compile Include="Global.asax.cs">
@@ -322,6 +323,7 @@
     <Content Include="Views\Account\ResetPassword.cshtml" />
     <Content Include="Views\Account\ConfirmAccount.cshtml" />
     <Content Include="Views\CustomItem\Index.cshtml" />
+    <Content Include="Views\Profile\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

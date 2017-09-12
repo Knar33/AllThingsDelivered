@@ -21,13 +21,13 @@ namespace CodingTemple.CodingCookware.Web.Controllers
             }
             base.Dispose(disposing);
         }
-
         public ActionResult Register()
         {
             return View();
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async System.Threading.Tasks.Task<ActionResult> Register(string username, string password, string firstname, string lastname, string phone)
         {
             var manager = HttpContext.GetOwinContext().GetUserManager<UserManager<IdentityUser>>();

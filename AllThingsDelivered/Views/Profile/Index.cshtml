@@ -1,0 +1,60 @@
+﻿@using AllThingsDelivered.Models
+@model Customer
+@{
+    ViewBag.Title = "Index";
+}
+
+<form method="post" action="/Profile">
+    @Html.AntiForgeryToken();
+    First Name:<br />
+    <input type="text" name="firstname" value="@Model.FirstName" /> <br />
+    Last Name:<br />
+    <input type="text" name="lastname" value="@Model.LastName" /><br />
+    Phone Number<br />
+    <input type="text" name="phone" value="@Model.PhoneNumber" /><br />
+    Email Address<br />
+    <input type="text" name="email" value="@Model.AspNetUser.Email" />
+    <input type="submit" />
+</form>
+<br /><br />
+Default Address:<br />
+@foreach (CustomerAddress address in (Model.CustomerAddresses.Where(x => x.DefaultAddr)))
+{
+    @address.Address.Line1<br />
+    @address.Address.Line2<br />
+    @address.Address.City<br />
+    @address.Address.State<br />
+    @address.Address.ZipCode<br />
+    @address.Address.Country
+}
+<br /><br />
+Other Addresses:<br />
+@foreach (CustomerAddress address in (Model.CustomerAddresses.Where(x => !x.DefaultAddr)))
+{
+    @address.Address.Line1<br />
+    @address.Address.Line2<br />
+    @address.Address.City<br />
+    @address.Address.State<br />
+    @address.Address.ZipCode<br />
+    @address.Address.Country
+    <a href="/Profile/DefaultAddress">Make this my default address</a>
+    <a href="/Profile/DeleteAddress">Delete this address</a>
+    <br /><br />
+}
+Add a new address:
+<form method="post" action="/Profile/AddAddress">
+    @Html.AntiForgeryToken();
+    Line 1<br />
+    <input type="text" name="line1" /><br />
+    Line 2<br />
+    <input type="text" name="line2" /><br />
+    City<br />
+    <input type="text" name="city" /><br />
+    State 
+    @*dropdown with all states name=state*@
+    zipcode<br />
+    <input type="text" name="zipcode" /><br />
+    Country<br />
+    @*dropdown with all countries name=country*@
+    <input type="submit" />
+</form>
