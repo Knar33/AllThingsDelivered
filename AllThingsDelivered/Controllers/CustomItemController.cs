@@ -27,23 +27,26 @@ namespace AllThingsDelivered.Controllers
 
         [ValidateAntiForgeryToken]
         [HttpPost]
-        public ActionResult Index(string itemLocation, string content)
+        public ActionResult Index(CustomCartIndex model)
         {
-            int customerID;
-            if (User.Identity.IsAuthenticated)
+            if (ModelState.IsValid)
             {
-                customerID = db.AspNetUsers.Single(x => x.UserName == User.Identity.Name).Customers.First().CustomerID;
-            }
-            else
-            {
-                TempData["SignIn"] = "You must be signed in to do that";
-                return RedirectToAction("SignIn", "Account");
-            }
+                int customerID;
+                if (User.Identity.IsAuthenticated)
+                {
+                    customerID = db.AspNetUsers.Single(x => x.UserName == User.Identity.Name).Customers.First().CustomerID;
+                }
+                else
+                {
+                    TempData["SignIn"] = "You must be signed in to do that";
+                    return RedirectToAction("SignIn", "Account");
+                }
 
-            db.CustomCartContents.Add(new CustomCartContent { ItemLocation = itemLocation, Content = content, CustomerID = customerID });
-            db.SaveChanges();
+                db.CustomCartContents.Add(new CustomCartContent { ItemLocation = model.itemLocation, Content = model.content, CustomerID = customerID });
+                db.SaveChanges();
 
-            ViewBag.message = "You have successfully added a custom item to your cart!";
+                ViewBag.message = "You have successfully added a custom item to your cart!";
+            }
             return View();
         }
     }

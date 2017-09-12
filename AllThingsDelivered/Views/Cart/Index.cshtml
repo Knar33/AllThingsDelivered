@@ -1,10 +1,9 @@
-﻿@using AllThingsDelivered.Models
-@model Cart
+﻿@model AllThingsDelivered.Models.Cart
 @{
     ViewBag.Title = "Index";
 }
 
-@foreach (CartContent cartContent in Model.cartContent)
+@foreach (AllThingsDelivered.Models.CartContent cartContent in Model.cartContent)
 {
     <text>ItemName: </text>@cartContent.ItemName <br />
     <text>Item Description: </text>@cartContent.ItemDescription <br />
@@ -15,6 +14,7 @@
         <text>Customize: </text>@cartContent.Customize <br />
     }
     <form method="post" action="/cart">
+        @Html.AntiForgeryToken();
         <input type="hidden" name="id" value="@cartContent.CartContentID"/>
         <input type="hidden" name="type" value="CartContent" />
         <input type="submit" value="Delete" />
@@ -22,7 +22,7 @@
     <br /><br />
 }
 
-@foreach (CustomCartContent customCartContent in Model.customCartContent)
+@foreach (AllThingsDelivered.Models.CustomCartContent customCartContent in Model.customCartContent)
 {
     if (customCartContent.ItemLocation != null)
     {
@@ -30,6 +30,7 @@
     }
     <text>Item: </text>@customCartContent.Content <br />
     <form method="post" action="/cart">
+        @Html.AntiForgeryToken();
         <input type="hidden" name="id" value="@customCartContent.CustomCartContentsID" />
         <input type="hidden" name="type" value="CustomCartContent" />
         <input type="submit" value="Delete" />

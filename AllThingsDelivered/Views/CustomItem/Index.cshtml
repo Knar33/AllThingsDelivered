@@ -1,4 +1,4 @@
-﻿
+﻿@model AllThingsDelivered.Models.CustomCartIndex
 @{
     ViewBag.Title = "Index";
 }
@@ -8,12 +8,18 @@
         @ViewBag.Message
     </div>
 }
-
-<form method="post" action="/CustomItem">
+@using (Html.BeginForm())
+{
     @Html.AntiForgeryToken()
-    Where to get the item:<br />
-    <input type="text" name="itemLocation" /><br />
-    Item:<br />
-    <input type="text" name="content" /><br />
+    <div class="form-group">
+        @Html.LabelFor(m => m.itemLocation, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.itemLocation, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.itemLocation)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.content, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.content, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.content)
+    </div>
     <input type="submit" />
-</form>
+}

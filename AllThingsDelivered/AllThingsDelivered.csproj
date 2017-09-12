@@ -217,7 +217,6 @@
     <Compile Include="Models\AspNetUser.cs">
       <DependentUpon>AllThingsDeliveredModels.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Cart.cs" />
     <Compile Include="Models\CartContent.cs">
       <DependentUpon>AllThingsDeliveredModels.tt</DependentUpon>
     </Compile>
