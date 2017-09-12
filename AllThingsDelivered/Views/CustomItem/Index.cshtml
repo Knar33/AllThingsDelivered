@@ -1,0 +1,19 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-success">
+        @ViewBag.Message
+    </div>
+}
+
+<form method="post" action="/CustomItem">
+    @Html.AntiForgeryToken()
+    Where to get the item:<br />
+    <input type="text" name="itemLocation" /><br />
+    Item:<br />
+    <input type="text" name="content" /><br />
+    <input type="submit" />
+</form>

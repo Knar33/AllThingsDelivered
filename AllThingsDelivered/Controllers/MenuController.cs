@@ -33,7 +33,7 @@ namespace AllThingsDelivered.Store.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Index(int id, string ItemName, string ItemDescription, int Quantity, decimal Price, int RestaurantID, string Customize)
         {
-            int customerID = 0;
+            int customerID;
             if (User.Identity.IsAuthenticated)
             {
                 customerID = db.AspNetUsers.Single(x => x.UserName == User.Identity.Name).Customers.First().CustomerID;

@@ -18,7 +18,7 @@ namespace AllThingsDelivered.Controllers
             }
             base.Dispose(disposing);
         }
-
+        
         public ActionResult Index()
         {
             int customerID = 0;
@@ -31,12 +31,16 @@ namespace AllThingsDelivered.Controllers
                 TempData["SignIn"] = "You must be signed in to do that";
                 return RedirectToAction("SignIn", "Account");
             }
-
-            return View(db.CartContents.Where(x => x.CustomerID == customerID));
+            Cart thisCart = new Cart
+            {
+                cartContent = db.CartContents.Where(x => x.CustomerID == customerID),
+                customCartContent = db.CustomCartContents.Where(x => x.CustomerID == customerID)
+            };
+            return View(thisCart);
         }
 
         [HttpPost]
-        public ActionResult Index(int id)
+        public ActionResult Index(int id, string type)
         {
             int customerID = 0;
             if (User.Identity.IsAuthenticated)
@@ -49,11 +53,28 @@ namespace AllThingsDelivered.Controllers
                 return RedirectToAction("SignIn", "Account");
             }
             
-            CartContent cartContent = new CartContent { CartContentID = id };
-            db.CartContents.Attach(cartContent);
-            db.CartContents.Remove(cartContent);
-            db.SaveChanges();
-            return View(db.CartContents.Where(x => x.CustomerID == customerID));
+            //remove item from cart
+            if (type == "CartContent")
+            {
+                CartContent cartContent = new CartContent { CartContentID = id };
+                db.CartContents.Attach(cartContent);
+                db.CartContents.Remove(cartContent);
+                db.SaveChanges();
+            }
+            else if (type == "CustomCartContent")
+            {
+                CustomCartContent customCartContent = new CustomCartContent { CustomCartContentsID = id };
+                db.CustomCartContents.Attach(customCartContent);
+                db.CustomCartContents.Remove(customCartContent);
+                db.SaveChanges();
+            }
+            
+            Cart thisCart = new Cart
+            {
+                cartContent = db.CartContents.Where(x => x.CustomerID == customerID),
+                customCartContent = db.CustomCartContents.Where(x => x.CustomerID == customerID)
+            };
+            return View(thisCart);
         }
     }
 }

@@ -211,6 +211,7 @@
     <Compile Include="Models\AspNetUser.cs">
       <DependentUpon>AllThingsDeliveredModels.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Cart.cs" />
     <Compile Include="Models\CartContent.cs">
       <DependentUpon>AllThingsDeliveredModels.tt</DependentUpon>
     </Compile>
@@ -320,10 +321,10 @@
     <Content Include="Views\Account\ForgotPasswordSent.cshtml" />
     <Content Include="Views\Account\ResetPassword.cshtml" />
     <Content Include="Views\Account\ConfirmAccount.cshtml" />
+    <Content Include="Views\CustomItem\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\CustomItem\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

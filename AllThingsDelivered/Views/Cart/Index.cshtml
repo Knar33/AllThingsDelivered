@@ -1,10 +1,10 @@
 ﻿@using AllThingsDelivered.Models
-@model IEnumerable<CartContent>
+@model Cart
 @{
     ViewBag.Title = "Index";
 }
 
-@foreach (CartContent cartContent in Model)
+@foreach (CartContent cartContent in Model.cartContent)
 {
     <text>ItemName: </text>@cartContent.ItemName <br />
     <text>Item Description: </text>@cartContent.ItemDescription <br />
@@ -16,6 +16,22 @@
     }
     <form method="post" action="/cart">
         <input type="hidden" name="id" value="@cartContent.CartContentID"/>
+        <input type="hidden" name="type" value="CartContent" />
+        <input type="submit" value="Delete" />
+    </form>
+    <br /><br />
+}
+
+@foreach (CustomCartContent customCartContent in Model.customCartContent)
+{
+    if (customCartContent.ItemLocation != null)
+    {
+        <text>Item Location: </text>@customCartContent.ItemLocation <br />
+    }
+    <text>Item: </text>@customCartContent.Content <br />
+    <form method="post" action="/cart">
+        <input type="hidden" name="id" value="@customCartContent.CustomCartContentsID" />
+        <input type="hidden" name="type" value="CustomCartContent" />
         <input type="submit" value="Delete" />
     </form>
     <br /><br />
