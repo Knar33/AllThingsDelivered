@@ -30,7 +30,7 @@
     }
     <text>Item: </text>@customCartContent.Content <br />
     <form method="post" action="/cart">
-        @Html.AntiForgeryToken();
+        @Html.AntiForgeryToken()
         <input type="hidden" name="id" value="@customCartContent.CustomCartContentsID" />
         <input type="hidden" name="type" value="CustomCartContent" />
         <input type="submit" value="Delete" />

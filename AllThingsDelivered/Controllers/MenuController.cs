@@ -31,22 +31,26 @@ namespace AllThingsDelivered.Store.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Index(int id, string ItemName, string ItemDescription, int Quantity, decimal Price, int RestaurantID, string Customize)
+        public ActionResult Index(AddToCart model)
         {
-            int customerID;
-            if (User.Identity.IsAuthenticated)
+            if (ModelState.IsValid)
             {
-                customerID = db.AspNetUsers.Single(x => x.UserName == User.Identity.Name).Customers.First().CustomerID;
-            }
-            else
-            {
-                TempData["SignIn"] = "You must be signed in to do that";
-                return RedirectToAction("SignIn", "Account");
-            }
+                int customerID;
+                if (User.Identity.IsAuthenticated)
+                {
+                    customerID = db.AspNetUsers.Single(x => x.UserName == User.Identity.Name).Customers.First().CustomerID;
+                }
+                else
+                {
+                    TempData["SignIn"] = "You must be signed in to do that";
+                    return RedirectToAction("SignIn", "Account");
+                }
 
-            db.CartContents.Add(new CartContent { CustomerID = customerID, RestaurantID = RestaurantID, ItemName = ItemName, ItemDescription = ItemDescription, Quantity = Quantity, Customize = Customize, Price = Price });
-            db.SaveChanges();
-            return View(db.Restaurants.Find(RestaurantID));
+                db.CartContents.Add(new CartContent { CustomerID = customerID, RestaurantID = model.RestaurantID, ItemName = model.ItemName, ItemDescription = model.ItemDescription, Quantity = model.Quantity, Customize = model.Customize, Price = model.Price });
+                db.SaveChanges();
+            }
+            //TODO: Add error message if cart contents are bad
+            return View(db.Restaurants.Find(model.RestaurantID));
         }
     }
 }

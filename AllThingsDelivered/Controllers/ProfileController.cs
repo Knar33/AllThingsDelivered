@@ -22,14 +22,9 @@ namespace AllThingsDelivered.Controllers
         // GET: Profile
         public ActionResult Index()
         {
-            int customerID = 0;
+            int customerID;
             if (User.Identity.IsAuthenticated)
             {
-                /*
-                //claim based authentication
-                var claimsIdentity = (System.Security.Claims.ClaimsIdentity)User.Identity;
-                claimsIdentity.Claims.Where(x => x.Type == System.Security.Claims.ClaimTypes.Role);
-                */
                 customerID = db.AspNetUsers.Single(x => x.UserName == User.Identity.Name).Customers.First().CustomerID;
             }
             else
@@ -37,25 +32,62 @@ namespace AllThingsDelivered.Controllers
                 TempData["SignIn"] = "You must be signed in to do that";
                 return RedirectToAction("SignIn", "Account");
             }
-            return View(db.Customers.Single(x => x.CustomerID == customerID));
+            EditInfo customerInfo = new EditInfo { customer = db.Customers.Single(x => x.CustomerID == customerID) };
+            return View(customerInfo);
         }
 
         //user edit profile information
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Index(string firstname, string lastname, string phone, string email)
+        public ActionResult Index(EditInfo model)
         {
-            return View();
+            int customerID;
+            if (User.Identity.IsAuthenticated)
+            {
+                customerID = db.AspNetUsers.Single(x => x.UserName == User.Identity.Name).Customers.First().CustomerID;
+            }
+            else
+            {
+                TempData["SignIn"] = "You must be signed in to do that";
+                return RedirectToAction("SignIn", "Account");
+            }
+
+            if (ModelState.IsValid)
+            {
+                db.Customers.Single(x => x.CustomerID == customerID).FirstName = model.firstname;
+                db.Customers.Single(x => x.CustomerID == customerID).LastName = model.lastname;
+                db.Customers.Single(x => x.CustomerID == customerID).PhoneNumber = model.phone;
+                //make sure the email address isn't already taken
+                if (User.Identity.Name != model.email)
+                {
+                    if ((db.AspNetUsers.SingleOrDefault(x => x.UserName == model.email) == null) && (db.AspNetUsers.SingleOrDefault(x => x.Email == model.email) == null))
+                    {
+                        db.AspNetUsers.Single(x => x.UserName == User.Identity.Name).Email = model.email;
+                        db.AspNetUsers.Single(x => x.UserName == User.Identity.Name).UserName = model.email;
+                        db.AspNetUsers.Single(x => x.UserName == User.Identity.Name).EmailConfirmed = false;
+                    }
+                    else
+                    {
+                        ViewBag.error = "That email address is already taken by another user.";
+                        EditInfo failedInfo = new EditInfo { customer = db.Customers.Single(x => x.CustomerID == customerID) };
+                        return View(failedInfo);
+                    }
+                }
+                db.SaveChanges();
+                ViewBag.Success = "You have successfully updated your profile inormation";
+            }
+            EditInfo customerInfo = new EditInfo { customer = db.Customers.Single(x => x.CustomerID == customerID) };
+            return View(customerInfo);
         }
 
         //user delete address
-        public ActionResult DeleteAddress(int AddressID)
+        public ActionResult DeleteAddress(DeleteAddress model)
         {
             return View();
         }
 
         //user add address
-        public ActionResult AddAddress(string line1, string line2, string city, string state, string zipcode, string country)
+        public ActionResult AddAddress(AddAddress model)
         {
             return View();
         }

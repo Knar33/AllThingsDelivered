@@ -250,6 +250,7 @@
     <Compile Include="Models\OrderContent.cs">
       <DependentUpon>AllThingsDeliveredModels.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ProfileModels.cs" />
     <Compile Include="Models\Restaurant.cs">
       <DependentUpon>AllThingsDeliveredModels.tt</DependentUpon>
     </Compile>

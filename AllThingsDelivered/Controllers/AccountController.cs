@@ -48,6 +48,7 @@ namespace CodingTemple.CodingCookware.Web.Controllers
                 var userIdentity = await manager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
                 authenticationManager.SignIn(new Microsoft.Owin.Security.AuthenticationProperties() { }, userIdentity);
 
+                /*
                 string token = manager.GenerateEmailConfirmationToken(user.Id);
                 string sendGridApiKey = System.Configuration.ConfigurationManager.AppSettings["SendGrid.ApiKey"];
                 SendGrid.SendGridClient client = new SendGrid.SendGridClient(sendGridApiKey);
@@ -64,7 +65,7 @@ namespace CodingTemple.CodingCookware.Web.Controllers
                 message.SetTemplateId("8765a1ec-6865-4be4-8854-b04ef686d63e");
                 var response = client.SendEmailAsync(message).Result;
                 var ResponseBody = response.Body.ReadAsStringAsync().Result;
-
+                */
                 return RedirectToAction("Index", "Restaurants");
             }
             else

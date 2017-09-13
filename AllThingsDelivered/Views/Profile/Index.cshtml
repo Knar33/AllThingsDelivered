@@ -1,24 +1,51 @@
 ﻿@using AllThingsDelivered.Models
-@model Customer
+@model EditInfo
 @{
     ViewBag.Title = "Index";
 }
+@if (ViewBag.Success != null)
+{
+    <div class="alert alert-success">
+        @ViewBag.Success
+    </div>
+}
+@if (ViewBag.error != null)
+{
+    <div class="alert alert-danger">
+        @ViewBag.error
+    </div>
+}
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="form-group">
+        @Html.LabelFor(m => m.firstname, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.firstname, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.firstname)
+    </div>
 
-<form method="post" action="/Profile">
-    @Html.AntiForgeryToken();
-    First Name:<br />
-    <input type="text" name="firstname" value="@Model.FirstName" /> <br />
-    Last Name:<br />
-    <input type="text" name="lastname" value="@Model.LastName" /><br />
-    Phone Number<br />
-    <input type="text" name="phone" value="@Model.PhoneNumber" /><br />
-    Email Address<br />
-    <input type="text" name="email" value="@Model.AspNetUser.Email" />
+    <div class="form-group">
+        @Html.LabelFor(m => m.lastname, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.lastname, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.lastname)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.phone, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.phone, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.phone)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.email, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.email, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.email)
+    </div>
     <input type="submit" />
-</form>
+}
 <br /><br />
 Default Address:<br />
-@foreach (CustomerAddress address in (Model.CustomerAddresses.Where(x => x.DefaultAddr)))
+@foreach (CustomerAddress address in (Model.customer.CustomerAddresses.Where(x => x.DefaultAddr)))
 {
     @address.Address.Line1<br />
     @address.Address.Line2<br />
@@ -29,7 +56,7 @@ Default Address:<br />
 }
 <br /><br />
 Other Addresses:<br />
-@foreach (CustomerAddress address in (Model.CustomerAddresses.Where(x => !x.DefaultAddr)))
+@foreach (CustomerAddress address in (Model.customer.CustomerAddresses.Where(x => !x.DefaultAddr)))
 {
     @address.Address.Line1<br />
     @address.Address.Line2<br />
@@ -43,7 +70,7 @@ Other Addresses:<br />
 }
 Add a new address:
 <form method="post" action="/Profile/AddAddress">
-    @Html.AntiForgeryToken();
+    @Html.AntiForgeryToken()
     Line 1<br />
     <input type="text" name="line1" /><br />
     Line 2<br />
