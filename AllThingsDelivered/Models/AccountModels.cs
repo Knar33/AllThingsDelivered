@@ -3,11 +3,16 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace AllThingsDelivered.Models
 {
     public class RegisterModel
     {
+        public List<SelectListItem> stateList { get; set; }
+
+        public List<SelectListItem> countryList { get; set; }
+
         [Required]
         [EmailAddress]
         [Display(Name = "Email Address")]
@@ -19,7 +24,7 @@ namespace AllThingsDelivered.Models
 
         [Required]
         [MinLength(4)]
-        [Compare("password1")]
+        [System.ComponentModel.DataAnnotations.Compare("password1")]
         public string password2 { get; set; }
 
         [Required]
@@ -37,6 +42,35 @@ namespace AllThingsDelivered.Models
         [MaxLength(15)]
         [Display(Name = "Phone Number")]
         public string phone { get; set; }
+
+        [Required]
+        [MaxLength(100)]
+        [Display(Name = "Address Line 1")]
+        public string line1 { get; set; }
+        
+        [MaxLength(100)]
+        [Display(Name = "Address Line 2")]
+        public string line2 { get; set; }
+
+        [Required]
+        [MaxLength(100)]
+        [Display(Name = "City")]
+        public string city { get; set; }
+
+        [Required]
+        [MaxLength(100)]
+        [Display(Name = "State")]
+        public string state { get; set; }
+
+        [Required]
+        [MaxLength(25)]
+        [Display(Name = "Postal Code")]
+        public string postalcode { get; set; }
+
+        [Required]
+        [MaxLength(100)]
+        [Display(Name = "Country")]
+        public string country { get; set; }
     }
 
     public class ForgotPassword

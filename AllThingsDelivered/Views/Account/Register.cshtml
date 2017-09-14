@@ -49,5 +49,43 @@
         @Html.ValidationMessageFor(m => m.password2)
     </div>
 
+    <h3>Address</h3>
+    <div class="form-group">
+        @Html.LabelFor(m => m.line1, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.line1, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.line1)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.line2, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.line2, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.line2)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.city, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.city, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.city)
+    </div>
+
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.state, new { @class = "control-label" })
+        @Html.DropDownListFor(m => m.state, Model.stateList)
+        @Html.ValidationMessageFor(m => m.state)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.postalcode, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.postalcode, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.postalcode)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.country, new { @class = "control-label" })
+        @Html.DropDownListFor(m => m.country, Model.countryList)
+        @Html.ValidationMessageFor(m => m.country)
+    </div>
+
     <input type="submit" value="Create Account" />
 }

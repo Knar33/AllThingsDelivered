@@ -20,26 +20,20 @@
     @Html.AntiForgeryToken()
     <div class="form-group">
         @Html.LabelFor(m => m.firstname, new { @class = "control-label" })
-        @Html.TextBoxFor(m => m.firstname, new { @class = "form-control" })
+        @Html.TextBoxFor(m => m.firstname, new { @class = "form-control", @Value = Model.customer.FirstName })
         @Html.ValidationMessageFor(m => m.firstname)
     </div>
 
     <div class="form-group">
         @Html.LabelFor(m => m.lastname, new { @class = "control-label" })
-        @Html.TextBoxFor(m => m.lastname, new { @class = "form-control" })
+        @Html.TextBoxFor(m => m.lastname, new { @class = "form-control", @Value = Model.customer.LastName })
         @Html.ValidationMessageFor(m => m.lastname)
     </div>
 
     <div class="form-group">
         @Html.LabelFor(m => m.phone, new { @class = "control-label" })
-        @Html.TextBoxFor(m => m.phone, new { @class = "form-control" })
+        @Html.TextBoxFor(m => m.phone, new { @class = "form-control", @Value = Model.customer.PhoneNumber })
         @Html.ValidationMessageFor(m => m.phone)
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(m => m.email, new { @class = "control-label" })
-        @Html.TextBoxFor(m => m.email, new { @class = "form-control" })
-        @Html.ValidationMessageFor(m => m.email)
     </div>
     <input type="submit" />
 }

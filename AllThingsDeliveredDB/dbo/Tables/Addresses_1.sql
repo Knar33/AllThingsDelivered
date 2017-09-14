@@ -8,8 +8,11 @@
     [Country]     NVARCHAR (100) NULL,
     [Deleted]     BIT            NOT NULL,
     [AddressType] NVARCHAR (100) NULL,
+    [Primary]     BIT            NULL,
     CONSTRAINT [PK_Addresses] PRIMARY KEY CLUSTERED ([AddressID] ASC)
 );
+
+
 
 
 

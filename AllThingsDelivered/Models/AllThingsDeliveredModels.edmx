@@ -18,6 +18,7 @@
           <Property Name="Country" Type="nvarchar" MaxLength="100" />
           <Property Name="Deleted" Type="bit" Nullable="false" />
           <Property Name="AddressType" Type="nvarchar" MaxLength="100" />
+          <Property Name="Primary" Type="bit" />
         </EntityType>
         <EntityType Name="AspNetUsers">
           <Key>
@@ -48,6 +49,13 @@
           <Property Name="Quantity" Type="int" Nullable="false" />
           <Property Name="Price" Type="decimal" Precision="18" Scale="0" />
           <Property Name="Customize" Type="nvarchar" MaxLength="1000" />
+        </EntityType>
+        <EntityType Name="Countries">
+          <Key>
+            <PropertyRef Name="CountryID" />
+          </Key>
+          <Property Name="CountryID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CountryName" Type="nvarchar" MaxLength="100" Nullable="false" />
         </EntityType>
         <EntityType Name="CustomCartContents">
           <Key>
@@ -175,6 +183,13 @@
           <Property Name="AddressID" Type="int" Nullable="false" />
           <Property Name="Phone" Type="nvarchar" MaxLength="50" />
           <Property Name="FSID" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="States">
+          <Key>
+            <PropertyRef Name="StateID" />
+          </Key>
+          <Property Name="StateID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StateName" Type="nvarchar" MaxLength="100" Nullable="false" />
         </EntityType>
         <Association Name="FK_CartContents_Customers">
           <End Role="Customers" Type="Self.Customers" Multiplicity="1" />
@@ -376,6 +391,7 @@
           <EntitySet Name="Addresses" EntityType="Self.Addresses" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CartContents" EntityType="Self.CartContents" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Countries" EntityType="Self.Countries" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CustomCartContents" EntityType="Self.CustomCartContents" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CustomerAddresses" EntityType="Self.CustomerAddresses" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Customers" EntityType="Self.Customers" Schema="dbo" store:Type="Tables" />
@@ -388,6 +404,7 @@
           <EntitySet Name="RestaurantCategories" EntityType="Self.RestaurantCategories" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RestaurantItems" EntityType="Self.RestaurantItems" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Restaurants" EntityType="Self.Restaurants" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="States" EntityType="Self.States" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_CartContents_Customers" Association="Self.FK_CartContents_Customers">
             <End Role="Customers" EntitySet="Customers" />
             <End Role="CartContents" EntitySet="CartContents" />
@@ -461,6 +478,7 @@
           <EntitySet Name="Addresses" EntityType="AllThingsDeliveredDBModel.Address" />
           <EntitySet Name="AspNetUsers" EntityType="AllThingsDeliveredDBModel.AspNetUser" />
           <EntitySet Name="CartContents" EntityType="AllThingsDeliveredDBModel.CartContent" />
+          <EntitySet Name="Countries" EntityType="AllThingsDeliveredDBModel.Country" />
           <EntitySet Name="CustomCartContents" EntityType="AllThingsDeliveredDBModel.CustomCartContent" />
           <EntitySet Name="CustomerAddresses" EntityType="AllThingsDeliveredDBModel.CustomerAddress" />
           <EntitySet Name="Customers" EntityType="AllThingsDeliveredDBModel.Customer" />
@@ -473,6 +491,7 @@
           <EntitySet Name="RestaurantCategories" EntityType="AllThingsDeliveredDBModel.RestaurantCategory" />
           <EntitySet Name="RestaurantItems" EntityType="AllThingsDeliveredDBModel.RestaurantItem" />
           <EntitySet Name="Restaurants" EntityType="AllThingsDeliveredDBModel.Restaurant" />
+          <EntitySet Name="States" EntityType="AllThingsDeliveredDBModel.State" />
           <AssociationSet Name="FK_CustomerAddresses_Addresses" Association="AllThingsDeliveredDBModel.FK_CustomerAddresses_Addresses">
             <End Role="Address" EntitySet="Addresses" />
             <End Role="CustomerAddress" EntitySet="CustomerAddresses" />
@@ -551,6 +570,7 @@
           <Property Name="Country" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Deleted" Type="Boolean" Nullable="false" />
           <Property Name="AddressType" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Primary" Type="Boolean" />
           <NavigationProperty Name="CustomerAddresses" Relationship="AllThingsDeliveredDBModel.FK_CustomerAddresses_Addresses" FromRole="Address" ToRole="CustomerAddress" />
           <NavigationProperty Name="Drivers" Relationship="AllThingsDeliveredDBModel.FK_Drivers_Addresses" FromRole="Address" ToRole="Driver" />
           <NavigationProperty Name="Operators" Relationship="AllThingsDeliveredDBModel.FK_Operators_Addresses" FromRole="Address" ToRole="Operator" />
@@ -588,6 +608,13 @@
           <Property Name="Price" Type="Decimal" Precision="18" Scale="0" />
           <Property Name="Customize" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Customer" Relationship="AllThingsDeliveredDBModel.FK_CartContents_Customers" FromRole="CartContent" ToRole="Customer" />
+        </EntityType>
+        <EntityType Name="Country">
+          <Key>
+            <PropertyRef Name="CountryID" />
+          </Key>
+          <Property Name="CountryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CountryName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="CustomCartContent">
           <Key>
@@ -740,6 +767,13 @@
           <Property Name="FSID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Address" Relationship="AllThingsDeliveredDBModel.FK_Restaurants_Addresses" FromRole="Restaurant" ToRole="Address" />
           <NavigationProperty Name="RestaurantCategories" Relationship="AllThingsDeliveredDBModel.FK_RestaurantCategories_Restaurants" FromRole="Restaurant" ToRole="RestaurantCategory" />
+        </EntityType>
+        <EntityType Name="State">
+          <Key>
+            <PropertyRef Name="StateID" />
+          </Key>
+          <Property Name="StateID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StateName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_CustomerAddresses_Addresses">
           <End Type="AllThingsDeliveredDBModel.Address" Role="Address" Multiplicity="1">
@@ -946,6 +980,7 @@
           <EntitySetMapping Name="Addresses">
             <EntityTypeMapping TypeName="AllThingsDeliveredDBModel.Address">
               <MappingFragment StoreEntitySet="Addresses">
+                <ScalarProperty Name="Primary" ColumnName="Primary" />
                 <ScalarProperty Name="AddressType" ColumnName="AddressType" />
                 <ScalarProperty Name="Deleted" ColumnName="Deleted" />
                 <ScalarProperty Name="Country" ColumnName="Country" />
@@ -987,6 +1022,14 @@
                 <ScalarProperty Name="RestaurantID" ColumnName="RestaurantID" />
                 <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
                 <ScalarProperty Name="CartContentID" ColumnName="CartContentID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Countries">
+            <EntityTypeMapping TypeName="AllThingsDeliveredDBModel.Country">
+              <MappingFragment StoreEntitySet="Countries">
+                <ScalarProperty Name="CountryName" ColumnName="CountryName" />
+                <ScalarProperty Name="CountryID" ColumnName="CountryID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1125,6 +1168,14 @@
                 <ScalarProperty Name="AddressID" ColumnName="AddressID" />
                 <ScalarProperty Name="RestaurantName" ColumnName="RestaurantName" />
                 <ScalarProperty Name="RestaurantID" ColumnName="RestaurantID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="States">
+            <EntityTypeMapping TypeName="AllThingsDeliveredDBModel.State">
+              <MappingFragment StoreEntitySet="States">
+                <ScalarProperty Name="StateName" ColumnName="StateName" />
+                <ScalarProperty Name="StateID" ColumnName="StateID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

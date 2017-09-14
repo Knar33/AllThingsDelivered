@@ -1,4 +1,7 @@
 ﻿using AllThingsDelivered.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity.Owin;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,8 +35,8 @@ namespace AllThingsDelivered.Controllers
                 TempData["SignIn"] = "You must be signed in to do that";
                 return RedirectToAction("SignIn", "Account");
             }
-            EditInfo customerInfo = new EditInfo { customer = db.Customers.Single(x => x.CustomerID == customerID) };
-            return View(customerInfo);
+            EditInfo editedInfo = new EditInfo { customer = db.Customers.Single(x => x.CustomerID == customerID) };
+            return View(editedInfo);
         }
 
         //user edit profile information
@@ -54,30 +57,15 @@ namespace AllThingsDelivered.Controllers
 
             if (ModelState.IsValid)
             {
-                db.Customers.Single(x => x.CustomerID == customerID).FirstName = model.firstname;
-                db.Customers.Single(x => x.CustomerID == customerID).LastName = model.lastname;
-                db.Customers.Single(x => x.CustomerID == customerID).PhoneNumber = model.phone;
-                //make sure the email address isn't already taken
-                if (User.Identity.Name != model.email)
-                {
-                    if ((db.AspNetUsers.SingleOrDefault(x => x.UserName == model.email) == null) && (db.AspNetUsers.SingleOrDefault(x => x.Email == model.email) == null))
-                    {
-                        db.AspNetUsers.Single(x => x.UserName == User.Identity.Name).Email = model.email;
-                        db.AspNetUsers.Single(x => x.UserName == User.Identity.Name).UserName = model.email;
-                        db.AspNetUsers.Single(x => x.UserName == User.Identity.Name).EmailConfirmed = false;
-                    }
-                    else
-                    {
-                        ViewBag.error = "That email address is already taken by another user.";
-                        EditInfo failedInfo = new EditInfo { customer = db.Customers.Single(x => x.CustomerID == customerID) };
-                        return View(failedInfo);
-                    }
-                }
+                var customer = db.Customers.Single(x => x.CustomerID == customerID);
+                customer.FirstName = model.firstname;
+                customer.LastName = model.lastname;
+                customer.PhoneNumber = model.phone;
                 db.SaveChanges();
                 ViewBag.Success = "You have successfully updated your profile inormation";
             }
-            EditInfo customerInfo = new EditInfo { customer = db.Customers.Single(x => x.CustomerID == customerID) };
-            return View(customerInfo);
+            EditInfo editedInfo = new EditInfo { customer = db.Customers.Single(x => x.CustomerID == customerID) };
+            return View(editedInfo);
         }
 
         //user delete address

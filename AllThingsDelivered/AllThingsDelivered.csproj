@@ -221,6 +221,9 @@
       <DependentUpon>AllThingsDeliveredModels.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\CartModels.cs" />
+    <Compile Include="Models\Country.cs">
+      <DependentUpon>AllThingsDeliveredModels.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\CustomCartContent.cs">
       <DependentUpon>AllThingsDeliveredModels.tt</DependentUpon>
     </Compile>
@@ -258,6 +261,9 @@
       <DependentUpon>AllThingsDeliveredModels.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\RestaurantItem.cs">
+      <DependentUpon>AllThingsDeliveredModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\State.cs">
       <DependentUpon>AllThingsDeliveredModels.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />

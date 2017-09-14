@@ -21,11 +21,33 @@ namespace CodingTemple.CodingCookware.Web.Controllers
             }
             base.Dispose(disposing);
         }
+
+        //Register GET
         public ActionResult Register()
         {
-            return View();
+            List<SelectListItem> StateList = new List<SelectListItem>();
+            StateList.Add(new SelectListItem { Text = "Select A State", Value = "" });
+            foreach (State state in db.States)
+            {
+                StateList.Add(new SelectListItem { Text = state.StateName, Value = state.StateName });
+            }
+
+            List<SelectListItem> CountryList = new List<SelectListItem>();
+            CountryList.Add(new SelectListItem { Text = "Select A Country", Value = "" });
+            foreach (Country country in db.Countries)
+            {
+                CountryList.Add(new SelectListItem { Text = country.CountryName, Value = country.CountryName });
+            }
+
+            RegisterModel model = new RegisterModel
+            {
+                stateList = StateList,
+                countryList = CountryList
+            };
+            return View(model);
         }
 
+        //Register POST
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async System.Threading.Tasks.Task<ActionResult> Register(RegisterModel model)
@@ -39,16 +61,27 @@ namespace CodingTemple.CodingCookware.Web.Controllers
                 if (!result.Succeeded)
                 {
                     ViewBag.Error = result.Errors;
-                    return View();
+                    return View(model);
                 }
 
-                db.Customers.Add(new Customer { AspNetUserID = user.Id, FirstName = model.firstname, LastName = model.lastname, PhoneNumber = model.phone });
+                //TODO: is there a better way?
+                Address address = new Address { Line1 = model.line1, Line2 = model.line2, City = model.city, State = model.state, ZipCode = model.postalcode, Country = model.country, Deleted = false, AddressType = "Customer", Primary = true };
+                db.Addresses.Add(address);
+
+                Customer thisCustomer = new Customer { AspNetUserID = user.Id, FirstName = model.firstname, LastName = model.lastname, PhoneNumber = model.phone };
+                db.Customers.Add(thisCustomer);
                 db.SaveChanges();
+
+                CustomerAddress customerAddress = new CustomerAddress();
+                customerAddress.CustomerID = thisCustomer.CustomerID;
+                customerAddress.AddressID = address.AddressID;
+                db.CustomerAddresses.Add(customerAddress);
+                db.SaveChanges();
+
                 var authenticationManager = HttpContext.GetOwinContext().Authentication;
                 var userIdentity = await manager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
                 authenticationManager.SignIn(new Microsoft.Owin.Security.AuthenticationProperties() { }, userIdentity);
-
-                /*
+                
                 string token = manager.GenerateEmailConfirmationToken(user.Id);
                 string sendGridApiKey = System.Configuration.ConfigurationManager.AppSettings["SendGrid.ApiKey"];
                 SendGrid.SendGridClient client = new SendGrid.SendGridClient(sendGridApiKey);
@@ -65,7 +98,7 @@ namespace CodingTemple.CodingCookware.Web.Controllers
                 message.SetTemplateId("8765a1ec-6865-4be4-8854-b04ef686d63e");
                 var response = client.SendEmailAsync(message).Result;
                 var ResponseBody = response.Body.ReadAsStringAsync().Result;
-                */
+                
                 return RedirectToAction("Index", "Restaurants");
             }
             else

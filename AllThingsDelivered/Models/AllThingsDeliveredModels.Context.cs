@@ -28,6 +28,7 @@ namespace AllThingsDelivered.Models
         public virtual DbSet<Address> Addresses { get; set; }
         public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
         public virtual DbSet<CartContent> CartContents { get; set; }
+        public virtual DbSet<Country> Countries { get; set; }
         public virtual DbSet<CustomCartContent> CustomCartContents { get; set; }
         public virtual DbSet<CustomerAddress> CustomerAddresses { get; set; }
         public virtual DbSet<Customer> Customers { get; set; }
@@ -40,5 +41,6 @@ namespace AllThingsDelivered.Models
         public virtual DbSet<RestaurantCategory> RestaurantCategories { get; set; }
         public virtual DbSet<RestaurantItem> RestaurantItems { get; set; }
         public virtual DbSet<Restaurant> Restaurants { get; set; }
+        public virtual DbSet<State> States { get; set; }
     }
 }

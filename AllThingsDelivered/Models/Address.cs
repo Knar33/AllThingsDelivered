@@ -33,6 +33,7 @@ namespace AllThingsDelivered.Models
         public string Country { get; set; }
         public bool Deleted { get; set; }
         public string AddressType { get; set; }
+        public Nullable<bool> Primary { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CustomerAddress> CustomerAddresses { get; set; }

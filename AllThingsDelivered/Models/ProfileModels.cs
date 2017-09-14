@@ -22,10 +22,6 @@ namespace AllThingsDelivered.Models
         [MinLength(10)]
         [MaxLength(15)]
         public string phone { get; set; }
-
-        [Required]
-        [EmailAddress]
-        public string email { get; set; }
     }
 
     public class DeleteAddress
