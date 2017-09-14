@@ -1,0 +1,58 @@
+﻿@using AllThingsDelivered.Models
+@model Checkout
+@{
+    ViewBag.Title = "Index";
+}
+
+@using (Html.BeginForm("Finalize", "Checkout"))
+{
+    @Html.AntiForgeryToken();
+    <div class="form-group">
+        @Html.LabelFor(m => m.customize, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.customize, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.customize)
+    </div>
+    
+    <h3>Default Address:</h3><br />
+    foreach (CustomerAddress address in (Model.customer.CustomerAddresses.Where(x => x.DefaultAddr)))
+    {
+        if (!address.Address.Deleted)
+        {
+            <input type="radio" name="address" value="@address.AddressID" checked /><br />
+            @address.Address.Line1<br />
+            if (address.Address.Line2 != null)
+            {
+                @address.Address.Line2<br />
+            }
+            @address.Address.City<br />
+            @address.Address.State<br />
+            @address.Address.ZipCode<br />
+            @address.Address.Country
+            <br /><br />
+        }
+    }
+    if ((Model.customer.CustomerAddresses.Where(x => !x.DefaultAddr).Count() > 0))
+    {
+        <h3>Other Addresses:</h3><br />
+    }
+    foreach (CustomerAddress address in (Model.customer.CustomerAddresses.Where(x => !x.DefaultAddr)))
+    {
+        if (!address.Address.Deleted)
+        {
+            <input type="radio" name="address" value="@address.AddressID" /><br />
+            @address.Address.Line1<br />
+            if (address.Address.Line2 != null)
+            {
+                @address.Address.Line2<br />
+            }
+            @address.Address.City<br />
+            @address.Address.State<br />
+            @address.Address.ZipCode<br />
+            @address.Address.Country<br />
+            <br /><br />
+        }
+    }
+
+
+    <input type="submit" value="Check Out" />
+}

@@ -21,7 +21,10 @@
         <br /><br />
     }
 }
-<h3>Other Addresses:</h3><br />
+
+@if (Model.customer.CustomerAddresses.Where(x => !x.DefaultAddr).Count() > 0) {
+    <h3>Other Addresses:</h3><br />
+}
 @foreach (CustomerAddress address in (Model.customer.CustomerAddresses.Where(x => !x.DefaultAddr)))
 {
     if (!address.Address.Deleted)
@@ -91,5 +94,5 @@
         @Html.ValidationMessageFor(m => m.country)
     </div>
 
-    <input type="submit" value="Create Account" />
+    <input type="submit" value="Add Address" />
 }

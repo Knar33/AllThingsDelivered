@@ -35,6 +35,7 @@ namespace AllThingsDelivered.Models
         public Nullable<decimal> DeliveryFee { get; set; }
         public Nullable<decimal> Customertip { get; set; }
         public Nullable<int> DriverRating { get; set; }
+        public string Customize { get; set; }
     
         public virtual Address Address { get; set; }
         public virtual Customer Customer { get; set; }

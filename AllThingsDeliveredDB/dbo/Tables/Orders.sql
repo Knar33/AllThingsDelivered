@@ -13,6 +13,7 @@
     [DeliveryFee]  DECIMAL (18)   NULL,
     [Customertip]  DECIMAL (18)   NULL,
     [DriverRating] INT            NULL,
+    [Customize] NVARCHAR(1000) NULL, 
     CONSTRAINT [PK_Orders] PRIMARY KEY CLUSTERED ([OrderID] ASC),
     CONSTRAINT [FK_Orders_Addresses] FOREIGN KEY ([AddressID]) REFERENCES [dbo].[Addresses] ([AddressID]),
     CONSTRAINT [FK_Orders_Customers] FOREIGN KEY ([CustomerID]) REFERENCES [dbo].[Customers] ([CustomerID]),

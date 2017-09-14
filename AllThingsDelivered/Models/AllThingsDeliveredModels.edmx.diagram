@@ -5,11 +5,11 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="59c33ee4b7b34003821b91a2aa6cfd07" Name="Diagram1" ZoomLevel="72">
-        <EntityTypeShape EntityType="AllThingsDeliveredDBModel.Address" Width="1.5" PointX="0.75" PointY="6.875" />
-        <EntityTypeShape EntityType="AllThingsDeliveredDBModel.AspNetUser" Width="1.5" PointX="0.75" PointY="17.75" />
-        <EntityTypeShape EntityType="AllThingsDeliveredDBModel.CartContent" Width="1.5" PointX="5.25" PointY="16.875" />
+        <EntityTypeShape EntityType="AllThingsDeliveredDBModel.Address" Width="1.5" PointX="0.75" PointY="7" />
+        <EntityTypeShape EntityType="AllThingsDeliveredDBModel.AspNetUser" Width="1.5" PointX="0.75" PointY="17.875" />
+        <EntityTypeShape EntityType="AllThingsDeliveredDBModel.CartContent" Width="1.5" PointX="5.25" PointY="19.625" />
         <EntityTypeShape EntityType="AllThingsDeliveredDBModel.Country" Width="1.5" PointX="0.75" PointY="0.75" />
-        <EntityTypeShape EntityType="AllThingsDeliveredDBModel.CustomCartContent" Width="1.5" PointX="5.25" PointY="20.375" />
+        <EntityTypeShape EntityType="AllThingsDeliveredDBModel.CustomCartContent" Width="1.5" PointX="5.25" PointY="16.875" />
         <EntityTypeShape EntityType="AllThingsDeliveredDBModel.CustomerAddress" Width="1.5" PointX="3" PointY="10.875" />
         <EntityTypeShape EntityType="AllThingsDeliveredDBModel.Customer" Width="1.5" PointX="3" PointY="18.125" />
         <EntityTypeShape EntityType="AllThingsDeliveredDBModel.CustomOrderContent" Width="1.5" PointX="7.5" PointY="12.375" />

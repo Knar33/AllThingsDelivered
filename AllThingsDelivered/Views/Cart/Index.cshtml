@@ -3,37 +3,93 @@
     ViewBag.Title = "Index";
 }
 
-@foreach (AllThingsDelivered.Models.CartContent cartContent in Model.cartContent)
+@if (Model.customCartContent.Count() > 0)
 {
-    <text>ItemName: </text>@cartContent.ItemName <br />
-    <text>Item Description: </text>@cartContent.ItemDescription <br />
-    <text>Price: </text>@cartContent.Price <br />
-    <text>Quantity: </text>@cartContent.Quantity <br />
-    if (cartContent.Customize != null)
-    {
-        <text>Customize: </text>@cartContent.Customize <br />
-    }
-    <form method="post" action="/cart">
-        @Html.AntiForgeryToken();
-        <input type="hidden" name="id" value="@cartContent.CartContentID"/>
-        <input type="hidden" name="type" value="CartContent" />
-        <input type="submit" value="Delete" />
-    </form>
-    <br /><br />
+    <h3>Custom Items</h3>
+    <table class="table">
+        <tr>
+            <td>Item Location</td>
+            <td>Item Description</td>
+            <td>Delete</td>
+        </tr>
+        @foreach (AllThingsDelivered.Models.CustomCartContent customCartContent in Model.customCartContent)
+        {
+            <tr>
+                <td>
+                    @if (customCartContent.ItemLocation != null)
+                    {
+                        @customCartContent.ItemLocation
+                    }
+                </td>
+                <td>@customCartContent.Content</td>
+                <td>
+                    <form method="post" action="/cart">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@customCartContent.CustomCartContentsID" />
+                        <input type="hidden" name="type" value="CustomCartContent" />
+                        <input type="submit" value="Delete" />
+                    </form>
+                </td>
+            </tr>
+        }
+    </table>
 }
 
-@foreach (AllThingsDelivered.Models.CustomCartContent customCartContent in Model.customCartContent)
+@if (Model.cartContent.Count() > 0)
 {
-    if (customCartContent.ItemLocation != null)
-    {
-        <text>Item Location: </text>@customCartContent.ItemLocation <br />
-    }
-    <text>Item: </text>@customCartContent.Content <br />
-    <form method="post" action="/cart">
-        @Html.AntiForgeryToken()
-        <input type="hidden" name="id" value="@customCartContent.CustomCartContentsID" />
-        <input type="hidden" name="type" value="CustomCartContent" />
-        <input type="submit" value="Delete" />
-    </form>
-    <br /><br />
+    <h3>Restaurant Items</h3>
+    <table class="table">
+        <tr>
+            <td>Item Name</td>
+            <td>Item Description</td>
+            <td>Quantity</td>
+            <td>Price Per</td>
+            <td>Customize</td>
+            <td>Delete</td>
+        </tr>
+        @foreach (AllThingsDelivered.Models.CartContent cartContent in Model.cartContent)
+        {
+
+            <tr>
+                <td>@cartContent.ItemName</td>
+                <td>@cartContent.ItemDescription</td>
+                <td>@cartContent.Quantity</td>
+                <td>@cartContent.Price</td>
+                <td>
+                    @if (cartContent.Customize != null)
+                    {
+                        @cartContent.Customize
+                    }
+                </td>
+                <td>
+                    <form method="post" action="/cart">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@cartContent.CartContentID" />
+                        <input type="hidden" name="type" value="CartContent" />
+                        <input type="submit" value="Delete" />
+                    </form>
+                </td>
+            </tr>
+        }
+        <tr>
+            <td colspan="4"></td>
+            <td>SubTotal</td>
+            <td>@Model.cartContent.Select(x=>(x.Quantity*x.Price)).Sum()</td>
+        </tr>
+    </table>
+}
+
+
+@if (Model.customCartContent.Count() > 0 || Model.cartContent.Count() > 0)
+{
+    <div class="pull-right">
+        <form method="post" action="/Checkout">
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="orderprice" value="@Model.cartContent.Select(x=>(x.Quantity*x.Price)).Sum()" />
+            <input type="submit" value="Check Out" />
+        </form>
+    </div>
+}
+else {
+    <h2>Cart Is Empty</h2>
 }

@@ -186,6 +186,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CartController.cs" />
+    <Compile Include="Controllers\CheckoutController.cs" />
     <Compile Include="Controllers\CustomItemController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MenuController.cs" />
@@ -221,6 +222,7 @@
       <DependentUpon>AllThingsDeliveredModels.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\CartModels.cs" />
+    <Compile Include="Models\CheckoutModels.cs" />
     <Compile Include="Models\Country.cs">
       <DependentUpon>AllThingsDeliveredModels.tt</DependentUpon>
     </Compile>
@@ -338,6 +340,8 @@
     <Content Include="Views\CustomItem\Index.cshtml" />
     <Content Include="Views\Profile\Index.cshtml" />
     <Content Include="Views\Profile\Addresses.cshtml" />
+    <Content Include="Views\Checkout\Index.cshtml" />
+    <Content Include="Views\Checkout\Success.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
