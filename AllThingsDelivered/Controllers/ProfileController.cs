@@ -68,22 +68,102 @@ namespace AllThingsDelivered.Controllers
             return View(editedInfo);
         }
 
-        //user delete address
-        public ActionResult DeleteAddress(DeleteAddress model)
+        public ActionResult Addresses()
         {
-            return View();
+            int customerID;
+            if (User.Identity.IsAuthenticated)
+            {
+                customerID = db.AspNetUsers.Single(x => x.UserName == User.Identity.Name).Customers.First().CustomerID;
+            }
+            else
+            {
+                TempData["SignIn"] = "You must be signed in to do that";
+                return RedirectToAction("SignIn", "Account");
+            }
+
+            List<SelectListItem> StateList = new List<SelectListItem>();
+            StateList.Add(new SelectListItem { Text = "Select A State", Value = "" });
+            foreach (State state in db.States)
+            {
+                StateList.Add(new SelectListItem { Text = state.StateName, Value = state.StateName });
+            }
+
+            List<SelectListItem> CountryList = new List<SelectListItem>();
+            CountryList.Add(new SelectListItem { Text = "Select A Country", Value = "" });
+            foreach (Country country in db.Countries)
+            {
+                CountryList.Add(new SelectListItem { Text = country.CountryName, Value = country.CountryName });
+            }
+
+            AddAddress model = new AddAddress
+            {
+                stateList = StateList,
+                countryList = CountryList,
+                customer = db.Customers.Single(x => x.CustomerID == customerID)
+            };
+
+            return View(model);
+        }
+
+        //user delete address
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteAddress(int addressID, int customerID)
+        {
+            CustomerAddress customerAddress = new CustomerAddress { CustomerID = customerID, AddressID = addressID };
+            db.CustomerAddresses.Attach(customerAddress);
+            db.CustomerAddresses.Remove(customerAddress);
+
+            Address address = db.Addresses.Single(x => x.AddressID == addressID);
+            address.Deleted = true;
+            db.SaveChanges();
+
+            return RedirectToAction("Addresses");
         }
 
         //user add address
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult AddAddress(AddAddress model)
         {
-            return View();
+            int customerID;
+            if (User.Identity.IsAuthenticated)
+            {
+                customerID = db.AspNetUsers.Single(x => x.UserName == User.Identity.Name).Customers.First().CustomerID;
+            }
+            else
+            {
+                TempData["SignIn"] = "You must be signed in to do that";
+                return RedirectToAction("SignIn", "Account");
+            }
+
+            if (ModelState.IsValid)
+            {
+                Address address = new Address { Line1 = model.line1, Line2 = model.line2, City = model.city, State = model.state, ZipCode = model.postalcode, Country = model.country, Deleted = false, AddressType = "Customer" };
+                db.Addresses.Add(address);
+
+                CustomerAddress customerAddress = new CustomerAddress { DefaultAddr = false };
+                customerAddress.CustomerID = customerID;
+                customerAddress.AddressID = address.AddressID;
+                db.CustomerAddresses.Add(customerAddress);
+                db.SaveChanges();
+            }
+            return RedirectToAction("Addresses", model);
         }
 
         //user set address as default
-        public ActionResult DefaultAddress(int AddressID)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DefaultAddress(int addressID, int customerID)
         {
-        return View();
+            foreach (CustomerAddress addr in db.CustomerAddresses.Where(x => x.CustomerID == customerID))
+            {
+                addr.DefaultAddr = false;
+            }
+            db.CustomerAddresses.SingleOrDefault(x => (x.CustomerID == customerID && x.AddressID == addressID)).DefaultAddr = true;
+            db.SaveChanges();
+
+            return RedirectToAction("Addresses");
         }
     }
 }

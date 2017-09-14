@@ -65,14 +65,14 @@ namespace CodingTemple.CodingCookware.Web.Controllers
                 }
 
                 //TODO: is there a better way?
-                Address address = new Address { Line1 = model.line1, Line2 = model.line2, City = model.city, State = model.state, ZipCode = model.postalcode, Country = model.country, Deleted = false, AddressType = "Customer", Primary = true };
+                Address address = new Address { Line1 = model.line1, Line2 = model.line2, City = model.city, State = model.state, ZipCode = model.postalcode, Country = model.country, Deleted = false, AddressType = "Customer" };
                 db.Addresses.Add(address);
 
                 Customer thisCustomer = new Customer { AspNetUserID = user.Id, FirstName = model.firstname, LastName = model.lastname, PhoneNumber = model.phone };
                 db.Customers.Add(thisCustomer);
                 db.SaveChanges();
 
-                CustomerAddress customerAddress = new CustomerAddress();
+                CustomerAddress customerAddress = new CustomerAddress { DefaultAddr = true };
                 customerAddress.CustomerID = thisCustomer.CustomerID;
                 customerAddress.AddressID = address.AddressID;
                 db.CustomerAddresses.Add(customerAddress);

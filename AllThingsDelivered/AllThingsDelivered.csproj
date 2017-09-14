@@ -337,6 +337,7 @@
     <Content Include="Views\Account\ConfirmAccount.cshtml" />
     <Content Include="Views\CustomItem\Index.cshtml" />
     <Content Include="Views\Profile\Index.cshtml" />
+    <Content Include="Views\Profile\Addresses.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
