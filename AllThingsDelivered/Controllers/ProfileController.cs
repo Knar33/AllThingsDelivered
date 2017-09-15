@@ -110,9 +110,7 @@ namespace AllThingsDelivered.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteAddress(int addressID, int customerID)
         {
-            CustomerAddress customerAddress = new CustomerAddress { CustomerID = customerID, AddressID = addressID };
-            db.CustomerAddresses.Attach(customerAddress);
-            db.CustomerAddresses.Remove(customerAddress);
+            db.CustomerAddresses.Remove(db.CustomerAddresses.SingleOrDefault(x => (x.CustomerID == customerID && x.AddressID == addressID)));
 
             Address address = db.Addresses.Single(x => x.AddressID == addressID);
             address.Deleted = true;

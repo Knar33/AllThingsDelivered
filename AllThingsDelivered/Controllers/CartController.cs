@@ -59,16 +59,15 @@ namespace AllThingsDelivered.Controllers
                 //remove item from cart
                 if (model.type == "CartContent")
                 {
-                    CartContent cartContent = new CartContent { CartContentID = model.id };
-                    db.CartContents.Attach(cartContent);
-                    db.CartContents.Remove(cartContent);
-                    db.SaveChanges();
+                    if (db.CartContents.SingleOrDefault(x => x.CartContentID == model.id) != null)
+                    {
+                        db.CartContents.Remove(db.CartContents.SingleOrDefault(x => x.CartContentID == model.id));
+                        db.SaveChanges();
+                    }
                 }
                 else if (model.type == "CustomCartContent")
                 {
-                    CustomCartContent customCartContent = new CustomCartContent { CustomCartContentsID = model.id };
-                    db.CustomCartContents.Attach(customCartContent);
-                    db.CustomCartContents.Remove(customCartContent);
+                    db.CustomCartContents.Remove(db.CustomCartContents.SingleOrDefault(x => x.CustomCartContentsID == model.id));
                     db.SaveChanges();
                 }
 

@@ -9,8 +9,6 @@ namespace AllThingsDelivered.Models
 {
     public class EditInfo
     {
-        public Customer customer { get; set; }
-
         [Required]
         [MaxLength(100)]
         public string firstname { get; set; }
@@ -23,6 +21,8 @@ namespace AllThingsDelivered.Models
         [MinLength(10)]
         [MaxLength(15)]
         public string phone { get; set; }
+
+        public Customer customer { get; set; }
     }
 
     public class DeleteAddress

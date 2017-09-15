@@ -80,7 +80,7 @@ namespace AllThingsDelivered.Controllers
 
             DateTime timePlaced = DateTime.Now;
 
-            db.Orders.Add(new Order
+            Order newOrder = new Order
             {
                 AddressID = Convert.ToInt32(model.address),
                 CustomerID = customerID,
@@ -91,10 +91,42 @@ namespace AllThingsDelivered.Controllers
                 Updated = false,
                 OrderPrice = model.orderprice,
                 Customize = model.customize
-            });
+            };
             db.SaveChanges();
+
+            Customer customer = db.Customers.Single(x => x.CustomerID == customerID);
+            foreach (CartContent content in customer.CartContents)
+            {
+                newOrder.OrderContents.Add(new OrderContent
+                {
+                    OrderID = newOrder.OrderID,
+                    RestaurantID = content.RestaurantID,
+                    ItemName = content.ItemName,
+                    ItemDescription = content.ItemDescription,
+                    Quantity = content.Quantity,
+                    Price = content.Price,
+                    Customize = content.Customize
+                });
+            }
+
+            foreach (CustomCartContent customContent in customer.CustomCartContents)
+            {
+                newOrder.CustomOrderContents.Add(new CustomOrderContent
+                {
+                    OrderID = newOrder.OrderID,
+                    ItemLocation = customContent.ItemLocation,
+                    Content = customContent.Content
+                });
+            }
+            db.Orders.Add(newOrder);
+
+            db.CustomCartContents.RemoveRange(customer.CustomCartContents.Where(x => x.CustomerID == customerID));
+            db.CartContents.RemoveRange(customer.CartContents.Where(x => x.CustomerID == customerID));
+            db.SaveChanges();
+
             //move everything from cart to order
             //delete cart items
+            TempData["ID"] = newOrder.CustomerID;
 
             return RedirectToAction("Success");
         }

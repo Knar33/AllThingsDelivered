@@ -4,6 +4,13 @@
     ViewBag.Title = "Index";
 }
 
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-success">
+        @ViewBag.Message
+    </div>
+}
+
 <div class="container">
 @foreach (RestaurantCategory category in Model.RestaurantCategories)
 {

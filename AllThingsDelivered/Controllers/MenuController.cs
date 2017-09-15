@@ -49,7 +49,8 @@ namespace AllThingsDelivered.Store.Controllers
                 db.CartContents.Add(new CartContent { CustomerID = customerID, RestaurantID = model.RestaurantID, ItemName = model.ItemName, ItemDescription = model.ItemDescription, Quantity = model.Quantity, Customize = model.Customize, Price = model.Price });
                 db.SaveChanges();
             }
-            //TODO: Add error message if cart contents are bad
+            ViewBag.message = "You have successfully added a custom item to your cart!";
+
             return View(db.Restaurants.Find(model.RestaurantID));
         }
     }

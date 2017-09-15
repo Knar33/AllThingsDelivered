@@ -22,6 +22,17 @@ namespace AllThingsDelivered.Controllers
         // GET: CustomItem
         public ActionResult Index()
         {
+            int customerID;
+            if (User.Identity.IsAuthenticated)
+            {
+                customerID = db.AspNetUsers.Single(x => x.UserName == User.Identity.Name).Customers.First().CustomerID;
+            }
+            else
+            {
+                TempData["SignIn"] = "You must be signed in to do that";
+                return RedirectToAction("SignIn", "Account");
+            }
+
             return View();
         }
 
