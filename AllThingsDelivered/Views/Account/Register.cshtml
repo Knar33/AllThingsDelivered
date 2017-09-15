@@ -1,11 +1,20 @@
 ﻿@model AllThingsDelivered.Models.RegisterModel
 @{
     ViewBag.Title = "Register";
+    var months = (new[] { "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12" }).Select(x => new SelectListItem { Text = x, Value = x });
+    var yearsInt = new int[6];
+    int j = DateTime.Now.Year;
+    for (int i = 0; i < 6; i++)
+    {
+        yearsInt[i] = j + i;
 
+    }
+    var years = yearsInt.Select(x => new SelectListItem { Text = x.ToString(), Value = x.ToString() });
 }
-@if (ViewBag.Error != null)
+
+@if (TempData["Errors"] != null)
 {
-    foreach (string s in (IEnumerable<string>)ViewBag.Error)
+    foreach (string s in (IEnumerable<string>)TempData["Errors"])
     {
         <div>Error: @s</div>
     }
@@ -18,31 +27,26 @@
         @Html.TextBoxFor(m => m.username, new { @class = "form-control" })
         @Html.ValidationMessageFor(m => m.username)
     </div>
-
     <div class="form-group">
         @Html.LabelFor(m => m.firstname, new { @class = "control-label" })
         @Html.TextBoxFor(m => m.firstname, new { @class = "form-control" })
         @Html.ValidationMessageFor(m => m.firstname)
     </div>
-
     <div class="form-group">
         @Html.LabelFor(m => m.lastname, new { @class = "control-label" })
         @Html.TextBoxFor(m => m.lastname, new { @class = "form-control" })
         @Html.ValidationMessageFor(m => m.lastname)
     </div>
-
     <div class="form-group">
         @Html.LabelFor(m => m.phone, new { @class = "control-label" })
         @Html.TextBoxFor(m => m.phone, new { @class = "form-control" })
         @Html.ValidationMessageFor(m => m.phone)
     </div>
-
     <div class="form-group">
         @Html.LabelFor(m => m.password1, new { @class = "control-label" })
         @Html.PasswordFor(m => m.password1, new { @class = "form-control" })
         @Html.ValidationMessageFor(m => m.password1)
     </div>
-    
     <div class="form-group">
         @Html.LabelFor(m => m.password2, new { @class = "control-label" })
         @Html.PasswordFor(m => m.password2, new { @class = "form-control" })
@@ -61,30 +65,48 @@
         @Html.TextBoxFor(m => m.line2, new { @class = "form-control" })
         @Html.ValidationMessageFor(m => m.line2)
     </div>
-
     <div class="form-group">
         @Html.LabelFor(m => m.city, new { @class = "control-label" })
         @Html.TextBoxFor(m => m.city, new { @class = "form-control" })
         @Html.ValidationMessageFor(m => m.city)
     </div>
-
-
     <div class="form-group">
         @Html.LabelFor(m => m.state, new { @class = "control-label" })<br />
         @Html.DropDownListFor(m => m.state, Model.stateList)
         @Html.ValidationMessageFor(m => m.state)
     </div>
-
     <div class="form-group">
         @Html.LabelFor(m => m.postalcode, new { @class = "control-label" })
         @Html.TextBoxFor(m => m.postalcode, new { @class = "form-control" })
         @Html.ValidationMessageFor(m => m.postalcode)
     </div>
-
     <div class="form-group">
         @Html.LabelFor(m => m.country, new { @class = "control-label" })<br />
         @Html.DropDownListFor(m => m.country, Model.countryList)
         @Html.ValidationMessageFor(m => m.country)
+    </div>
+
+    <h3>Payment</h3>
+    <div class="form-group">
+        @Html.LabelFor(m => m.CreditCardNumber, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.CreditCardNumber, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.CreditCardNumber)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.CreditCardVerificationValue, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.CreditCardVerificationValue, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.CreditCardVerificationValue)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.CreditCardHolderName, new { @class = "control-label" })
+        @Html.TextBoxFor(m => m.CreditCardHolderName, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.CreditCardHolderName)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.CreditCardExpirationMonth, new { @class = "control-label" })
+        @Html.DropDownListFor(m => m.CreditCardExpirationMonth, months, new { @class = "form-control" }) /
+        @Html.DropDownListFor(m => m.CreditCardExpirationYear, years, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.CreditCardExpirationMonth)
     </div>
 
     <input type="submit" value="Create Account" />

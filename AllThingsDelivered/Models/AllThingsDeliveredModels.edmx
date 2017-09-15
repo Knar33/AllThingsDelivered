@@ -90,6 +90,7 @@
           <Property Name="LastName" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="PhoneNumber" Type="nvarchar" MaxLength="15" Nullable="false" />
           <Property Name="AspNetUserID" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="BrainTreeID" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="CustomOrderContents">
           <Key>
@@ -666,6 +667,7 @@
           <Property Name="LastName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="PhoneNumber" Type="String" Nullable="false" MaxLength="15" FixedLength="false" Unicode="true" />
           <Property Name="AspNetUserID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="BrainTreeID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="AspNetUser" Relationship="AllThingsDeliveredDBModel.FK_Customers_AspNetUsers" FromRole="Customer" ToRole="AspNetUser" />
           <NavigationProperty Name="CartContents" Relationship="AllThingsDeliveredDBModel.FK_CartContents_Customers" FromRole="Customer" ToRole="CartContent" />
           <NavigationProperty Name="CustomCartContents" Relationship="AllThingsDeliveredDBModel.FK_CustomCartContents_Customers" FromRole="Customer" ToRole="CustomCartContent" />
@@ -1089,6 +1091,7 @@
           <EntitySetMapping Name="Customers">
             <EntityTypeMapping TypeName="AllThingsDeliveredDBModel.Customer">
               <MappingFragment StoreEntitySet="Customers">
+                <ScalarProperty Name="BrainTreeID" ColumnName="BrainTreeID" />
                 <ScalarProperty Name="AspNetUserID" ColumnName="AspNetUserID" />
                 <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
                 <ScalarProperty Name="LastName" ColumnName="LastName" />

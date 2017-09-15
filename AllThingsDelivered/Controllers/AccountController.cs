@@ -1,9 +1,11 @@
 ﻿using AllThingsDelivered.Models;
+using Braintree;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -52,23 +54,79 @@ namespace CodingTemple.CodingCookware.Web.Controllers
         [ValidateAntiForgeryToken]
         public async System.Threading.Tasks.Task<ActionResult> Register(RegisterModel model)
         {
+            //TODO: Better way to do this state/country list?
+            List<SelectListItem> StateList = new List<SelectListItem>();
+            StateList.Add(new SelectListItem { Text = "Select A State", Value = "" });
+            foreach (State state in db.States)
+            {
+                StateList.Add(new SelectListItem { Text = state.StateName, Value = state.StateName });
+            }
+
+            List<SelectListItem> CountryList = new List<SelectListItem>();
+            CountryList.Add(new SelectListItem { Text = "Select A Country", Value = "" });
+            foreach (Country country in db.Countries)
+            {
+                CountryList.Add(new SelectListItem { Text = country.CountryName, Value = country.CountryName });
+            }
+
+            model.stateList = StateList;
+            model.countryList = CountryList;
+
             if (ModelState.IsValid)
             {
-                var manager = HttpContext.GetOwinContext().GetUserManager<UserManager<IdentityUser>>();
-                IdentityUser user = new IdentityUser() { UserName = model.username, Email = model.username };
-                IdentityResult result = await manager.CreateAsync(user, model.password1);
+                Result<Braintree.Customer> braintreeResult;
 
-                if (!result.Succeeded)
+                string merchantId = ConfigurationManager.AppSettings["Braintree.MerchantID"];
+                var environment = Braintree.Environment.SANDBOX;
+                string publicKey = ConfigurationManager.AppSettings["Braintree.PublicKey"];
+                string privateKey = ConfigurationManager.AppSettings["Braintree.PrivateKey"];
+                Braintree.BraintreeGateway braintreeGateway = new Braintree.BraintreeGateway(environment, merchantId, publicKey, privateKey);
+                
+                var request = new CustomerRequest
                 {
-                    ViewBag.Error = result.Errors;
+                    FirstName = model.firstname,
+                    LastName = model.lastname,
+                    Email = model.username,
+                    Phone = model.phone
+                };
+                braintreeResult = braintreeGateway.Customer.Create(request);
+                bool success = braintreeResult.IsSuccess();
+                string braintreeId = braintreeResult.Target.Id;
+                if (!success)
+                {
+                    TempData["Errors"] = braintreeResult.Errors;
                     return View(model);
                 }
 
-                //TODO: is there a better way?
-                Address address = new Address { Line1 = model.line1, Line2 = model.line2, City = model.city, State = model.state, ZipCode = model.postalcode, Country = model.country, Deleted = false, AddressType = "Customer" };
+                var manager = HttpContext.GetOwinContext().GetUserManager<UserManager<IdentityUser>>();
+                IdentityUser user = new IdentityUser() { UserName = model.username, Email = model.username };
+                IdentityResult userResult = await manager.CreateAsync(user, model.password1);
+
+                if (!userResult.Succeeded)
+                {
+                    TempData["Errors"] = userResult.Errors;
+                    return View(model);
+                }
+
+                AllThingsDelivered.Models.Address address = new AllThingsDelivered.Models.Address {
+                    Line1 = model.line1,
+                    Line2 = model.line2,
+                    City = model.city,
+                    State = model.state,
+                    ZipCode = model.postalcode,
+                    Country = model.country,
+                    Deleted = false,
+                    AddressType = "Customer"
+                };
                 db.Addresses.Add(address);
 
-                Customer thisCustomer = new Customer { AspNetUserID = user.Id, FirstName = model.firstname, LastName = model.lastname, PhoneNumber = model.phone };
+                AllThingsDelivered.Models.Customer thisCustomer = new AllThingsDelivered.Models.Customer {
+                    AspNetUserID = user.Id,
+                    FirstName = model.firstname,
+                    LastName = model.lastname,
+                    PhoneNumber = model.phone,
+                    BrainTreeID = braintreeResult.Target.Id
+                };
                 db.Customers.Add(thisCustomer);
                 db.SaveChanges();
 

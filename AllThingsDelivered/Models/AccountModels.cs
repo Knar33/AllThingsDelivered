@@ -71,6 +71,24 @@ namespace AllThingsDelivered.Models
         [MaxLength(100)]
         [Display(Name = "Country")]
         public string country { get; set; }
+
+        [Required]
+        [Display(Name = "Credit Card Number")]
+        public string CreditCardNumber { get; set; }
+
+        [Required]
+        [Display(Name = "CVV")]
+        public string CreditCardVerificationValue { get; set; }
+
+        [Required]
+        [Display(Name = "Expiration")]
+        public int CreditCardExpirationMonth { get; set; }
+
+        [Required]
+        public int CreditCardExpirationYear { get; set; }
+
+        [Required]
+        public string CreditCardHolderName { get; set; }
     }
 
     public class ForgotPassword

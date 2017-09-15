@@ -190,6 +190,7 @@
     <Compile Include="Controllers\CustomItemController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MenuController.cs" />
+    <Compile Include="Controllers\PaymentController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Controllers\RestaurantsController.cs" />
     <Compile Include="Controllers\ScrapeController.cs" />
@@ -255,6 +256,7 @@
     <Compile Include="Models\OrderContent.cs">
       <DependentUpon>AllThingsDeliveredModels.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\paymentModels.cs" />
     <Compile Include="Models\ProfileModels.cs" />
     <Compile Include="Models\Restaurant.cs">
       <DependentUpon>AllThingsDeliveredModels.tt</DependentUpon>
@@ -342,6 +344,7 @@
     <Content Include="Views\Profile\Addresses.cshtml" />
     <Content Include="Views\Checkout\Index.cshtml" />
     <Content Include="Views\Checkout\Success.cshtml" />
+    <Content Include="Views\Payment\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
