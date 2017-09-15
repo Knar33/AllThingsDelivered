@@ -42,12 +42,19 @@
           </Key>
           <Property Name="CartContentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CustomerID" Type="int" Nullable="false" />
-          <Property Name="RestaurantID" Type="int" Nullable="false" />
           <Property Name="ItemName" Type="nvarchar" MaxLength="1000" Nullable="false" />
           <Property Name="ItemDescription" Type="nvarchar" MaxLength="2000" />
           <Property Name="Quantity" Type="int" Nullable="false" />
           <Property Name="Price" Type="decimal" Precision="18" Scale="2" />
           <Property Name="Customize" Type="nvarchar" MaxLength="1000" />
+          <Property Name="RestaurantName" Type="nvarchar" MaxLength="1000" Nullable="false" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="50" />
+          <Property Name="Line1" Type="nvarchar" MaxLength="100" />
+          <Property Name="Line2" Type="nvarchar" MaxLength="100" />
+          <Property Name="City" Type="nvarchar" MaxLength="100" />
+          <Property Name="State" Type="nvarchar" MaxLength="100" />
+          <Property Name="ZipCode" Type="nvarchar" MaxLength="25" />
+          <Property Name="Country" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="Countries">
           <Key>
@@ -129,12 +136,19 @@
           </Key>
           <Property Name="OrderContentID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="OrderID" Type="int" Nullable="false" />
-          <Property Name="RestaurantID" Type="int" Nullable="false" />
           <Property Name="ItemName" Type="nvarchar" MaxLength="1000" Nullable="false" />
           <Property Name="ItemDescription" Type="nvarchar" MaxLength="2000" />
           <Property Name="Quantity" Type="int" Nullable="false" />
-          <Property Name="Price" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="Price" Type="decimal" Precision="18" Scale="2" />
           <Property Name="Customize" Type="nvarchar" MaxLength="1000" />
+          <Property Name="RestaurantName" Type="nvarchar" MaxLength="1000" Nullable="false" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="50" />
+          <Property Name="Line1" Type="nvarchar" MaxLength="100" />
+          <Property Name="Line2" Type="nvarchar" MaxLength="100" />
+          <Property Name="City" Type="nvarchar" MaxLength="100" />
+          <Property Name="State" Type="nvarchar" MaxLength="100" />
+          <Property Name="ZipCode" Type="nvarchar" MaxLength="25" />
+          <Property Name="Country" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="Orders">
           <Key>
@@ -600,12 +614,19 @@
           </Key>
           <Property Name="CartContentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CustomerID" Type="Int32" Nullable="false" />
-          <Property Name="RestaurantID" Type="Int32" Nullable="false" />
           <Property Name="ItemName" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="ItemDescription" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
           <Property Name="Quantity" Type="Int32" Nullable="false" />
           <Property Name="Price" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="Customize" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="RestaurantName" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Line1" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Line2" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="State" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ZipCode" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="Country" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Customer" Relationship="AllThingsDeliveredDBModel.FK_CartContents_Customers" FromRole="CartContent" ToRole="Customer" />
         </EntityType>
         <EntityType Name="Country">
@@ -701,12 +722,19 @@
           </Key>
           <Property Name="OrderContentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="OrderID" Type="Int32" Nullable="false" />
-          <Property Name="RestaurantID" Type="Int32" Nullable="false" />
           <Property Name="ItemName" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="ItemDescription" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
           <Property Name="Quantity" Type="Int32" Nullable="false" />
-          <Property Name="Price" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="Price" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="Customize" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="RestaurantName" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Line1" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Line2" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="State" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ZipCode" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="Country" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Order" Relationship="AllThingsDeliveredDBModel.FK_OrderContents_Orders" FromRole="OrderContent" ToRole="Order" />
         </EntityType>
         <EntityType Name="Order">
@@ -1013,12 +1041,19 @@
           <EntitySetMapping Name="CartContents">
             <EntityTypeMapping TypeName="AllThingsDeliveredDBModel.CartContent">
               <MappingFragment StoreEntitySet="CartContents">
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="ZipCode" ColumnName="ZipCode" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Line2" ColumnName="Line2" />
+                <ScalarProperty Name="Line1" ColumnName="Line1" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="RestaurantName" ColumnName="RestaurantName" />
                 <ScalarProperty Name="Customize" ColumnName="Customize" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="Quantity" ColumnName="Quantity" />
                 <ScalarProperty Name="ItemDescription" ColumnName="ItemDescription" />
                 <ScalarProperty Name="ItemName" ColumnName="ItemName" />
-                <ScalarProperty Name="RestaurantID" ColumnName="RestaurantID" />
                 <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
                 <ScalarProperty Name="CartContentID" ColumnName="CartContentID" />
               </MappingFragment>
@@ -1108,12 +1143,19 @@
           <EntitySetMapping Name="OrderContents">
             <EntityTypeMapping TypeName="AllThingsDeliveredDBModel.OrderContent">
               <MappingFragment StoreEntitySet="OrderContents">
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="ZipCode" ColumnName="ZipCode" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Line2" ColumnName="Line2" />
+                <ScalarProperty Name="Line1" ColumnName="Line1" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="RestaurantName" ColumnName="RestaurantName" />
                 <ScalarProperty Name="Customize" ColumnName="Customize" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="Quantity" ColumnName="Quantity" />
                 <ScalarProperty Name="ItemDescription" ColumnName="ItemDescription" />
                 <ScalarProperty Name="ItemName" ColumnName="ItemName" />
-                <ScalarProperty Name="RestaurantID" ColumnName="RestaurantID" />
                 <ScalarProperty Name="OrderID" ColumnName="OrderID" />
                 <ScalarProperty Name="OrderContentID" ColumnName="OrderContentID" />
               </MappingFragment>

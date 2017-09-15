@@ -46,7 +46,24 @@ namespace AllThingsDelivered.Store.Controllers
                     return RedirectToAction("SignIn", "Account");
                 }
 
-                db.CartContents.Add(new CartContent { CustomerID = customerID, RestaurantID = model.RestaurantID, ItemName = model.ItemName, ItemDescription = model.ItemDescription, Quantity = model.Quantity, Customize = model.Customize, Price = model.Price });
+                Restaurant restaurant = db.Restaurants.Single(x => x.RestaurantID == model.RestaurantID);
+
+                db.CartContents.Add(new CartContent {
+                    CustomerID = customerID,
+                    ItemName = model.ItemName,
+                    ItemDescription = model.ItemDescription,
+                    Quantity = model.Quantity,
+                    Customize = model.Customize,
+                    Price = model.Price,
+                    RestaurantName  = restaurant.RestaurantName,
+                    Phone = restaurant.Phone,
+                    Line1 = restaurant.Address.Line1,
+                    Line2 = restaurant.Address.Line2,
+                    City = restaurant.Address.City,
+                    State = restaurant.Address.State,
+                    ZipCode = restaurant.Address.ZipCode,
+                    Country = restaurant.Address.Country
+                });
                 db.SaveChanges();
             }
             ViewBag.message = "You have successfully added a custom item to your cart!";

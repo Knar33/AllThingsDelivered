@@ -95,17 +95,25 @@ namespace AllThingsDelivered.Controllers
             db.SaveChanges();
 
             Customer customer = db.Customers.Single(x => x.CustomerID == customerID);
+
             foreach (CartContent content in customer.CartContents)
             {
                 newOrder.OrderContents.Add(new OrderContent
                 {
                     OrderID = newOrder.OrderID,
-                    RestaurantID = content.RestaurantID,
                     ItemName = content.ItemName,
                     ItemDescription = content.ItemDescription,
                     Quantity = content.Quantity,
                     Price = content.Price,
-                    Customize = content.Customize
+                    Customize = content.Customize,
+                    RestaurantName = content.RestaurantName,
+                    Phone = content.Phone,
+                    Line1 = content.Line1,
+                    Line2 = content.Line2,
+                    City = content.City,
+                    State = content.State,
+                    ZipCode = content.ZipCode,
+                    Country = content.Country
                 });
             }
 

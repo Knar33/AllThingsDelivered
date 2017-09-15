@@ -16,12 +16,19 @@ namespace AllThingsDelivered.Models
     {
         public int OrderContentID { get; set; }
         public int OrderID { get; set; }
-        public int RestaurantID { get; set; }
         public string ItemName { get; set; }
         public string ItemDescription { get; set; }
         public int Quantity { get; set; }
         public Nullable<decimal> Price { get; set; }
         public string Customize { get; set; }
+        public string RestaurantName { get; set; }
+        public string Phone { get; set; }
+        public string Line1 { get; set; }
+        public string Line2 { get; set; }
+        public string City { get; set; }
+        public string State { get; set; }
+        public string ZipCode { get; set; }
+        public string Country { get; set; }
     
         public virtual Order Order { get; set; }
     }
