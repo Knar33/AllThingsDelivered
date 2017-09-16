@@ -3,6 +3,16 @@
 @{
     ViewBag.Title = "Addresses";
 }
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
 <a href="/profile/index">Edit Profile</a> | <a href="/profile/addresses">Addresses</a> | <a href="/profile/payment">Payment Info</a> | <a href="/profile/changepassword">Change Your Password</a>
 <br /><br />
 <h3>Default Payment Method:</h3><br />
@@ -28,23 +38,90 @@
 }
 @foreach (Braintree.PaymentMethod method in Model.methods)
 {
-    if (Model.primaryMethod.GetType() == typeof(Braintree.CreditCard))
+    if (method.GetType() == typeof(Braintree.CreditCard))
     {
-        var castedPrimary = (Braintree.CreditCard)Model.primaryMethod;
-        if (castedPrimary.IsDefault == null || castedPrimary.IsDefault != true)
+        var castedMethod = (Braintree.CreditCard)method;
+        if (castedMethod.IsDefault == null || castedMethod.IsDefault != true)
         {
             <h4>Credit Card</h4>
-            <text>Card Type: </text>@castedPrimary.CardType<br />
-            <text>Card: **** **** **** </text>@castedPrimary.LastFour<br />
+            <text>Card Type: </text>@castedMethod.CardType<br />
+            <text>Card: **** **** **** </text>@castedMethod.LastFour<br />
+            <form method="post" action="/profile/primarypayment">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="token" value="@castedMethod.Token" />
+                <input type="submit" value="Make this my default payment method" />
+            </form>
+            <form method="post" action="/profile/deletepayment">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="token" value="@castedMethod.Token" />
+                <input type="submit" value="Delete this payment" />
+            </form>
         }
     }
-    if (Model.primaryMethod.GetType() == typeof(Braintree.PayPalAccount))
+    if (method.GetType() == typeof(Braintree.PayPalAccount))
     {
-        var castedPrimary = (Braintree.PayPalAccount)Model.primaryMethod;
-        if (castedPrimary.IsDefault == null || castedPrimary.IsDefault != true)
+        var castedMethod = (Braintree.PayPalAccount)method;
+        if (castedMethod.IsDefault == null || castedMethod.IsDefault != true)
         {
             <h4>Paypal</h4>
-            <text>Email Address: </text>@castedPrimary.Email<br />
+            <text>Email Address: </text>@castedMethod.Email<br />
+            <form method="post" action="/profile/primarypayment">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="token" value="@castedMethod.Token" />
+                <input type="submit" value="Make this my default payment method" />
+            </form>
+            <form method="post" action="/profile/deletepayment">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="token" value="@castedMethod.Token" />
+                <input type="submit" value="Delete this payment" />
+            </form>
         }
     }
 }
+<br />
+<h3>Add a new payment method</h3>
+@using (Html.BeginForm("AddPayment", "Profile", FormMethod.Post, new { id = "payment-form" }))
+{
+    @Html.AntiForgeryToken();
+    <section>
+        <div class="bt-drop-in-wrapper">
+            <div id="bt-dropin"></div>
+        </div>
+    </section>
+    <input id="nonce" name="payment_method_nonce" type="hidden" />
+
+    <input type="submit" value="Add Payment Method" />
+}
+<script src="https://js.braintreegateway.com/web/dropin/1.7.0/js/dropin.min.js"></script>
+<script>
+    var client_token = "@ViewBag.ClientToken";
+    var form = document.querySelector('#payment-form');
+
+    braintree.dropin.create({
+        authorization: client_token,
+        container: '#bt-dropin',
+        paypal: {
+            flow: 'vault',
+            currency: 'USD'
+        }
+    }, function (createErr, instance) {
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            instance.requestPaymentMethod(function (err, payload) {
+                if (err) {
+                    console.log('Error', err);
+                    return;
+                }
+
+                // Add the nonce to the form and submit
+                document.querySelector('#nonce').value = payload.nonce;
+                form.submit();
+            });
+        });
+    });
+
+    var checkout = new Demo({
+        formID: "payment-form"
+    });
+</script>

@@ -14,10 +14,7 @@
 
 @if (TempData["Errors"] != null)
 {
-    foreach (string s in (IEnumerable<string>)TempData["Errors"])
-    {
-        <div>Error: @s</div>
-    }
+   <div class="alert alert-danger">@TempData["Errors"]</div>
 }
 @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { id = "payment-form" }))
 {
@@ -107,10 +104,6 @@
         authorization: client_token,
         container: '#bt-dropin',
         paypal: {
-            flow: 'vault',
-            currency: 'USD'
-        },
-        paypalCredit: {
             flow: 'vault',
             currency: 'USD'
         }

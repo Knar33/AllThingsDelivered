@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Braintree;
+using System.Configuration;
 
 namespace AllThingsDelivered.Controllers
 {
@@ -22,21 +24,7 @@ namespace AllThingsDelivered.Controllers
         // GET: Checkout
         public ActionResult Index()
         {
-            int customerID;
-            if (User.Identity.IsAuthenticated)
-            {
-                customerID = db.AspNetUsers.Single(x => x.UserName == User.Identity.Name).Customers.First().CustomerID;
-            }
-            else
-            {
-                TempData["SignIn"] = "You must be signed in to do that";
-                return RedirectToAction("SignIn", "Account");
-            }
-            Checkout model = new Checkout
-            {
-                customer = db.Customers.Single(x => x.CustomerID == customerID)
-            };
-            return View(model);
+            return RedirectToAction("Index", "Cart");
         }
 
         // GET: Checkout
@@ -54,8 +42,26 @@ namespace AllThingsDelivered.Controllers
                 TempData["SignIn"] = "You must be signed in to do that";
                 return RedirectToAction("SignIn", "Account");
             }
+            
+            string merchantId = ConfigurationManager.AppSettings["Braintree.MerchantID"];
+            var environment = Braintree.Environment.SANDBOX;
+            string publicKey = ConfigurationManager.AppSettings["Braintree.PublicKey"];
+            string privateKey = ConfigurationManager.AppSettings["Braintree.PrivateKey"];
+            BraintreeGateway braintreeGateway = new BraintreeGateway(environment, merchantId, publicKey, privateKey);
+
+            var clientToken = braintreeGateway.ClientToken.generate();
+            ViewBag.ClientToken = clientToken;
+
+            Braintree.Customer customer = braintreeGateway.Customer.Find(db.AspNetUsers.Single(x => x.UserName == User.Identity.Name).Customers.First().BrainTreeID);
+            PaymentMethods methods = new PaymentMethods
+            {
+                primaryMethod = customer.DefaultPaymentMethod,
+                methods = customer.PaymentMethods
+            };
+
             Checkout outModel = new Checkout
             {
+                payment = methods,
                 orderprice = model.orderprice,
                 customer = db.Customers.Single(x => x.CustomerID == customerID)
             };
@@ -85,16 +91,14 @@ namespace AllThingsDelivered.Controllers
                 AddressID = Convert.ToInt32(model.address),
                 CustomerID = customerID,
                 TimePlaced = timePlaced,
-                OrderMethod = "Internet",
                 Active = true,
-                Updating = false,
-                Updated = false,
                 OrderPrice = model.orderprice,
-                Customize = model.customize
+                Customize = model.customize,
+                PaymentToken = model.paymentMethod
             };
             db.SaveChanges();
 
-            Customer customer = db.Customers.Single(x => x.CustomerID == customerID);
+            Models.Customer customer = db.Customers.Single(x => x.CustomerID == customerID);
 
             foreach (CartContent content in customer.CartContents)
             {

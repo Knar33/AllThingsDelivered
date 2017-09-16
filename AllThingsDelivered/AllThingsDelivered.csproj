@@ -246,9 +246,6 @@
     </Compile>
     <Compile Include="Models\Menu.cs" />
     <Compile Include="Models\MenuModels.cs" />
-    <Compile Include="Models\Operator.cs">
-      <DependentUpon>AllThingsDeliveredModels.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Order.cs">
       <DependentUpon>AllThingsDeliveredModels.tt</DependentUpon>
     </Compile>

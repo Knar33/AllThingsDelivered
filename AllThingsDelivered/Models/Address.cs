@@ -19,7 +19,6 @@ namespace AllThingsDelivered.Models
         {
             this.CustomerAddresses = new HashSet<CustomerAddress>();
             this.Drivers = new HashSet<Driver>();
-            this.Operators = new HashSet<Operator>();
             this.Orders = new HashSet<Order>();
             this.Restaurants = new HashSet<Restaurant>();
         }
@@ -38,8 +37,6 @@ namespace AllThingsDelivered.Models
         public virtual ICollection<CustomerAddress> CustomerAddresses { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Driver> Drivers { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Operator> Operators { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Order> Orders { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -67,7 +67,6 @@
     <Build Include="dbo\Tables\Addresses_1.sql" />
     <Build Include="dbo\Tables\CustomerAddresses_1.sql" />
     <Build Include="dbo\Tables\Drivers.sql" />
-    <Build Include="dbo\Tables\Operators.sql" />
     <Build Include="dbo\Tables\Orders.sql" />
     <Build Include="dbo\Tables\OrderContents.sql" />
     <Build Include="dbo\Tables\CustomOrderContents.sql" />

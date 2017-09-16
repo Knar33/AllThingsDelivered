@@ -25,24 +25,20 @@ namespace AllThingsDelivered.Models
         public int AddressID { get; set; }
         public Nullable<int> DriverID { get; set; }
         public int CustomerID { get; set; }
-        public Nullable<int> OperatorID { get; set; }
         public System.DateTime TimePlaced { get; set; }
-        public string OrderMethod { get; set; }
         public bool Active { get; set; }
-        public bool Updating { get; set; }
-        public bool Updated { get; set; }
         public Nullable<decimal> OrderPrice { get; set; }
         public Nullable<decimal> DeliveryFee { get; set; }
         public Nullable<decimal> Customertip { get; set; }
         public Nullable<int> DriverRating { get; set; }
         public string Customize { get; set; }
+        public string PaymentToken { get; set; }
     
         public virtual Address Address { get; set; }
         public virtual Customer Customer { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CustomOrderContent> CustomOrderContents { get; set; }
         public virtual Driver Driver { get; set; }
-        public virtual Operator Operator { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OrderContent> OrderContents { get; set; }
     }

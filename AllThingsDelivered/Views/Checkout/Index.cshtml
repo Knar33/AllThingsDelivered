@@ -53,6 +53,45 @@
         }
     }
 
+    <h3>Select a payment method:</h3><br />
+
+    var primaryID = Model.payment.primaryMethod.Token;
+    if (Model.payment.primaryMethod.GetType() == typeof(Braintree.CreditCard))
+    {
+        <input type="radio" name="paymentMethod" value="@primaryID" checked /><h4>Credit Card</h4>
+        var castedPrimary = (Braintree.CreditCard)Model.payment.primaryMethod;
+        <text>Card Type: </text>@castedPrimary.CardType<br />
+        <text>Card: **** **** **** </text>@castedPrimary.LastFour<br />
+    }
+    if (Model.payment.primaryMethod.GetType() == typeof(Braintree.PayPalAccount))
+    {
+        <input type="radio" name="paymentMethod" value="@primaryID" checked /><h4>Paypal</h4>
+        var castedPrimary = (Braintree.PayPalAccount)Model.payment.primaryMethod;
+        <text>Email Address: </text>@castedPrimary.Email<br />
+    }
+
+    foreach (Braintree.PaymentMethod method in Model.payment.methods)
+    {
+        if (method.GetType() == typeof(Braintree.CreditCard))
+        {
+            var castedMethod = (Braintree.CreditCard)method;
+            if (castedMethod.IsDefault == null || castedMethod.IsDefault != true)
+            {
+                <input type="radio" name="paymentMethod" value="@method.Token" /><h4>Credit Card</h4>
+                <text>Card Type: </text>@castedMethod.CardType<br />
+                <text>Card: **** **** **** </text>@castedMethod.LastFour<br />
+            }
+        }
+        if (method.GetType() == typeof(Braintree.PayPalAccount))
+        {
+            var castedMethod = (Braintree.PayPalAccount)method;
+            if (castedMethod.IsDefault == null || castedMethod.IsDefault != true)
+            {
+                <input type="radio" name="paymentMethod" value="@method.Token" /><h4>Paypal</h4>
+                <text>Email Address: </text>@castedMethod.Email<br />
+            }
+        }
+    }
 
     <input type="submit" value="Check Out" />
 }

@@ -8,6 +8,10 @@ namespace AllThingsDelivered.Models
 {
     public class Checkout
     {
+        public PaymentMethods payment { get; set; }
+
+        public string paymentMethod { get; set; }
+
         public Customer customer { get; set; }
 
         public decimal orderprice { get; set; }

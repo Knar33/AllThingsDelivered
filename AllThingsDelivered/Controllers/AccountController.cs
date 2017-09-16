@@ -128,7 +128,7 @@ namespace CodingTemple.CodingCookware.Web.Controllers
                 {
                     var clientToken = braintreeGateway.ClientToken.generate();
                     ViewBag.ClientToken = clientToken;
-                    TempData["Errors"] = braintreeResult.Errors;
+                    TempData["Errors"] = "There was an error adding your payment method";
                     return View(model);
                 }
                 bool paymentSuccess = result.IsSuccess();
@@ -136,7 +136,7 @@ namespace CodingTemple.CodingCookware.Web.Controllers
                 {
                     var clientToken = braintreeGateway.ClientToken.generate();
                     ViewBag.ClientToken = clientToken;
-                    TempData["Errors"] = braintreeResult.Errors;
+                    TempData["Errors"] = "There was an error adding your payment method";
                     return View(model);
                 }
 

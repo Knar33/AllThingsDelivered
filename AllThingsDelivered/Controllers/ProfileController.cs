@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -215,6 +216,9 @@ namespace AllThingsDelivered.Controllers
             string privateKey = ConfigurationManager.AppSettings["Braintree.PrivateKey"];
             BraintreeGateway braintreeGateway = new BraintreeGateway(environment, merchantId, publicKey, privateKey);
 
+            var clientToken = braintreeGateway.ClientToken.generate();
+            ViewBag.ClientToken = clientToken;
+
             Braintree.Customer customer = braintreeGateway.Customer.Find(db.AspNetUsers.Single(x => x.UserName == User.Identity.Name).Customers.First().BrainTreeID);
             PaymentMethods model = new PaymentMethods
             {
@@ -222,6 +226,113 @@ namespace AllThingsDelivered.Controllers
                 methods = customer.PaymentMethods
             };
             return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AddPayment()
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                TempData["SignIn"] = "You must be signed in to do that";
+                return RedirectToAction("SignIn", "Account");
+            }
+
+            string merchantId = ConfigurationManager.AppSettings["Braintree.MerchantID"];
+            var environment = Braintree.Environment.SANDBOX;
+            string publicKey = ConfigurationManager.AppSettings["Braintree.PublicKey"];
+            string privateKey = ConfigurationManager.AppSettings["Braintree.PrivateKey"];
+            BraintreeGateway braintreeGateway = new BraintreeGateway(environment, merchantId, publicKey, privateKey);
+
+            Braintree.Customer customer = braintreeGateway.Customer.Find(db.AspNetUsers.Single(x => x.UserName == User.Identity.Name).Customers.First().BrainTreeID);
+
+            var paymentMethodRequest = new PaymentMethodRequest
+            {
+                CustomerId = customer.Id,
+                Options = new PaymentMethodOptionsRequest
+                {
+                    MakeDefault = false,
+                    VerifyCard = true
+                },
+                PaymentMethodNonce = Request["payment_method_nonce"]
+            };
+            Result<PaymentMethod> result = braintreeGateway.PaymentMethod.Create(paymentMethodRequest);
+            if (result.CreditCardVerification != null)
+            {
+                TempData["Error"] = "There was an error adding your payment method";
+                return RedirectToAction("Payment");
+            }
+            bool paymentSuccess = result.IsSuccess();
+            if (!paymentSuccess)
+            {
+                TempData["Error"] = "There was an error adding your payment method";
+                return RedirectToAction("Payment");
+            }
+
+            TempData["Success"] = "You have successfully added a payment method";
+            return RedirectToAction("Payment");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeletePayment(string token)
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                TempData["SignIn"] = "You must be signed in to do that";
+                return RedirectToAction("SignIn", "Account");
+            }
+
+            string merchantId = ConfigurationManager.AppSettings["Braintree.MerchantID"];
+            var environment = Braintree.Environment.SANDBOX;
+            string publicKey = ConfigurationManager.AppSettings["Braintree.PublicKey"];
+            string privateKey = ConfigurationManager.AppSettings["Braintree.PrivateKey"];
+            BraintreeGateway braintreeGateway = new BraintreeGateway(environment, merchantId, publicKey, privateKey);
+            
+            var result = braintreeGateway.PaymentMethod.Delete(token);
+            if (!result.IsSuccess())
+            {
+                TempData["Error"] = "There was an error deleting a payment method";
+                return RedirectToAction("Payment");
+            }
+
+            TempData["Success"] = "You have successfully deleted a payment method";
+            return RedirectToAction("Payment");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> PrimaryPayment(string token)
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                TempData["SignIn"] = "You must be signed in to do that";
+                return RedirectToAction("SignIn", "Account");
+            }
+
+            string merchantId = ConfigurationManager.AppSettings["Braintree.MerchantID"];
+            var environment = Braintree.Environment.SANDBOX;
+            string publicKey = ConfigurationManager.AppSettings["Braintree.PublicKey"];
+            string privateKey = ConfigurationManager.AppSettings["Braintree.PrivateKey"];
+            BraintreeGateway braintreeGateway = new BraintreeGateway(environment, merchantId, publicKey, privateKey);
+
+            var updateRequest = new PaymentMethodRequest
+            {
+                Options = new PaymentMethodOptionsRequest
+                {
+                    MakeDefault = true
+                }
+            };
+            Result<PaymentMethod> result = await braintreeGateway.PaymentMethod.UpdateAsync(token, updateRequest);
+
+            if (!result.IsSuccess())
+            {
+                TempData["Error"] = "There was an error changing your default payment method";
+                return RedirectToAction("Payment");
+            }
+
+            TempData["Success"] = "You have successfully changed your default payment method";
+            return RedirectToAction("Payment");
         }
     }
 }

@@ -35,7 +35,6 @@ namespace AllThingsDelivered.Models
         public virtual DbSet<CustomOrderContent> CustomOrderContents { get; set; }
         public virtual DbSet<Driver> Drivers { get; set; }
         public virtual DbSet<IgnoredRestaurant> IgnoredRestaurants { get; set; }
-        public virtual DbSet<Operator> Operators { get; set; }
         public virtual DbSet<OrderContent> OrderContents { get; set; }
         public virtual DbSet<Order> Orders { get; set; }
         public virtual DbSet<RestaurantCategory> RestaurantCategories { get; set; }
