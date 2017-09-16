@@ -1,0 +1,50 @@
+﻿@using AllThingsDelivered.Models
+@model PaymentMethods
+@{
+    ViewBag.Title = "Addresses";
+}
+<a href="/profile/index">Edit Profile</a> | <a href="/profile/addresses">Addresses</a> | <a href="/profile/payment">Payment Info</a> | <a href="/profile/changepassword">Change Your Password</a>
+<br /><br />
+<h3>Default Payment Method:</h3><br />
+@{
+    var primaryID = Model.primaryMethod.Token;
+    if (Model.primaryMethod.GetType() == typeof(Braintree.CreditCard))
+    {
+        <h4>Credit Card</h4>
+        var castedPrimary = (Braintree.CreditCard)Model.primaryMethod;
+        <text>Card Type: </text>@castedPrimary.CardType<br />
+        <text>Card: **** **** **** </text>@castedPrimary.LastFour<br />
+    }
+    if (Model.primaryMethod.GetType() == typeof(Braintree.PayPalAccount))
+    {
+        <h4>Paypal</h4>
+        var castedPrimary = (Braintree.PayPalAccount)Model.primaryMethod;
+        <text>Email Address: </text>@castedPrimary.Email<br />
+    }
+}
+@if (Model.methods.Count() > 1)
+{
+    <h3>Other payment methods:</h3>
+}
+@foreach (Braintree.PaymentMethod method in Model.methods)
+{
+    if (Model.primaryMethod.GetType() == typeof(Braintree.CreditCard))
+    {
+        var castedPrimary = (Braintree.CreditCard)Model.primaryMethod;
+        if (castedPrimary.IsDefault == null || castedPrimary.IsDefault != true)
+        {
+            <h4>Credit Card</h4>
+            <text>Card Type: </text>@castedPrimary.CardType<br />
+            <text>Card: **** **** **** </text>@castedPrimary.LastFour<br />
+        }
+    }
+    if (Model.primaryMethod.GetType() == typeof(Braintree.PayPalAccount))
+    {
+        var castedPrimary = (Braintree.PayPalAccount)Model.primaryMethod;
+        if (castedPrimary.IsDefault == null || castedPrimary.IsDefault != true)
+        {
+            <h4>Paypal</h4>
+            <text>Email Address: </text>@castedPrimary.Email<br />
+        }
+    }
+}

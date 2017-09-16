@@ -71,24 +71,6 @@ namespace AllThingsDelivered.Models
         [MaxLength(100)]
         [Display(Name = "Country")]
         public string country { get; set; }
-
-        [Required]
-        [Display(Name = "Credit Card Number")]
-        public string CreditCardNumber { get; set; }
-
-        [Required]
-        [Display(Name = "CVV")]
-        public string CreditCardVerificationValue { get; set; }
-
-        [Required]
-        [Display(Name = "Expiration")]
-        public int CreditCardExpirationMonth { get; set; }
-
-        [Required]
-        public int CreditCardExpirationYear { get; set; }
-
-        [Required]
-        public string CreditCardHolderName { get; set; }
     }
 
     public class ForgotPassword
@@ -124,6 +106,14 @@ namespace AllThingsDelivered.Models
         [Display(Name = "Email Address")]
         public string email { get; set; }
         public string token { get; set; }
-        public string password { get; set; }
+
+        [Required]
+        [MinLength(4)]
+        public string password1 { get; set; }
+
+        [Required]
+        [MinLength(4)]
+        [System.ComponentModel.DataAnnotations.Compare("password1")]
+        public string password2 { get; set; }
     }
 }

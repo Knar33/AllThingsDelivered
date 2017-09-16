@@ -66,7 +66,7 @@ namespace AllThingsDelivered.Store.Controllers
                 });
                 db.SaveChanges();
             }
-            ViewBag.message = "You have successfully added a custom item to your cart!";
+            ViewBag.message = "You have successfully added an item to your cart!";
 
             return View(db.Restaurants.Find(model.RestaurantID));
         }

@@ -46,6 +46,15 @@ namespace CodingTemple.CodingCookware.Web.Controllers
                 stateList = StateList,
                 countryList = CountryList
             };
+
+            string merchantId = ConfigurationManager.AppSettings["Braintree.MerchantID"];
+            var environment = Braintree.Environment.SANDBOX;
+            string publicKey = ConfigurationManager.AppSettings["Braintree.PublicKey"];
+            string privateKey = ConfigurationManager.AppSettings["Braintree.PrivateKey"];
+            BraintreeGateway braintreeGateway = new BraintreeGateway(environment, merchantId, publicKey, privateKey);
+
+            var clientToken = braintreeGateway.ClientToken.generate();
+            ViewBag.ClientToken = clientToken;
             return View(model);
         }
 
@@ -72,16 +81,19 @@ namespace CodingTemple.CodingCookware.Web.Controllers
             model.stateList = StateList;
             model.countryList = CountryList;
 
+            Result<Braintree.Customer> braintreeResult;
+
+            string merchantId = ConfigurationManager.AppSettings["Braintree.MerchantID"];
+            var environment = Braintree.Environment.SANDBOX;
+            string publicKey = ConfigurationManager.AppSettings["Braintree.PublicKey"];
+            string privateKey = ConfigurationManager.AppSettings["Braintree.PrivateKey"];
+            Braintree.BraintreeGateway braintreeGateway = new BraintreeGateway(environment, merchantId, publicKey, privateKey);
+
             if (ModelState.IsValid)
             {
-                Result<Braintree.Customer> braintreeResult;
-
-                string merchantId = ConfigurationManager.AppSettings["Braintree.MerchantID"];
-                var environment = Braintree.Environment.SANDBOX;
-                string publicKey = ConfigurationManager.AppSettings["Braintree.PublicKey"];
-                string privateKey = ConfigurationManager.AppSettings["Braintree.PrivateKey"];
-                Braintree.BraintreeGateway braintreeGateway = new Braintree.BraintreeGateway(environment, merchantId, publicKey, privateKey);
                 
+                
+                //Create new customer in braintree
                 var request = new CustomerRequest
                 {
                     FirstName = model.firstname,
@@ -94,6 +106,36 @@ namespace CodingTemple.CodingCookware.Web.Controllers
                 string braintreeId = braintreeResult.Target.Id;
                 if (!success)
                 {
+                    TempData["Errors"] = braintreeResult.Errors;
+                    var clientToken = braintreeGateway.ClientToken.generate();
+                    ViewBag.ClientToken = clientToken;
+                    return View(model);
+                }
+
+                //Create payment method in braintree for customer
+                var paymentMethodRequest = new PaymentMethodRequest
+                {
+                    CustomerId = braintreeId,
+                    Options = new PaymentMethodOptionsRequest
+                    {
+                        MakeDefault = true,
+                        VerifyCard = true
+                    },
+                    PaymentMethodNonce = Request["payment_method_nonce"]
+                };
+                Result<PaymentMethod> result = braintreeGateway.PaymentMethod.Create(paymentMethodRequest);
+                if (result.CreditCardVerification != null)
+                {
+                    var clientToken = braintreeGateway.ClientToken.generate();
+                    ViewBag.ClientToken = clientToken;
+                    TempData["Errors"] = braintreeResult.Errors;
+                    return View(model);
+                }
+                bool paymentSuccess = result.IsSuccess();
+                if (!paymentSuccess)
+                {
+                    var clientToken = braintreeGateway.ClientToken.generate();
+                    ViewBag.ClientToken = clientToken;
                     TempData["Errors"] = braintreeResult.Errors;
                     return View(model);
                 }
@@ -146,7 +188,7 @@ namespace CodingTemple.CodingCookware.Web.Controllers
                 SendGrid.Helpers.Mail.SendGridMessage message = new SendGrid.Helpers.Mail.SendGridMessage();
                 message.AddTo(model.username);
                 message.Subject = "Confirm your account on AllThingsDelivered.com";
-                message.SetFrom("no-reply@allthingsdelivered.com", "All Things Deivered Administration");
+                message.SetFrom("no-reply@allthingsdelivered.com", "All Things Delivered Administration");
                 string body = string.Format("<a href=\"{0}/account/ConfirmAccount?email={1}&token={2}\">Confirm your account</a>",
                     Request.Url.GetLeftPart(UriPartial.Authority),
                     model.username,
@@ -161,7 +203,9 @@ namespace CodingTemple.CodingCookware.Web.Controllers
             }
             else
             {
-                return View();
+                var clientToken = braintreeGateway.ClientToken.generate();
+                ViewBag.ClientToken = clientToken;
+                return View(model);
             }
         }
 
@@ -188,7 +232,7 @@ namespace CodingTemple.CodingCookware.Web.Controllers
                     SendGrid.Helpers.Mail.SendGridMessage message = new SendGrid.Helpers.Mail.SendGridMessage();
                     message.AddTo(model.email);
                     message.Subject = "Reset your password on AllThingsDelivered.com";
-                    message.SetFrom("no-reply@allthingsdelivered.com", "All Things Deivered Administration");
+                    message.SetFrom("no-reply@allthingsdelivered.com", "All Things Delivered Administration");
                     string body = string.Format("<a href=\"{0}/account/resetpassword?email={1}&token={2}\">Reset your password</a>",
                         Request.Url.GetLeftPart(UriPartial.Authority),
                         model.email,
@@ -269,7 +313,7 @@ namespace CodingTemple.CodingCookware.Web.Controllers
                 IdentityUser user = manager.FindByEmail(model.email);
                 if (user != null)
                 {
-                    IdentityResult result = manager.ResetPassword(user.Id, model.token, model.password);
+                    IdentityResult result = manager.ResetPassword(user.Id, model.token, model.password2);
                     if (result.Succeeded)
                     {
                         TempData["PasswordReset"] = "Your password has been reset successfully";

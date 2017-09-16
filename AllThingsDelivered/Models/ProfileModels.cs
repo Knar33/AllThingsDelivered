@@ -67,4 +67,29 @@ namespace AllThingsDelivered.Models
         [Display(Name = "Country")]
         public string country { get; set; }
     }
+
+    public class ChangePassword
+    {
+        [Required]
+        [MinLength(4)]
+        [Display(Name = "Type your old password")]
+        public string oldPassword { get; set; }
+
+        [Required]
+        [MinLength(4)]
+        [Display(Name = "New Password")]
+        public string password1 { get; set; }
+
+        [Required]
+        [MinLength(4)]
+        [System.ComponentModel.DataAnnotations.Compare("password1")]
+        [Display(Name = "Confirm New Password")]
+        public string password2 { get; set; }
+    }
+
+    public class PaymentMethods
+    {
+        public Braintree.PaymentMethod primaryMethod { get; set; }
+        public Braintree.PaymentMethod[]  methods { get; set; }
+    }
 }

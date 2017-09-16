@@ -1,9 +1,11 @@
 ﻿using AllThingsDelivered.Models;
+using Braintree;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -110,9 +112,15 @@ namespace AllThingsDelivered.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteAddress(int addressID, int customerID)
         {
+            if (!User.Identity.IsAuthenticated)
+            { 
+                TempData["SignIn"] = "You must be signed in to do that";
+                return RedirectToAction("SignIn", "Account");
+            }
+
             db.CustomerAddresses.Remove(db.CustomerAddresses.SingleOrDefault(x => (x.CustomerID == customerID && x.AddressID == addressID)));
 
-            Address address = db.Addresses.Single(x => x.AddressID == addressID);
+            Models.Address address = db.Addresses.Single(x => x.AddressID == addressID);
             address.Deleted = true;
             db.SaveChanges();
 
@@ -137,7 +145,7 @@ namespace AllThingsDelivered.Controllers
 
             if (ModelState.IsValid)
             {
-                Address address = new Address { Line1 = model.line1, Line2 = model.line2, City = model.city, State = model.state, ZipCode = model.postalcode, Country = model.country, Deleted = false, AddressType = "Customer" };
+                Models.Address address = new Models.Address { Line1 = model.line1, Line2 = model.line2, City = model.city, State = model.state, ZipCode = model.postalcode, Country = model.country, Deleted = false, AddressType = "Customer" };
                 db.Addresses.Add(address);
 
                 CustomerAddress customerAddress = new CustomerAddress { DefaultAddr = false };
@@ -162,6 +170,58 @@ namespace AllThingsDelivered.Controllers
             db.SaveChanges();
 
             return RedirectToAction("Addresses");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ChangePassword(ChangePassword model)
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                TempData["SignIn"] = "You must be signed in to do that";
+                return RedirectToAction("SignIn", "Account");
+            }
+
+            if (ModelState.IsValid)
+            {
+                var manager = HttpContext.GetOwinContext().GetUserManager<UserManager<IdentityUser>>();
+                IdentityResult result = manager.ChangePassword(User.Identity.GetUserId(), model.oldPassword, model.password2);
+                if (result.Succeeded)
+                {
+                    ViewBag.Success = "Your password has been changed successfully";
+                    return View();
+                }
+                ViewBag.Errors = result.Errors;
+            }
+            return View();
+        }
+
+        public ActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        public ActionResult Payment()
+        {
+            if (!User.Identity.IsAuthenticated)
+            { 
+                TempData["SignIn"] = "You must be signed in to do that";
+                return RedirectToAction("SignIn", "Account");
+            }
+
+            string merchantId = ConfigurationManager.AppSettings["Braintree.MerchantID"];
+            var environment = Braintree.Environment.SANDBOX;
+            string publicKey = ConfigurationManager.AppSettings["Braintree.PublicKey"];
+            string privateKey = ConfigurationManager.AppSettings["Braintree.PrivateKey"];
+            BraintreeGateway braintreeGateway = new BraintreeGateway(environment, merchantId, publicKey, privateKey);
+
+            Braintree.Customer customer = braintreeGateway.Customer.Find(db.AspNetUsers.Single(x => x.UserName == User.Identity.Name).Customers.First().BrainTreeID);
+            PaymentMethods model = new PaymentMethods
+            {
+                primaryMethod = customer.DefaultPaymentMethod,
+                methods = customer.PaymentMethods
+            };
+            return View(model);
         }
     }
 }

@@ -3,7 +3,8 @@
 @{
     ViewBag.Title = "Addresses";
 }
-<a href="/profile/index">Edit Profile</a> | <a href="/profile/addresses">Addresses</a> | <a href="/profile/payment">Payment Info</a><br /><br />
+<a href="/profile/index">Edit Profile</a> | <a href="/profile/addresses">Addresses</a> | <a href="/profile/payment">Payment Info</a> | <a href="/profile/changepassword">Change Your Password</a>
+<br /><br />
 <h3>Default Address:</h3><br />
 @foreach (CustomerAddress address in (Model.customer.CustomerAddresses.Where(x => x.DefaultAddr)))
 {
