@@ -1,0 +1,119 @@
+﻿Frontend
+	page is too wide
+	register success page
+	customitem form - change itemLocation to display name
+	fix for jquery validation not firing off
+		add address
+		edit profile
+	hide customize/quantity/add to cart until clicked on in menus
+	hide non-primary credit cards and addresses until clicked on in checkout
+	success messages on other pages 
+		remove item from cart
+	format validation errors on forms as red boxes
+	format forms so they look nice
+	content page - Index
+	Content page - About
+	order page
+	
+want to do today
+	Order status page after user places an order (don't allow users to make more than 1 order)
+		Status page shows up when user hits "order" page, if they have an order. Otherwise it will just show the normal order page
+		use ajax loop to refresh this page
+	driver page
+		if no active order is assigned to driver, display active orders
+		if an active order is assigned, display order info
+		use ajax/jquery to update this live
+	driver login
+	driver logout
+	driver timeclock
+	driver accept order
+	maybe - show cart on checkout page - hide until clicked
+	change check of "isAuthenticated" on driver/operator pages to role authorization - Roles are Operator and Driver. 
+		All drivers and operators are customers by default, and an employee can be both a driver and an operator
+	
+Tasks that can be done later
+	change all db saves and user manager stuff to be async
+	login on change password?
+	format emails to look good
+	receipt email for cart order
+	fix restaurants with missing menus
+	constantly updating user order and driver pages with ajax
+	change email sending to be async
+	add try/catch on all API situations
+	driver edit order details after items are aquired(How much the order costed)
+	user payment that automatically happens after order is delivered
+	user rate driver
+	create lat/long array for chicago to get all restaurants
+	address verification
+	clean up code
+		make sure all model/view/control situations make sense
+		comments
+	
+Completed and tested tasks
+	create script that gets menus from chicago in list and stores them to DB
+	city list
+	Restaurants in city
+	specific restaurant menu
+	ignored restaurant list (for bad menus)
+	cart table
+	add to cart
+	view cart
+	remove from cart
+	add custom item to cart
+	implement identity framework
+	user registration
+	user login
+	user logout
+	change out hard coded customerid for user ID
+	messages on login page for login/registration/cart actions
+	user view profile
+	create strongly typed models for form submissions, add decorators to models, check if models are valid
+		register
+		forgotpassword
+		signin
+		resetpassword
+		cart index
+		custom cart index
+		menu index controller (add to cart)
+	make sure all user forms max-lengths and types match the database requirements
+	make sure all have anti-forgery
+	change from html forms to begin html form in razor code
+	add validation messages for form fields
+	edit profile info (name, phone, email etc) - one single form with default values as current values
+		change username and email in aspusers when form is submitted
+	verify that values are different before updating them in the customers model
+	verify that email doesnt already exist in database before adding it
+	put default values in form from Customer model
+	require an address when registering - make this their primary address
+		state/country dropdown generated from state/country database
+	user add address
+	user remove address
+	user set address as primary - flags all other address as not primary
+	user checkout
+		choose address (primary selected, hidden window pops up if you choose to select another address)
+		enter special instructions
+	Confirm password on registration
+	tabular view for shopping cart with subtotal
+	dont show checkout button when cart is empty
+	success message when item added to cart from menu
+	move cart items over to order items
+	remove old cart items
+	remove primary from addresses table (useless)
+	add order ID on success page
+	receipt page after order is placed
+	save all address info to orderContents table instead of just the restaurantID
+		add restaurant/address info to cart contents
+		add restaurant/address info to custom cart contents
+	create user in braintree whenever they register - add braintreeID to customers table as column - do this async
+	change password
+	confirm password on change password
+	make sure user is logged in before accessing customitem page
+	check if users registered credit card is valid before letting them register	
+	make registered payment method the default
+	confirm password on forgot password
+	view current payment methods
+	if no payment methods, dont have title for that section
+	user remove payment method
+	user change primary payment method
+	choose payment method when checking out
+	remove operator and quickorder table
