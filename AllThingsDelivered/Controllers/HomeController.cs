@@ -10,20 +10,17 @@ namespace AllThingsDelivered.Controllers
     {
         public ActionResult Index()
         {
+            ViewBag.BGUrl = "'/Content/Images/bg.jpg'";
+            ViewBag.BGRepeat = "no-repeat";
+            ViewBag.BGSize = "cover";
             return View();
         }
 
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
+            ViewBag.BGUrl = "'/Content/Images/bg2.jpg'";
+            ViewBag.BGRepeat = "no-repeat";
+            ViewBag.BGSize = "cover";
             return View();
         }
     }

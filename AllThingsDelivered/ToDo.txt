@@ -1,12 +1,9 @@
 ﻿Frontend tasks
-	padding
-	format validation errors on forms as red boxes
-	format forms so they look nice
-	format tables
 	content page - Index
 	Content page - About
 	order page
 	responsiveness
+	format validation errors on forms as red boxes
 	success messages on other pages 
 
 urgent tasks
@@ -45,6 +42,7 @@ longterm tasks
 	fix for jquery validation not firing off
 		add address
 		edit profile
+	format forms so they look nice
 	
 Completed and tested tasks
 	create script that gets menus from chicago in list and stores them to DB
@@ -124,5 +122,7 @@ Completed and tested tasks
 	format customize/quantity/add to cart in menus
 	hide customize/quantity/add to cart until clicked on in menus
 	change redirect on register
+	format tables
+	padding
 
 completed and untested tasks

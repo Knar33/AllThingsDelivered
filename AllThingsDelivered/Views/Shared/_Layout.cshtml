@@ -8,19 +8,33 @@
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
-<div class="main container-fluid">
+@{ 
+    if (ViewBag.BGUrl == null)
+    {
+        ViewBag.BGURL = "'/Content/Images/tilebg.png'";
+    }
+    if (ViewBag.BGRepeat == null)
+    {
+        ViewBag.BGRepeat = "repeat";
+    }
+    if (ViewBag.BgSize == null)
+    {
+        ViewBag.BgSize = "auto";
+    }
+}
+<div class="main container-fluid" style="background-image: url(@ViewBag.BGUrl); background-repeat: @ViewBag.BGRepeat; background-size: @ViewBag.BgSize;">
     <div class="row topNav">
         <div class="col-sm-offset-2 col-sm-2">
-            <a class="bigLink" href="/Home">All Things Delivered</a>
+            <a class="bigLink inverse" href="/Home">All Things Delivered</a>
         </div>
         <div class="col-sm-1">
-            <a href="/Home">Home</a>
+            <a class="bigLink" href="/Home">Home</a>
         </div>
         <div class="col-sm-1">
-            <a href="/Home/About">About</a>
+            <a class="bigLink" href="/Home/About">About</a>
         </div>
         <div class="col-sm-1">
-            <a href="/Order">Order</a>
+            <a class="bigLink" href="/Order">Order</a>
         </div>
         <div class="col-sm-3 text-right">
             @if (User.Identity.IsAuthenticated)
@@ -40,7 +54,9 @@
     </div>
     <div class="row content">
         <div class="col-sm-offset-2 col-sm-8">
-            @RenderBody()
+            <div class="splash">
+                @RenderBody()
+            </div>
         </div>
     </div>
     <div class="row botNav">

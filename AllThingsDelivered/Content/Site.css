@@ -24,18 +24,19 @@ textarea {
 }
 
 .topNav {
-    background-color: black;
+    background: rgba(0,0,0,0.7);
     padding: 1em 0;
+    border-bottom: 2px solid #333333;
 }
 
 .botNav {
     padding: 1em 0;
     text-align: center;
+    background-color: black;
 }
 
 .content {
     padding: 1em 0;
-    background-color: white;
     color: black;
 }
 
@@ -53,4 +54,21 @@ textarea {
     border-radius: 5px;
     padding: 1em;
     white-space: normal;
+}
+
+.splash {
+    background: rgba(0,0,0,0.7);
+    color: #DDDDDD;
+    padding: 1em;
+    height: 400px;
+    border: 1px solid #333333;
+    border-radius: 5px;
+}
+
+.inverse {
+    color: white;
+}
+
+a:hover {
+    text-decoration: none;
 }
