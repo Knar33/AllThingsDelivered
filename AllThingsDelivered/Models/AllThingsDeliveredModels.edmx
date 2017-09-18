@@ -150,9 +150,9 @@
           <Property Name="CustomerID" Type="int" Nullable="false" />
           <Property Name="TimePlaced" Type="datetime" Nullable="false" />
           <Property Name="Active" Type="bit" Nullable="false" />
-          <Property Name="OrderPrice" Type="decimal" Precision="18" Scale="0" />
-          <Property Name="DeliveryFee" Type="decimal" Precision="18" Scale="0" />
-          <Property Name="Customertip" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="OrderPrice" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="DeliveryFee" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Customertip" Type="decimal" Precision="18" Scale="2" />
           <Property Name="DriverRating" Type="int" />
           <Property Name="Customize" Type="nvarchar" MaxLength="1000" />
           <Property Name="PaymentToken" Type="nvarchar" MaxLength="50" Nullable="false" />
@@ -679,9 +679,9 @@
           <Property Name="CustomerID" Type="Int32" Nullable="false" />
           <Property Name="TimePlaced" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Active" Type="Boolean" Nullable="false" />
-          <Property Name="OrderPrice" Type="Decimal" Precision="18" Scale="0" />
-          <Property Name="DeliveryFee" Type="Decimal" Precision="18" Scale="0" />
-          <Property Name="Customertip" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="OrderPrice" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="DeliveryFee" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Customertip" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="DriverRating" Type="Int32" />
           <Property Name="Customize" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="PaymentToken" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />

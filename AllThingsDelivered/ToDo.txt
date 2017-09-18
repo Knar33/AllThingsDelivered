@@ -14,24 +14,23 @@
 	content page - Index
 	Content page - About
 	order page
-	
+
 want to do today
-	Order status page after user places an order (don't allow users to make more than 1 order)
-		Status page shows up when user hits "order" page, if they have an order. Otherwise it will just show the normal order page
-		use ajax loop to refresh this page
 	driver page
 		if no active order is assigned to driver, display active orders
 		if an active order is assigned, display order info
-		use ajax/jquery to update this live
 	driver login
 	driver logout
-	driver timeclock
 	driver accept order
 	maybe - show cart on checkout page - hide until clicked
 	change check of "isAuthenticated" on driver/operator pages to role authorization - Roles are Operator and Driver. 
 		All drivers and operators are customers by default, and an employee can be both a driver and an operator
-	
+
 Tasks that can be done later
+	driver timeclock
+	check if a user has an active order before letting them place an order
+	use ajax loop to refresh order page page
+	use ajax/jquery to update driver page live
 	change all db saves and user manager stuff to be async
 	login on change password?
 	format emails to look good
@@ -117,3 +116,7 @@ Completed and tested tasks
 	user change primary payment method
 	choose payment method when checking out
 	remove operator and quickorder table
+	create oprder page
+	order price
+	Order status page after user places an order (don't allow users to make more than 1 order)
+		Status page shows up when user hits "order" page, if they have an order. Otherwise it will just show the normal order page

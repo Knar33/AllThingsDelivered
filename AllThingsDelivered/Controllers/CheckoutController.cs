@@ -138,7 +138,7 @@ namespace AllThingsDelivered.Controllers
 
             //move everything from cart to order
             //delete cart items
-            TempData["ID"] = newOrder.CustomerID;
+            TempData["ID"] = newOrder.OrderID;
 
             return RedirectToAction("Success");
         }

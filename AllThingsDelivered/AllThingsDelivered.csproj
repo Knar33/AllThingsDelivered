@@ -190,6 +190,7 @@
     <Compile Include="Controllers\CustomItemController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MenuController.cs" />
+    <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Controllers\RestaurantsController.cs" />
     <Compile Include="Controllers\ScrapeController.cs" />
@@ -252,6 +253,7 @@
     <Compile Include="Models\OrderContent.cs">
       <DependentUpon>AllThingsDeliveredModels.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\OrderModels.cs" />
     <Compile Include="Models\ProfileModels.cs" />
     <Compile Include="Models\Restaurant.cs">
       <DependentUpon>AllThingsDeliveredModels.tt</DependentUpon>
@@ -308,6 +310,7 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="ToDo.txt" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -341,6 +344,7 @@
     <Content Include="Views\Checkout\Success.cshtml" />
     <Content Include="Views\Profile\ChangePassword.cshtml" />
     <Content Include="Views\Profile\Payment.cshtml" />
+    <Content Include="Views\Order\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

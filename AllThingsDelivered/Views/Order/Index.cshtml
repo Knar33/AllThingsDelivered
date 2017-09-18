@@ -1,0 +1,69 @@
+﻿@using AllThingsDelivered.Models
+@model Order
+@{
+    ViewBag.Title = "Index";
+}
+
+@if (Model == null)
+{
+    <a href="/customitem">Add a custom item to your cart</a><br />
+    <a href="/Restaurants">Browse menus</a>
+}
+else {
+    <h3>Your Order</h3>
+    <p>
+        Order ID: @Model.OrderID<br />
+    </p>
+    if (Model.CustomOrderContents.Count() > 0)
+    {
+        <h3>Custom Items</h3>
+        <table class="table">
+            <tr>
+                <td>Item Location</td>
+                <td>Item Description</td>
+            </tr>
+            @foreach (AllThingsDelivered.Models.CustomOrderContent customOrderContent in Model.CustomOrderContents)
+            {
+                <tr>
+                    <td>
+                        @if (customOrderContent.ItemLocation != null)
+                        {
+                            @customOrderContent.ItemLocation
+                        }
+                    </td>
+                    <td>@customOrderContent.Content</td>
+                </tr>
+            }
+        </table>
+    }
+
+    if (Model.OrderContents.Count() > 0)
+    {
+        <h3>Restaurant Items</h3>
+        <table class="table">
+            <tr>
+                <td>Item Name</td>
+                <td>Item Description</td>
+                <td>Quantity</td>
+                <td>Price Per</td>
+                <td>Customize</td>
+            </tr>
+            @foreach (AllThingsDelivered.Models.OrderContent orderContent in Model.OrderContents)
+            {
+
+                <tr>
+                    <td>@orderContent.ItemName</td>
+                    <td>@orderContent.ItemDescription</td>
+                    <td>@orderContent.Quantity</td>
+                    <td>@orderContent.Price</td>
+                    <td>
+                        @if (orderContent.Customize != null)
+                        {
+                            @orderContent.Customize
+                        }
+                    </td>
+                </tr>
+            }
+        </table>
+    }
+}

@@ -21,7 +21,7 @@ namespace AllThingsDelivered.Controllers
         
         public ActionResult Index()
         {
-            int customerID = 0;
+            int customerID;
             if (User.Identity.IsAuthenticated)
             {
                 customerID = db.AspNetUsers.Single(x => x.UserName == User.Identity.Name).Customers.First().CustomerID;
@@ -45,7 +45,7 @@ namespace AllThingsDelivered.Controllers
         {
             if (ModelState.IsValid)
             {
-                int customerID = 0;
+                int customerID;
                 if (User.Identity.IsAuthenticated)
                 {
                     customerID = db.AspNetUsers.Single(x => x.UserName == User.Identity.Name).Customers.First().CustomerID;

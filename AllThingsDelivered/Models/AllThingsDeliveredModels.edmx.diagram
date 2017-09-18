@@ -12,15 +12,15 @@
         <EntityTypeShape EntityType="AllThingsDeliveredDBModel.CustomCartContent" Width="1.5" PointX="3" PointY="20.625" />
         <EntityTypeShape EntityType="AllThingsDeliveredDBModel.CustomerAddress" Width="1.5" PointX="3" PointY="5.875" />
         <EntityTypeShape EntityType="AllThingsDeliveredDBModel.Customer" Width="1.5" PointX="0.75" PointY="2.375" />
-        <EntityTypeShape EntityType="AllThingsDeliveredDBModel.CustomOrderContent" Width="1.5" PointX="7.5" PointY="12.5" />
-        <EntityTypeShape EntityType="AllThingsDeliveredDBModel.Driver" Width="1.5" PointX="3" PointY="11.875" />
-        <EntityTypeShape EntityType="AllThingsDeliveredDBModel.IgnoredRestaurant" Width="1.5" PointX="5.75" PointY="4.875" />
-        <EntityTypeShape EntityType="AllThingsDeliveredDBModel.OrderContent" Width="1.5" PointX="7.5" PointY="15.125" />
-        <EntityTypeShape EntityType="AllThingsDeliveredDBModel.Order" Width="1.5" PointX="5.25" PointY="11.75" />
-        <EntityTypeShape EntityType="AllThingsDeliveredDBModel.RestaurantCategory" Width="1.5" PointX="5.25" PointY="8.875" />
-        <EntityTypeShape EntityType="AllThingsDeliveredDBModel.RestaurantItem" Width="1.5" PointX="7.5" PointY="8.75" />
-        <EntityTypeShape EntityType="AllThingsDeliveredDBModel.Restaurant" Width="1.5" PointX="3" PointY="8.75" />
-        <EntityTypeShape EntityType="AllThingsDeliveredDBModel.State" Width="1.5" PointX="7.75" PointY="1.875" />
+        <EntityTypeShape EntityType="AllThingsDeliveredDBModel.CustomOrderContent" Width="1.5" PointX="7.5" PointY="5.875" />
+        <EntityTypeShape EntityType="AllThingsDeliveredDBModel.Driver" Width="1.5" PointX="3" PointY="8.75" />
+        <EntityTypeShape EntityType="AllThingsDeliveredDBModel.IgnoredRestaurant" Width="1.5" PointX="7.75" PointY="1.875" />
+        <EntityTypeShape EntityType="AllThingsDeliveredDBModel.OrderContent" Width="1.5" PointX="7.5" PointY="15.625" />
+        <EntityTypeShape EntityType="AllThingsDeliveredDBModel.Order" Width="1.5" PointX="5.25" PointY="7.125" />
+        <EntityTypeShape EntityType="AllThingsDeliveredDBModel.RestaurantCategory" Width="1.5" PointX="5.25" PointY="12.375" />
+        <EntityTypeShape EntityType="AllThingsDeliveredDBModel.RestaurantItem" Width="1.5" PointX="7.5" PointY="12.25" />
+        <EntityTypeShape EntityType="AllThingsDeliveredDBModel.Restaurant" Width="1.5" PointX="3" PointY="12.25" />
+        <EntityTypeShape EntityType="AllThingsDeliveredDBModel.State" Width="1.5" PointX="7.75" PointY="8.875" />
         <AssociationConnector Association="AllThingsDeliveredDBModel.FK_CustomerAddresses_Addresses" />
         <AssociationConnector Association="AllThingsDeliveredDBModel.FK_Drivers_Addresses" />
         <AssociationConnector Association="AllThingsDeliveredDBModel.FK_Orders_Addresses" />
