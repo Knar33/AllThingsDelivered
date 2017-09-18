@@ -25,12 +25,12 @@ namespace AllThingsDelivered.Models
     {
         [Required]
         [MaxLength(1000)]
-        [Display(Name = "Where can the item(s) be found (If you're not sure, you can leave this blank)")]
+        [Display(Name = "Where can the item be found (If you're not sure, you can leave this blank)")]
         public string itemLocation { get; set; }
 
         [Required]
         [MaxLength(1000)]
-        [Display(Name = "Item(s)")]
+        [Display(Name = "Item")]
         public string content { get; set; }
     }
 }

@@ -34,6 +34,7 @@ textarea {
 }
 
 .content {
+    padding: 1em 0;
     background-color: white;
     color: black;
 }
@@ -44,4 +45,12 @@ textarea {
 
 .row {
     margin-right: 0;
+}
+
+.lilBox {
+    border: 1px solid #CCCCCC;
+    background-color: #EEEEEE;
+    border-radius: 5px;
+    padding: 1em;
+    white-space: normal;
 }

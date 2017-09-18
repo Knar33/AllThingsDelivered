@@ -19,17 +19,24 @@
 @{
     var primaryID = Model.primaryMethod.Token;
     if (Model.primaryMethod.GetType() == typeof(Braintree.CreditCard))
-    {
-        <h4>Credit Card</h4>
-        var castedPrimary = (Braintree.CreditCard)Model.primaryMethod;
-        <text>Card Type: </text>@castedPrimary.CardType<br />
-        <text>Card: **** **** **** </text>@castedPrimary.LastFour<br />
+    {   <div class="well well-sm">
+            <h4>Credit Card</h4>
+            @{
+                var castedPrimary = (Braintree.CreditCard)Model.primaryMethod;
+            }
+            <text>Card Type: </text>@castedPrimary.CardType<br />
+            <text>Card: **** **** **** </text>@castedPrimary.LastFour<br />
+        </div>
     }
     if (Model.primaryMethod.GetType() == typeof(Braintree.PayPalAccount))
     {
-        <h4>Paypal</h4>
-        var castedPrimary = (Braintree.PayPalAccount)Model.primaryMethod;
-        <text>Email Address: </text>@castedPrimary.Email<br />
+        <div class="well well-sm">
+            <h4>Paypal</h4>
+            @{
+                var castedPrimary = (Braintree.PayPalAccount)Model.primaryMethod;
+            }
+            <text>Email Address: </text>@castedPrimary.Email<br />
+        </div>
     }
 }
 @if (Model.methods.Count() > 1)
@@ -43,19 +50,21 @@
         var castedMethod = (Braintree.CreditCard)method;
         if (castedMethod.IsDefault == null || castedMethod.IsDefault != true)
         {
-            <h4>Credit Card</h4>
-            <text>Card Type: </text>@castedMethod.CardType<br />
-            <text>Card: **** **** **** </text>@castedMethod.LastFour<br />
-            <form method="post" action="/profile/primarypayment">
-                @Html.AntiForgeryToken()
-                <input type="hidden" name="token" value="@castedMethod.Token" />
-                <input type="submit" value="Make this my default payment method" />
-            </form>
-            <form method="post" action="/profile/deletepayment">
-                @Html.AntiForgeryToken()
-                <input type="hidden" name="token" value="@castedMethod.Token" />
-                <input type="submit" value="Delete this payment" />
-            </form>
+            <div class="well well-sm">
+                <h4>Credit Card</h4>
+                <text>Card Type: </text>@castedMethod.CardType<br />
+                <text>Card: **** **** **** </text>@castedMethod.LastFour<br />
+                <form method="post" action="/profile/primarypayment">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="token" value="@castedMethod.Token" />
+                    <input type="submit" value="Set as default" />
+                </form>
+                <form method="post" action="/profile/deletepayment">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="token" value="@castedMethod.Token" />
+                    <input type="submit" value="Delete" />
+                </form>
+            </div>
         }
     }
     if (method.GetType() == typeof(Braintree.PayPalAccount))
@@ -63,20 +72,23 @@
         var castedMethod = (Braintree.PayPalAccount)method;
         if (castedMethod.IsDefault == null || castedMethod.IsDefault != true)
         {
-            <h4>Paypal</h4>
-            <text>Email Address: </text>@castedMethod.Email<br />
-            <form method="post" action="/profile/primarypayment">
-                @Html.AntiForgeryToken()
-                <input type="hidden" name="token" value="@castedMethod.Token" />
-                <input type="submit" value="Make this my default payment method" />
-            </form>
-            <form method="post" action="/profile/deletepayment">
-                @Html.AntiForgeryToken()
-                <input type="hidden" name="token" value="@castedMethod.Token" />
-                <input type="submit" value="Delete this payment" />
-            </form>
+            <div class="well well-sm">
+                <h4>Paypal</h4>
+                <text>Email Address: </text>@castedMethod.Email<br />
+                <form method="post" action="/profile/primarypayment">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="token" value="@castedMethod.Token" />
+                    <input type="submit" value="Set as default" />
+                </form>
+                <form method="post" action="/profile/deletepayment">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="token" value="@castedMethod.Token" />
+                    <input type="submit" value="Delete" />
+                </form>
+            </div>
         }
     }
+    <br />
 }
 <br />
 <h3>Add a new payment method</h3>

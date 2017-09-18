@@ -22,10 +22,10 @@ else {
     if (Model.CustomOrderContents.Count() > 0)
     {
         <h3>Custom Items</h3>
-        <table class="table">
+        <table class="table table-bordered table-striped">
             <tr>
-                <td>Item Location</td>
-                <td>Item Description</td>
+                <th>Item Location</th>
+                <th>Item Description</th>
             </tr>
             @foreach (AllThingsDelivered.Models.CustomOrderContent customOrderContent in Model.CustomOrderContents)
             {
@@ -45,13 +45,13 @@ else {
     if (Model.OrderContents.Count() > 0)
     {
         <h3>Restaurant Items</h3>
-        <table class="table">
+        <table class="table table-bordered table-striped">
             <tr>
-                <td>Item Name</td>
-                <td>Item Description</td>
-                <td>Quantity</td>
-                <td>Price Per</td>
-                <td>Customize</td>
+                <th>Item Name</th>
+                <th>Item Description</th>
+                <th>Quantity</th>
+                <th>Price Per</th>
+                <th>Customize</th>
             </tr>
             @foreach (AllThingsDelivered.Models.OrderContent orderContent in Model.OrderContents)
             {

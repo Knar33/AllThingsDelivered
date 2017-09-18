@@ -2,6 +2,7 @@
 	padding
 	format validation errors on forms as red boxes
 	format forms so they look nice
+	format tables
 	content page - Index
 	Content page - About
 	order page

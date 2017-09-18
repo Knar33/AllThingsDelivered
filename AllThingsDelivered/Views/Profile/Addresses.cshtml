@@ -5,95 +5,101 @@
 }
 <a href="/profile/index">Edit Profile</a> | <a href="/profile/addresses">Addresses</a> | <a href="/profile/payment">Payment Info</a> | <a href="/profile/changepassword">Change Your Password</a>
 <br /><br />
-<h3>Default Address:</h3><br />
-@foreach (CustomerAddress address in (Model.customer.CustomerAddresses.Where(x => x.DefaultAddr)))
-{
-    if (!address.Address.Deleted)
+    <h3>Default Address:</h3><br />
+    @foreach (CustomerAddress address in (Model.customer.CustomerAddresses.Where(x => x.DefaultAddr)))
     {
-        @address.Address.Line1<br />
-        if (address.Address.Line2 != null)
+        if (!address.Address.Deleted)
         {
-            @address.Address.Line2<br />
+            <div class="well well-sm">
+                @address.Address.Line1<br />
+                @if (address.Address.Line2 != null)
+                {
+                    @address.Address.Line2<br />
+                }
+                @address.Address.City<br />
+                @address.Address.State<br />
+                @address.Address.ZipCode<br />
+                @address.Address.Country
+            </div><br />
         }
-        @address.Address.City<br />
-        @address.Address.State<br />
-        @address.Address.ZipCode<br />
-        @address.Address.Country
-        <br /><br />
     }
-}
 
-@if (Model.customer.CustomerAddresses.Where(x => !x.DefaultAddr).Count() > 0) {
-    <h3>Other Addresses:</h3><br />
-}
-@foreach (CustomerAddress address in (Model.customer.CustomerAddresses.Where(x => !x.DefaultAddr)))
-{
-    if (!address.Address.Deleted)
+    @if (Model.customer.CustomerAddresses.Where(x => !x.DefaultAddr).Count() > 0)
     {
-        @address.Address.Line1<br />
-            if (address.Address.Line2 != null)
-            {
-            @address.Address.Line2<br />
-            }
-        @address.Address.City<br />
-        @address.Address.State<br />
-        @address.Address.ZipCode<br />
-        @address.Address.Country<br />
-        <form method="post" action="/profile/DefaultAddress">
-            @Html.AntiForgeryToken()
-            <input type="hidden" name="customerID" value="@address.CustomerID" />
-            <input type="hidden" name="addressID" value="@address.AddressID" />
-            <input type="submit" value="Make this my default address" />
-        </form>
-        <form method="post" action="/profile/deleteaddress">
-            @Html.AntiForgeryToken()
-            <input type="hidden" name="customerID" value="@address.CustomerID" />
-            <input type="hidden" name="addressID" value="@address.AddressID" />
-            <input type="submit" value="Delete this address" />
-        </form>
-        <br /><br />
+        <h3>Other Addresses:</h3><br />
     }
-}
-<h3>Add a new address:</h3>
-@using (Html.BeginForm("AddAddress", "Profile"))
-{
-    @Html.AntiForgeryToken();
-    <div class="form-group">
-        @Html.LabelFor(m => m.line1, new { @class = "control-label" })
-        @Html.TextBoxFor(m => m.line1, new { @class = "form-control" })
-        @Html.ValidationMessageFor(m => m.line1)
-    </div>
+    @foreach (CustomerAddress address in (Model.customer.CustomerAddresses.Where(x => !x.DefaultAddr)))
+    {
+        if (!address.Address.Deleted)
+        {
+            <div class="well well-sm">
+                @address.Address.Line1<br />
+                @if (address.Address.Line2 != null)
+                {
+                    @address.Address.Line2<br />
+                }
+                @address.Address.City<br />
+                @address.Address.State<br />
+                @address.Address.ZipCode<br />
+                @address.Address.Country<br />
+                <form method="post" action="/profile/DefaultAddress">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="customerID" value="@address.CustomerID" />
+                    <input type="hidden" name="addressID" value="@address.AddressID" />
+                    <input type="submit" value="Set as default" />
+                </form>
+                <form method="post" action="/profile/deleteaddress">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="customerID" value="@address.CustomerID" />
+                    <input type="hidden" name="addressID" value="@address.AddressID" />
+                    <input type="submit" value="Delete" />
+                </form>
+            </div><br />
+        }
+    }
+    <h3>Add a new address:</h3>
+    @using (Html.BeginForm("AddAddress", "Profile"))
+    {
+        @Html.AntiForgeryToken();
+        <div class="form-group">
+            @Html.LabelFor(m => m.line1, new { @class = "control-label" })
+            @Html.TextBoxFor(m => m.line1, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.line1)
+        </div>
 
-    <div class="form-group">
-        @Html.LabelFor(m => m.line2, new { @class = "control-label" })
-        @Html.TextBoxFor(m => m.line2, new { @class = "form-control" })
-        @Html.ValidationMessageFor(m => m.line2)
-    </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.line2, new { @class = "control-label" })
+            @Html.TextBoxFor(m => m.line2, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.line2)
+        </div>
 
-    <div class="form-group">
-        @Html.LabelFor(m => m.city, new { @class = "control-label" })
-        @Html.TextBoxFor(m => m.city, new { @class = "form-control" })
-        @Html.ValidationMessageFor(m => m.city)
-    </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.city, new { @class = "control-label" })
+            @Html.TextBoxFor(m => m.city, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.city)
+        </div>
 
 
-    <div class="form-group">
-        @Html.LabelFor(m => m.state, new { @class = "control-label" })
-        @Html.DropDownListFor(m => m.state, Model.stateList)
-        @Html.ValidationMessageFor(m => m.state)
-    </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.state, new { @class = "control-label" })
+            <br />
+            @Html.DropDownListFor(m => m.state, Model.stateList)
+            @Html.ValidationMessageFor(m => m.state)
+        </div>
 
-    <div class="form-group">
-        @Html.LabelFor(m => m.postalcode, new { @class = "control-label" })
-        @Html.TextBoxFor(m => m.postalcode, new { @class = "form-control" })
-        @Html.ValidationMessageFor(m => m.postalcode)
-    </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.postalcode, new { @class = "control-label" })
+            @Html.TextBoxFor(m => m.postalcode, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.postalcode)
+        </div>
 
-    <div class="form-group">
-        @Html.LabelFor(m => m.country, new { @class = "control-label" })
-        @Html.DropDownListFor(m => m.country, Model.countryList)
-        @Html.ValidationMessageFor(m => m.country)
-    </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.country, new { @class = "control-label" })
+            <br />
+            @Html.DropDownListFor(m => m.country, Model.countryList)
+            @Html.ValidationMessageFor(m => m.country)
+        </div>
 
-    <input type="submit" value="Add Address" />
-}
+        <input type="submit" value="Add Address" />
+
+    }
