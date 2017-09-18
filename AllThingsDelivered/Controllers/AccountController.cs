@@ -198,8 +198,9 @@ namespace CodingTemple.CodingCookware.Web.Controllers
                 message.SetTemplateId("8765a1ec-6865-4be4-8854-b04ef686d63e");
                 var response = client.SendEmailAsync(message).Result;
                 var ResponseBody = response.Body.ReadAsStringAsync().Result;
-                
-                return RedirectToAction("Index", "Restaurants");
+
+                TempData["Success"] = "You have successfully registered an account. You have automatically been signed in and can begin shopping";
+                return RedirectToAction("Index", "Order");
             }
             else
             {

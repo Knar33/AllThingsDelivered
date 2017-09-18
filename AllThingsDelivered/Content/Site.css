@@ -34,11 +34,14 @@ textarea {
 }
 
 .content {
-    padding: 1em 0;
     background-color: white;
     color: black;
 }
 
 .bigLink {
     font-size: 1.5em;
+}
+
+.row {
+    margin-right: 0;
 }

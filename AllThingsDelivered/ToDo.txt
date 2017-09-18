@@ -1,21 +1,14 @@
-﻿Frontend
-	page is too wide
-	register success page
-	customitem form - change itemLocation to display name
-	fix for jquery validation not firing off
-		add address
-		edit profile
-	hide customize/quantity/add to cart until clicked on in menus
-	hide non-primary credit cards and addresses until clicked on in checkout
-	success messages on other pages 
-		remove item from cart
+﻿Frontend tasks
+	padding
 	format validation errors on forms as red boxes
 	format forms so they look nice
 	content page - Index
 	Content page - About
 	order page
+	responsiveness
+	success messages on other pages 
 
-want to do today
+urgent tasks
 	driver page
 		if no active order is assigned to driver, display active orders
 		if an active order is assigned, display order info
@@ -26,7 +19,7 @@ want to do today
 	change check of "isAuthenticated" on driver/operator pages to role authorization - Roles are Operator and Driver. 
 		All drivers and operators are customers by default, and an employee can be both a driver and an operator
 
-Tasks that can be done later
+longterm tasks
 	driver timeclock
 	check if a user has an active order before letting them place an order
 	use ajax loop to refresh order page page
@@ -47,6 +40,10 @@ Tasks that can be done later
 	clean up code
 		make sure all model/view/control situations make sense
 		comments
+	hide non-primary credit cards and addresses until clicked on in checkout
+	fix for jquery validation not firing off
+		add address
+		edit profile
 	
 Completed and tested tasks
 	create script that gets menus from chicago in list and stores them to DB
@@ -120,3 +117,11 @@ Completed and tested tasks
 	order price
 	Order status page after user places an order (don't allow users to make more than 1 order)
 		Status page shows up when user hits "order" page, if they have an order. Otherwise it will just show the normal order page
+	page is too wide
+	register success page
+	customitem form - change itemLocation to display name
+	format customize/quantity/add to cart in menus
+	hide customize/quantity/add to cart until clicked on in menus
+	change redirect on register
+
+completed and untested tasks
