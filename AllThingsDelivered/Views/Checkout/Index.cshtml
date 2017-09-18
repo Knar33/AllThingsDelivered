@@ -13,43 +13,41 @@
         @Html.ValidationMessageFor(m => m.customize)
     </div>
     
-    <h3>Default Address:</h3><br />
+    <h3>Select your Address:</h3><br />
     foreach (CustomerAddress address in (Model.customer.CustomerAddresses.Where(x => x.DefaultAddr)))
     {
         if (!address.Address.Deleted)
         {
+            <label class="well well-sm">
             <input type="radio" name="address" value="@address.AddressID" checked /><br />
-            @address.Address.Line1<br />
-            if (address.Address.Line2 != null)
-            {
-                @address.Address.Line2<br />
-            }
-            @address.Address.City<br />
-            @address.Address.State<br />
-            @address.Address.ZipCode<br />
-            @address.Address.Country
-            <br /><br />
+                @address.Address.Line1<br />
+                @if (address.Address.Line2 != null)
+                {
+                    @address.Address.Line2<br />
+                }
+                @address.Address.City<br />
+                @address.Address.State<br />
+                @address.Address.ZipCode<br />
+                @address.Address.Country
+            </label><br />
         }
-    }
-    if ((Model.customer.CustomerAddresses.Where(x => !x.DefaultAddr).Count() > 0))
-    {
-        <h3>Other Addresses:</h3><br />
     }
     foreach (CustomerAddress address in (Model.customer.CustomerAddresses.Where(x => !x.DefaultAddr)))
     {
         if (!address.Address.Deleted)
         {
-            <input type="radio" name="address" value="@address.AddressID" /><br />
-            @address.Address.Line1<br />
-            if (address.Address.Line2 != null)
-            {
-                @address.Address.Line2<br />
-            }
-            @address.Address.City<br />
-            @address.Address.State<br />
-            @address.Address.ZipCode<br />
-            @address.Address.Country<br />
-            <br /><br />
+            <label class="well well-sm">
+                <input type="radio" name="address" value="@address.AddressID" /><br />
+                @address.Address.Line1<br />
+                @if (address.Address.Line2 != null)
+                {
+                    @address.Address.Line2<br />
+                }
+                @address.Address.City<br />
+                @address.Address.State<br />
+                @address.Address.ZipCode<br />
+                @address.Address.Country<br />
+            </label><br />
         }
     }
 
@@ -58,16 +56,20 @@
     var primaryID = Model.payment.primaryMethod.Token;
     if (Model.payment.primaryMethod.GetType() == typeof(Braintree.CreditCard))
     {
-        <input type="radio" name="paymentMethod" value="@primaryID" checked /><h4>Credit Card</h4>
-        var castedPrimary = (Braintree.CreditCard)Model.payment.primaryMethod;
-        <text>Card Type: </text>@castedPrimary.CardType<br />
-        <text>Card: **** **** **** </text>@castedPrimary.LastFour<br />
+        <label class="well well-sm">
+            <input type="radio" name="paymentMethod" value="@primaryID" checked /><h4>Credit Card</h4>
+            @{var castedPrimary = (Braintree.CreditCard)Model.payment.primaryMethod;}
+            <text>Card Type: </text>@castedPrimary.CardType<br />
+            <text>Card: **** **** **** </text>@castedPrimary.LastFour<br />
+        </label><br />
     }
     if (Model.payment.primaryMethod.GetType() == typeof(Braintree.PayPalAccount))
     {
-        <input type="radio" name="paymentMethod" value="@primaryID" checked /><h4>Paypal</h4>
-        var castedPrimary = (Braintree.PayPalAccount)Model.payment.primaryMethod;
-        <text>Email Address: </text>@castedPrimary.Email<br />
+        <label class="well well-sm">
+            <input type="radio" name="paymentMethod" value="@primaryID" checked /><h4>Paypal</h4>
+            @{var castedPrimary = (Braintree.PayPalAccount)Model.payment.primaryMethod;}
+            <text>Email Address: </text>@castedPrimary.Email<br />
+        </label><br />
     }
 
     foreach (Braintree.PaymentMethod method in Model.payment.methods)
@@ -77,9 +79,11 @@
             var castedMethod = (Braintree.CreditCard)method;
             if (castedMethod.IsDefault == null || castedMethod.IsDefault != true)
             {
-                <input type="radio" name="paymentMethod" value="@method.Token" /><h4>Credit Card</h4>
-                <text>Card Type: </text>@castedMethod.CardType<br />
-                <text>Card: **** **** **** </text>@castedMethod.LastFour<br />
+                <label class="well well-sm">
+                    <input type="radio" name="paymentMethod" value="@method.Token" /><h4>Credit Card</h4>
+                    <text>Card Type: </text>@castedMethod.CardType<br />
+                    <text>Card: **** **** **** </text>@castedMethod.LastFour<br />
+                </label><br />
             }
         }
         if (method.GetType() == typeof(Braintree.PayPalAccount))
@@ -87,8 +91,10 @@
             var castedMethod = (Braintree.PayPalAccount)method;
             if (castedMethod.IsDefault == null || castedMethod.IsDefault != true)
             {
-                <input type="radio" name="paymentMethod" value="@method.Token" /><h4>Paypal</h4>
-                <text>Email Address: </text>@castedMethod.Email<br />
+                <label class="well well-sm">
+                    <input type="radio" name="paymentMethod" value="@method.Token" /><h4>Paypal</h4>
+                    <text>Email Address: </text>@castedMethod.Email<br />
+                </label><br />
             }
         }
     }
