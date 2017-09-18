@@ -41,20 +41,20 @@
             {
                 <text>
                     Welcome, @User.Identity.Name<br />
-                    <span class="glyphicon glyphicon-shopping-cart"></span><a href="/Cart">View Cart</a> | <span class="glyphicon glyphicon-cog"></span><a href="/Profile">Profile</a> | <a href="/Account/SignOut">Sign Out</a>
+                    <span class="glyphicon glyphicon-shopping-cart"></span> <a href="/Cart">View Cart</a> | <span class="glyphicon glyphicon-cog"></span> <a href="/Profile">Profile</a> | <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> <a href="/Account/SignOut">Sign Out</a>
                 </text>
             }
             else
             {
                 <text>
-                    Welcome, Guest | @Html.ActionLink("Register", "Register", "Account") | @Html.ActionLink("Log On", "SignIn", "Account")
+                    Welcome, Guest | <span class="glyphicon glyphicon-user" aria-hidden="true"></span> @Html.ActionLink("Register", "Register", "Account") | <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span> @Html.ActionLink("Log On", "SignIn", "Account")
                 </text>
             }
         </div>
     </div>
     <div class="row content">
         <div class="col-sm-offset-2 col-sm-8">
-            <div class="splash">
+            <div class="splash" style="padding: 1em;">
                 @RenderBody()
             </div>
         </div>
