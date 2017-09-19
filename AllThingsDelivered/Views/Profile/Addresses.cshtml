@@ -42,13 +42,13 @@
                 @address.Address.State<br />
                 @address.Address.ZipCode<br />
                 @address.Address.Country<br />
-                <form method="post" action="/profile/DefaultAddress">
+                <form method="post" action="/profile/DefaultAddress" style="padding: 0;">
                     @Html.AntiForgeryToken()
                     <input type="hidden" name="customerID" value="@address.CustomerID" />
                     <input type="hidden" name="addressID" value="@address.AddressID" />
                     <input type="submit" value="Set as default" />
                 </form>
-                <form method="post" action="/profile/deleteaddress">
+                <form method="post" action="/profile/deleteaddress" style="padding: 0;">
                     @Html.AntiForgeryToken()
                     <input type="hidden" name="customerID" value="@address.CustomerID" />
                     <input type="hidden" name="addressID" value="@address.AddressID" />

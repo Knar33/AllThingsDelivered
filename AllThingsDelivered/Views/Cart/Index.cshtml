@@ -23,7 +23,7 @@
                 </td>
                 <td>@customCartContent.Content</td>
                 <td>
-                    <form method="post" action="/cart">
+                    <form method="post" action="/cart" style="padding: 0;">
                         @Html.AntiForgeryToken()
                         <input type="hidden" name="id" value="@customCartContent.CustomCartContentsID" />
                         <input type="hidden" name="type" value="CustomCartContent" />

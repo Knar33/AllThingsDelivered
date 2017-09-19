@@ -39,7 +39,7 @@
         </div>
         <div class="row">
             <div class="col-sm-12">
-                <form method="post" action="/menu/index">
+                <form method="post" action="/menu/index" style="padding: 0;">
                     @Html.AntiForgeryToken()
                     <input type="hidden" name="id" value="@item.RestaurantItemID" />
                     <input type="hidden" name="ItemName" value="@item.ItemName" id="@("ItemName" + Convert.ToString(item.RestaurantItemID))" />

@@ -1,10 +1,7 @@
 ﻿Frontend tasks
-	content page - Index
-	Content page - About
 	order page
 	responsiveness
 	format validation errors on forms as red boxes
-	success messages on other pages 
 
 urgent tasks
 	driver page
@@ -124,5 +121,8 @@ Completed and tested tasks
 	change redirect on register
 	format tables
 	padding
+	success messages on other pages 
+	content page - Index
+	Content page - About
 
 completed and untested tasks

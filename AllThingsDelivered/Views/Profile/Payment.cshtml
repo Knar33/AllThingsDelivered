@@ -54,12 +54,12 @@
                 <h4>Credit Card</h4>
                 <text>Card Type: </text>@castedMethod.CardType<br />
                 <text>Card: **** **** **** </text>@castedMethod.LastFour<br />
-                <form method="post" action="/profile/primarypayment">
+                <form method="post" action="/profile/primarypayment" style="padding: 0;">
                     @Html.AntiForgeryToken()
                     <input type="hidden" name="token" value="@castedMethod.Token" />
                     <input type="submit" value="Set as default" />
                 </form>
-                <form method="post" action="/profile/deletepayment">
+                <form method="post" action="/profile/deletepayment" style="padding: 0;">
                     @Html.AntiForgeryToken()
                     <input type="hidden" name="token" value="@castedMethod.Token" />
                     <input type="submit" value="Delete" />
@@ -75,12 +75,12 @@
             <div class="well well-sm">
                 <h4>Paypal</h4>
                 <text>Email Address: </text>@castedMethod.Email<br />
-                <form method="post" action="/profile/primarypayment">
+                <form method="post" action="/profile/primarypayment" style="padding: 0;">
                     @Html.AntiForgeryToken()
                     <input type="hidden" name="token" value="@castedMethod.Token" />
                     <input type="submit" value="Set as default" />
                 </form>
-                <form method="post" action="/profile/deletepayment">
+                <form method="post" action="/profile/deletepayment" style="padding: 0;">
                     @Html.AntiForgeryToken()
                     <input type="hidden" name="token" value="@castedMethod.Token" />
                     <input type="submit" value="Delete" />
