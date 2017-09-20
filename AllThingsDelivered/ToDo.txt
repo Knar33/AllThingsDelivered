@@ -1,9 +1,5 @@
-﻿Frontend tasks
-	order page
-	responsiveness
-	format validation errors on forms as red boxes
-
-urgent tasks
+﻿urgent tasks
+	require admin for scrape
 	driver page
 		if no active order is assigned to driver, display active orders
 		if an active order is assigned, display order info
@@ -13,6 +9,11 @@ urgent tasks
 	maybe - show cart on checkout page - hide until clicked
 	change check of "isAuthenticated" on driver/operator pages to role authorization - Roles are Operator and Driver. 
 		All drivers and operators are customers by default, and an employee can be both a driver and an operator
+
+ Frontend tasks
+	order page
+	responsiveness
+	format validation errors on forms as red boxes
 
 longterm tasks
 	driver timeclock

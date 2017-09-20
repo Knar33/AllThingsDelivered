@@ -23,10 +23,15 @@ namespace AllThingsDelivered.Controllers
             }
             base.Dispose(disposing);
         }
-
-        // GET: Scrape
+        
         public async Task<ActionResult> Index()
         {
+            if (!User.IsInRole("Admin"))
+            {
+                TempData["SignIn"] = "You must be signed into an Administrator account to do that";
+                return RedirectToAction("SignIn", "Account");
+            }
+
             //delete everything from restaurants tables
             db.Database.ExecuteSqlCommand("DELETE FROM RestaurantItems");
             db.Database.ExecuteSqlCommand("DELETE FROM RestaurantCategories");
