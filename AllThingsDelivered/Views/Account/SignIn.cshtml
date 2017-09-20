@@ -34,7 +34,7 @@
         </div>
     }
 
-    @using (Html.BeginForm("", "", "", new { @class = "table table-compact"))
+    @using (Html.BeginForm())
     {
         @Html.AntiForgeryToken()
         <div class="form-group">
