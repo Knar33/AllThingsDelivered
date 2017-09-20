@@ -101,3 +101,7 @@ th {
 .topBotPadded {
     padding: 5em 0;
 }
+
+div.braintree-heading {
+    position: relative;
+}

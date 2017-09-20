@@ -19,77 +19,94 @@
 @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { id = "payment-form" }))
 {
     @Html.AntiForgeryToken();
-    <div class="form-group">
-        @Html.LabelFor(m => m.username, new { @class = "control-label" })
-        @Html.TextBoxFor(m => m.username, new { @class = "form-control" })
-        @Html.ValidationMessageFor(m => m.username)
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.firstname, new { @class = "control-label" })
-        @Html.TextBoxFor(m => m.firstname, new { @class = "form-control" })
-        @Html.ValidationMessageFor(m => m.firstname)
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.lastname, new { @class = "control-label" })
-        @Html.TextBoxFor(m => m.lastname, new { @class = "form-control" })
-        @Html.ValidationMessageFor(m => m.lastname)
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.phone, new { @class = "control-label" })
-        @Html.TextBoxFor(m => m.phone, new { @class = "form-control" })
-        @Html.ValidationMessageFor(m => m.phone)
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.password1, new { @class = "control-label" })
-        @Html.PasswordFor(m => m.password1, new { @class = "form-control" })
-        @Html.ValidationMessageFor(m => m.password1)
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.password2, new { @class = "control-label" })
-        @Html.PasswordFor(m => m.password2, new { @class = "form-control" })
-        @Html.ValidationMessageFor(m => m.password2)
-    </div>
+    <row>
+        <div class="col-md-6">
+            <h3>Basic Information</h3>
+            <div class="form-group">
+                @Html.LabelFor(m => m.username, new { @class = "control-label" })
+                @Html.TextBoxFor(m => m.username, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.username)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.firstname, new { @class = "control-label" })
+                @Html.TextBoxFor(m => m.firstname, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.firstname)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.lastname, new { @class = "control-label" })
+                @Html.TextBoxFor(m => m.lastname, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.lastname)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.phone, new { @class = "control-label" })
+                @Html.TextBoxFor(m => m.phone, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.phone)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.password1, new { @class = "control-label" })
+                @Html.PasswordFor(m => m.password1, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.password1)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.password2, new { @class = "control-label" })
+                @Html.PasswordFor(m => m.password2, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.password2)
+            </div>
+        </div>
+        <div class="col-md-6">
+            <h3>Address</h3>
+            <div class="form-group">
+                @Html.LabelFor(m => m.line1, new { @class = "control-label" })
+                @Html.TextBoxFor(m => m.line1, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.line1)
+            </div>
 
-    <h3>Address</h3>
-    <div class="form-group">
-        @Html.LabelFor(m => m.line1, new { @class = "control-label" })
-        @Html.TextBoxFor(m => m.line1, new { @class = "form-control" })
-        @Html.ValidationMessageFor(m => m.line1)
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(m => m.line2, new { @class = "control-label" })
-        @Html.TextBoxFor(m => m.line2, new { @class = "form-control" })
-        @Html.ValidationMessageFor(m => m.line2)
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.city, new { @class = "control-label" })
-        @Html.TextBoxFor(m => m.city, new { @class = "form-control" })
-        @Html.ValidationMessageFor(m => m.city)
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.state, new { @class = "control-label" })
-        <br />
-        @Html.DropDownListFor(m => m.state, Model.stateList)
-        @Html.ValidationMessageFor(m => m.state)
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.postalcode, new { @class = "control-label" })
-        @Html.TextBoxFor(m => m.postalcode, new { @class = "form-control" })
-        @Html.ValidationMessageFor(m => m.postalcode)
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(m => m.country, new { @class = "control-label" })
-        <br />
-        @Html.DropDownListFor(m => m.country, Model.countryList)
-        @Html.ValidationMessageFor(m => m.country)
-    </div>
-
-    <section>
+            <div class="form-group">
+                @Html.LabelFor(m => m.line2, new { @class = "control-label" })
+                @Html.TextBoxFor(m => m.line2, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.line2)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.city, new { @class = "control-label" })
+                @Html.TextBoxFor(m => m.city, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.city)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.state, new { @class = "control-label" })
+                <br />
+                @Html.DropDownListFor(m => m.state, Model.stateList)
+                @Html.ValidationMessageFor(m => m.state)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.postalcode, new { @class = "control-label" })
+                @Html.TextBoxFor(m => m.postalcode, new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.postalcode)
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.country, new { @class = "control-label" })
+                <br />
+                @Html.DropDownListFor(m => m.country, Model.countryList)
+                @Html.ValidationMessageFor(m => m.country)
+            </div>
+        </div>
+    </row>
+    <row>
         <div class="bt-drop-in-wrapper">
             <div id="bt-dropin"></div>
+            <style>
+                div.braintree-heading {
+                    position: relative;
+                    color: white;
+                }
+                div.braintree-placeholder {
+                    padding: 0;
+                    margin: 0;
+                    height: 0;
+                    width: 0;
+                }
+            </style>
         </div>
-    </section>
+    </row>
     <input id="nonce" name="payment_method_nonce" type="hidden" />
 
     <input type="submit" value="Create Account" />
